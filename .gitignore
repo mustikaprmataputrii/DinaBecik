@@ -1,0 +1,49 @@
+# ============================================================
+#  Dina Becik — .gitignore
+#  JANGAN pernah commit file di bawah ini.
+# ============================================================
+
+# --- Dependensi ---
+node_modules/
+.pnpm-store/
+
+# --- Build output ---
+dist/
+build/
+.vite/
+
+# --- RAHASIA: kunci admin Firebase ---
+# Bocor = database bisa dihapus orang lain. TIDAK BOLEH masuk repo.
+serviceAccountKey.json
+*serviceAccount*.json
+*-firebase-adminsdk-*.json
+.firebase/
+
+# --- Environment variables ---
+.env
+.env.local
+.env.*.local
+.env.production
+
+# --- Log ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- OS / Editor ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# --- Cache test ---
+coverage/
+.vitest/
+
+# --- Arsip lokal ---
+*.zip
+~$*

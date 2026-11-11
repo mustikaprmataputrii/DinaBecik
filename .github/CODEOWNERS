@@ -1,0 +1,42 @@
+# ============================================================================
+#  Dina Becik — CODEOWNERS
+# ============================================================================
+#  File ini menandai PEMILIK setiap folder.
+#  GitHub otomatis meminta review dari pemilik saat ada Pull Request.
+#
+#  ⚠️ SEBELUM DIPAKAI: ganti tulisan <username-github-*> dengan username
+#     GitHub asli tiap anggota. Jika tidak, GitHub mengabaikan baris tersebut.
+#
+#     Cara mengisi:
+#       1. Minta tiap anggota membuat akun GitHub (kalau belum punya)
+#       2. Tambahkan mereka sebagai collaborator repo ini
+#       3. Ganti placeholder di bawah
+# ============================================================================
+
+# --- Default: ketua meninjau semua perubahan ---
+*                               @mustikaprmataputrii
+
+# --- Logika metode: AGNI ---
+/src/shared/                    @mustikaprmataputrii
+/src/tests/                     @mustikaprmataputrii
+/docs/EXCEL-ACUAN.md            @mustikaprmataputrii
+
+# --- Backend & database: ALIA ---
+# /src/data/                    @<username-github-alia>
+# /src/auth/                    @<username-github-alia>
+# /docs/FIRESTORE-RULES.md      @<username-github-alia>
+
+# --- Frontend & desain: SRI ---
+# /src/pages/                   @<username-github-sri>
+# /src/components/              @<username-github-sri>
+# /src/styles/                  @<username-github-sri>
+
+# --- Data & dokumentasi: NADYA ---
+# /src/fixtures/                @<username-github-nadya>
+# /docs/                        @<username-github-nadya>
+
+# --- File kritis: butuh persetujuan SEMUA orang ---
+# File-file ini mempengaruhi seluruh kelompok. Jangan ubah tanpa diskusi.
+/package.json                   @mustikaprmataputrii
+/src/shared/constants.js        @mustikaprmataputrii
+/README.md                      @mustikaprmataputrii
