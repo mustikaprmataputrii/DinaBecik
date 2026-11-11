@@ -4,39 +4,38 @@
 #  File ini menandai PEMILIK setiap folder.
 #  GitHub otomatis meminta review dari pemilik saat ada Pull Request.
 #
-#  ⚠️ SEBELUM DIPAKAI: ganti tulisan <username-github-*> dengan username
-#     GitHub asli tiap anggota. Jika tidak, GitHub mengabaikan baris tersebut.
-#
-#     Cara mengisi:
-#       1. Minta tiap anggota membuat akun GitHub (kalau belum punya)
-#       2. Tambahkan mereka sebagai collaborator repo ini
-#       3. Ganti placeholder di bawah
+#  Username sudah terisi (diverifikasi 11 Nov 2026):
+#    Agni  Galuh Essa Vandriya          -> @agnigaluhev-svg
+#    Alia  Julyanti                     -> @al-11111
+#    Sri   Mustika Indah Permata Putri  -> @mustikaprmataputrii
+#    Nadya Clarisa Az-zahra             -> @nadyaclarisa
 # ============================================================================
 
 # --- Default: ketua meninjau semua perubahan ---
 *                               @mustikaprmataputrii
 
 # --- Logika metode: AGNI ---
-/src/shared/                    @mustikaprmataputrii
-/src/tests/                     @mustikaprmataputrii
-/docs/EXCEL-ACUAN.md            @mustikaprmataputrii
+/src/shared/                    @agnigaluhev-svg @mustikaprmataputrii
+/src/tests/                     @agnigaluhev-svg @mustikaprmataputrii
+/docs/EXCEL-ACUAN.md            @agnigaluhev-svg
 
 # --- Backend & database: ALIA ---
-# /src/data/                    @<username-github-alia>
-# /src/auth/                    @<username-github-alia>
-# /docs/FIRESTORE-RULES.md      @<username-github-alia>
+/src/data/                      @al-11111 @mustikaprmataputrii
+/src/auth/                      @al-11111 @mustikaprmataputrii
+/docs/FIRESTORE-RULES.md        @al-11111
 
 # --- Frontend & desain: SRI ---
-# /src/pages/                   @<username-github-sri>
-# /src/components/              @<username-github-sri>
-# /src/styles/                  @<username-github-sri>
+/src/pages/                     @mustikaprmataputrii
+/src/components/                @mustikaprmataputrii
+/src/styles/                    @mustikaprmataputrii
+/public/                        @mustikaprmataputrii
 
 # --- Data & dokumentasi: NADYA ---
-# /src/fixtures/                @<username-github-nadya>
-# /docs/                        @<username-github-nadya>
+/src/fixtures/                  @nadyaclarisa @mustikaprmataputrii
+/docs/                          @nadyaclarisa
 
 # --- File kritis: butuh persetujuan SEMUA orang ---
 # File-file ini mempengaruhi seluruh kelompok. Jangan ubah tanpa diskusi.
-/package.json                   @mustikaprmataputrii
-/src/shared/constants.js        @mustikaprmataputrii
+/package.json                   @mustikaprmataputrii @agnigaluhev-svg
+/src/shared/constants.js        @mustikaprmataputrii @agnigaluhev-svg
 /README.md                      @mustikaprmataputrii

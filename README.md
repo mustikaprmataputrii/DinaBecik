@@ -19,7 +19,15 @@ hajatan dari beberapa tanggal kandidat, dengan menggabungkan penilaian individua
 | Sri Mustika Indah Permata Putri | 240605110158 | Frontend & Desain | `src/pages/`, `src/components/`, `src/styles/` |
 | Nadya Clarissa Azzahra | 240605110166 | Data, Weton & Dokumentasi | `src/fixtures/`, `docs/` |
 
+| Anggota | GitHub | Branch |
+|---|---|---|
+| Agni | `@agnigaluhev-svg` | `feat/metode-agni` |
+| Alia | `@al-11111` | `feat/backend-alia` |
+| Sri | `@mustikaprmataputrii` | `feat/frontend-sri` |
+| Nadya | `@nadyaclarisa` | `feat/data-nadya` |
+
 Pembagian lengkap: **[docs/PEMBAGIAN-KERJA.md](docs/PEMBAGIAN-KERJA.md)**
+Cara pakai Git: **[docs/ALUR-GIT.md](docs/ALUR-GIT.md)**
 
 ---
 
@@ -47,6 +55,7 @@ DinaBecik/
 │
 ├── docs/
 │   ├── PEMBAGIAN-KERJA.md        ← siapa mengerjakan apa
+│   ├── ALUR-GIT.md               ← cara pakai git & pull request
 │   ├── CATATAN-TEKNIS.md         ← temuan & keputusan teknis
 │   ├── FIRESTORE-RULES.md        ← aturan keamanan database
 │   └── panduan-proyek.pdf        ← dokumen acuan dosen
