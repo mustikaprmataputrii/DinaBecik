@@ -1,0 +1,175 @@
+/* ============================================================================
+ *  Dina Becik — Stylesheet utama
+ * ============================================================================
+ *  Tailwind v4 + design token dari src/styles/tokens.js
+ *
+ *  ATURAN: warna, font, dan radius TIDAK ditulis hardcoded di komponen.
+ *  Semua lewat utility Tailwind (@theme) atau CSS variable di bawah.
+ * ========================================================================== */
+
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * TEMA: memetakan design token ke utility Tailwind
+ * ------------------------------------------------------------------------- */
+@theme {
+  /* Sogan (cokelat) */
+  --color-sogan-50: #fbf6f0;
+  --color-sogan-100: #f5eadf;
+  --color-sogan-200: #e8d3be;
+  --color-sogan-300: #d6b694;
+  --color-sogan-400: #be9169;
+  --color-sogan-500: #a5703f;
+  --color-sogan-600: #8b5e3c;
+  --color-sogan-700: #6f4a2f;
+  --color-sogan-800: #523722;
+  --color-sogan-900: #3a2718;
+
+  /* Emas */
+  --color-emas-50: #fef9ec;
+  --color-emas-100: #fcf0cc;
+  --color-emas-200: #f8e09b;
+  --color-emas-300: #f2cb63;
+  --color-emas-400: #e9b23a;
+  --color-emas-500: #d99a1e;
+  --color-emas-600: #b87c13;
+  --color-emas-700: #925e11;
+  --color-emas-800: #784c15;
+  --color-emas-900: #653f16;
+
+  /* Krem */
+  --color-krem-50: #fffdfa;
+  --color-krem-100: #fdf9f3;
+  --color-krem-200: #f9f2e7;
+  --color-krem-300: #f2e8d8;
+  --color-krem-400: #e9dac5;
+
+  /* Netral */
+  --color-netral-0: #ffffff;
+  --color-netral-50: #fafaf9;
+  --color-netral-100: #f4f3f1;
+  --color-netral-200: #e7e5e1;
+  --color-netral-300: #d3d0ca;
+  --color-netral-400: #a8a29a;
+  --color-netral-500: #7c766d;
+  --color-netral-600: #5c574f;
+  --color-netral-700: #403c36;
+  --color-netral-800: #2a2723;
+  --color-netral-900: #1a1815;
+
+  /* Status */
+  --color-draft: #7c766d;
+  --color-penilaian: #2f6fa8;
+  --color-voting: #b87c13;
+  --color-selesai: #2e7d4f;
+  --color-bahaya: #b3261e;
+  --color-sukses: #2e7d4f;
+  --color-peringatan: #b26a00;
+
+  /* Font */
+  --font-judul: 'Playfair Display', Georgia, serif;
+  --font-isi: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-angka: 'JetBrains Mono', Consolas, monospace;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  /* Bayangan bernuansa sogan, bukan hitam pekat */
+  --shadow-sm: 0 1px 2px rgba(58, 39, 24, 0.06);
+  --shadow-md: 0 2px 8px rgba(58, 39, 24, 0.08);
+  --shadow-lg: 0 4px 16px rgba(58, 39, 24, 0.1);
+  --shadow-xl: 0 8px 32px rgba(58, 39, 24, 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+ * DASAR
+ * ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-isi);
+    color: var(--color-netral-800);
+    background-color: var(--color-krem-100);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-judul);
+    color: var(--color-sogan-800);
+    letter-spacing: -0.01em;
+  }
+
+  /* Angka selalu tabular agar kolom S/V/poin rata */
+  .angka {
+    font-family: var(--font-angka);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Fokus terlihat jelas untuk aksesibilitas */
+  :focus-visible {
+    outline: 2px solid var(--color-emas-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * KOMPONEN BERSAMA
+ * ------------------------------------------------------------------------- */
+@layer components {
+  /* Motif batik tipis sebagai latar — opacity sangat rendah agar angka terbaca */
+  .latar-batik {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%238B5E3C' stroke-width='0.6'%3E%3Ccircle cx='10' cy='10' r='7'/%3E%3Ccircle cx='30' cy='10' r='7'/%3E%3Ccircle cx='10' cy='30' r='7'/%3E%3Ccircle cx='30' cy='30' r='7'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 40px 40px;
+  }
+
+  .kartu {
+    background-color: var(--color-netral-0);
+    border: 1px solid var(--color-netral-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .kartu-tebal {
+    background-color: var(--color-netral-0);
+    border: 1px solid var(--color-sogan-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Garis emas dekoratif di bawah judul */
+  .garis-emas::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 2px;
+    margin-top: 0.5rem;
+    background: linear-gradient(90deg, var(--color-emas-500), transparent);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * CETAK (untuk ekspor PDF)
+ * ------------------------------------------------------------------------- */
+@media print {
+  .tanpa-cetak {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .kartu,
+  .kartu-tebal {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
