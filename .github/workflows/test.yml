@@ -1,0 +1,55 @@
+# ============================================================================
+#  Dina Becik — CI: jalankan 50 unit test acuan
+# ============================================================================
+#  Workflow ini berjalan otomatis setiap:
+#    - ada Pull Request ke main
+#    - ada push ke main
+#    - ada push ke branch feat/*
+#
+#  Jika ada yang merusak rumus WP/Borda/weton, workflow ini GAGAL dan
+#  Pull Request tidak bisa di-merge (karena branch protection mewajibkan
+#  status check ini lulus).
+# ============================================================================
+
+name: Test Acuan
+
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: npm test (50 test acuan)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Pasang Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependensi
+        run: npm ci
+
+      - name: Jalankan unit test acuan
+        run: npm test
+
+      # ---------------------------------------------------------------
+      # Pemeriksaan tambahan: memastikan tidak ada yang menyalin
+      # kunci admin Firebase ke repo.
+      # ---------------------------------------------------------------
+      - name: Cek tidak ada file rahasia
+        run: |
+          echo "Memeriksa file rahasia..."
+          if git ls-files | grep -Ei 'serviceAccountKey|firebase-adminsdk|^\.env$|^\.env\.local$'; then
+            echo "❌ GAGAL: file rahasia ditemukan di repo."
+            echo "Kunci admin Firebase yang bocor bisa menghapus seluruh database."
+            exit 1
+          fi
+          echo "✅ Tidak ada file rahasia."
