@@ -79,27 +79,29 @@ export default function Layout({ sesi, onLogout, children }) {
             )}
           </div>
 
-          {/* Navigasi */}
+          {/* Navigasi — bisa digulir mendatar di layar kecil agar semua menu terjangkau */}
           {sesi && (
-            <nav className="wadah overflow-x-auto">
-              <ul className="flex gap-1 pb-2.5">
-                {MENU.map((m) => (
-                  <li key={m.ke}>
-                    <NavLink
-                      to={m.ke}
-                      className={({ isActive }) =>
-                        `inline-block whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                          isActive
-                            ? 'bg-emas-500 text-sogan-900 shadow-sm'
-                            : 'text-krem-200/85 hover:bg-emas-500/15 hover:text-emas-100'
-                        }`
-                      }
-                    >
-                      {m.label}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
+            <nav className="wadah" aria-label="Menu utama">
+              <div className="overflow-x-auto pb-2.5">
+                <ul className="flex w-max min-w-full gap-1">
+                  {MENU.map((m) => (
+                    <li key={m.ke}>
+                      <NavLink
+                        to={m.ke}
+                        className={({ isActive }) =>
+                          `inline-block whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition ${
+                            isActive
+                              ? 'bg-emas-500 text-sogan-900 shadow-sm'
+                              : 'text-krem-200/85 hover:bg-emas-500/15 hover:text-emas-100'
+                          }`
+                        }
+                      >
+                        {m.label}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </nav>
           )}
         </div>

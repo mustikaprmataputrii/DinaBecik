@@ -375,6 +375,78 @@
     white-space: nowrap;
   }
 
+  /* ---------------- PENGGESER (SLIDER BOBOT) ----------------
+   * Slider 0-100 untuk tiap kriteria di halaman "Atur Bobot".
+   * Warna diambil dari token, bukan hardcoded.
+   * `--isi` diisi inline oleh komponen (persentase terisi).
+   * ---------------------------------------------------------- */
+  .penggeser {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-emas-500) 0%,
+      var(--color-emas-500) var(--isi, 0%),
+      var(--color-sogan-200) var(--isi, 0%),
+      var(--color-sogan-200) 100%
+    );
+    outline: none;
+    cursor: pointer;
+  }
+
+  .penggeser::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-sogan-800);
+    background-image: linear-gradient(180deg, var(--color-emas-200), var(--color-emas-500));
+    box-shadow: 0 1px 3px rgba(20, 13, 11, 0.45);
+    transition: transform 120ms ease;
+  }
+
+  .penggeser::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+
+  .penggeser::-moz-range-thumb {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-sogan-800);
+    background-image: linear-gradient(180deg, var(--color-emas-200), var(--color-emas-500));
+    box-shadow: 0 1px 3px rgba(20, 13, 11, 0.45);
+  }
+
+  .penggeser:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  /* ---------------- PETUNJUK GESER TABEL ----------------
+   * Muncul hanya di layar kecil, memberi tahu bahwa tabel bisa digeser.
+   * ------------------------------------------------------ */
+  .petunjuk-geser {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-bottom: 1px solid var(--color-sogan-200);
+    background-color: var(--color-sogan-50);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+    color: var(--color-netral-500);
+  }
+
+  @media (min-width: 1024px) {
+    .petunjuk-geser {
+      display: none;
+    }
+  }
+
   /* ---------------- WADAH (KONTAINER) ----------------
    * Untuk header & footer yang melebar penuh.
    * Kartu isi memakai lebar sendiri yang lebih sempit.
