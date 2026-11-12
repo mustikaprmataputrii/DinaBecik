@@ -14,14 +14,16 @@ import { Link } from 'react-router-dom';
 import Kartu, { JudulKartu } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
+import PanelBuktiAkurasi from '../components/PanelBuktiAkurasi.jsx';
 import { getAcara, getStatusSemuaDm, getHasilVoting } from '../data/index.js';
 import { DECISION_MAKERS, URUTAN_DM, STATUS_ACARA, METODE } from '../shared/constants.js';
 
 const PINTASAN = [
+  { ke: '/kelola', judul: 'Kelola Data', isi: 'Isi data hajatan sendiri', ikon: '✎' },
   { ke: '/kandidat', judul: 'Data Acara', isi: 'Kandidat & weton', ikon: '▤' },
   { ke: '/bobot', judul: 'Atur Bobot', isi: '5 kriteria, total 100%', ikon: '⚖' },
-  { ke: '/penilaian', judul: 'Penilaian Saya', isi: 'S, V, ranking WP', ikon: '✎' },
-  { ke: '/hasil', judul: 'Konsensus', isi: 'Hasil Weighted Borda', ikon: '◈' },
+  { ke: '/penilaian', judul: 'Penilaian Saya', isi: 'S, V, ranking WP', ikon: '◈' },
+  { ke: '/hasil', judul: 'Konsensus', isi: 'Hasil Weighted Borda', ikon: '★' },
 ];
 
 export default function HalamanDashboard({ sesi }) {
@@ -74,6 +76,12 @@ export default function HalamanDashboard({ sesi }) {
               {METODE.penilaianIndividual} → {METODE.konsensus.split(' (')[0]}
             </span>
             {acara?.status && <BadgeStatus status={acara.status} gelap ukuran="sm" />}
+            <a
+              href="#bukti-akurasi"
+              className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
+            >
+              Bukti akurasi ↓
+            </a>
           </div>
         </div>
       </Kartu>
@@ -119,6 +127,9 @@ export default function HalamanDashboard({ sesi }) {
               </div>
             </div>
           </Kartu>
+
+          {/* ================= BUKTI AKURASI (angka contoh Tabel 7.2/7.3) ================= */}
+          <PanelBuktiAkurasi />
 
           {/* ================= STATUS DM + PINTASAN ================= */}
           <div className="grid gap-6 lg:grid-cols-3">

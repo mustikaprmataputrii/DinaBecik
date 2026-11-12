@@ -214,3 +214,41 @@ Saat `firebaseAdapter` aktif, pindah penyimpanan cukup di `src/data/index.js`.
    baru bisa setelah ID diambil dari acara aktif.
 4. Tombol "Kembalikan data contoh" memanggil `resetDemo()` — berguna saat demo,
    tetapi menghapus data pengguna di peramban itu.
+
+---
+
+## 12. Panel Bukti Akurasi: angka laporan sebagai PEMBANDING, bukan masukan
+
+### Masalah
+
+Pengguna (dan dosen) perlu yakin bahwa aplikasi ini benar-benar menghitung,
+bukan menampilkan angka yang sudah dipatok. Menampilkan "E = 35 poin" saja
+tidak membuktikan apa pun — angka itu bisa saja ditulis mati di JSX.
+
+### Keputusan
+
+`src/components/PanelBuktiAkurasi.jsx` (dipasang di Dashboard):
+
+1. Ambil **data contoh** Tabel 7.1 dari fixture (selalu data contoh, tidak
+   terpengaruh data yang diisi pengguna).
+2. Hitung **ulang** dengan `hitungWP()` dan `hitungBorda()` — fungsi yang sama
+   persis dengan halaman Penilaian & Konsensus.
+3. Bandingkan hasil hitung dengan angka Tabel 7.2/7.3.
+4. Tampilkan berdampingan: angka hasil hitung (besar) + angka laporan (kecil)
+   + tanda ✓/!.
+
+Ada tombol "Hitung ulang" yang menjalankan mesin sekali lagi, dan penanda waktu
+supaya terlihat panelnya benar-benar bekerja saat itu, bukan hasil render statis.
+
+### Konsekuensi
+
+- Panel ini berfungsi sebagai **alarm**: kalau ada yang merusak rumus, badge
+  berubah dari "48/48 cocok" menjadi merah. Ini pelengkap 50 unit test, bukan
+  penggantinya.
+- Angka di kolom "laporan" **tidak pernah dipakai untuk menghitung apa pun** —
+  hanya sebagai pembanding. Jadi tidak ada risiko sirkular (membandingkan angka
+  dengan dirinya sendiri).
+- Toleransi pembanding nilai S: `0.00005`, karena laporan menulis 4 desimal
+  (selisih mentah terbesar yang terukur: 0.0000447).
+- Total pemeriksaan: 6 kandidat × 3 DM × 2 (nilai S + ranking) + 6 × 2
+  (poin + ranking final) = **48**.
