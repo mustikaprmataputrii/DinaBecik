@@ -17,6 +17,7 @@ import LatarBudaya from './LatarBudaya.jsx';
 const MENU = [
   { ke: '/dashboard', label: 'Dashboard' },
   { ke: '/kandidat', label: 'Data Acara' },
+  { ke: '/kelola', label: 'Kelola Data' },
   { ke: '/bobot', label: 'Atur Bobot' },
   { ke: '/penilaian', label: 'Penilaian Saya' },
   { ke: '/hasil', label: 'Konsensus' },

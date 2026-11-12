@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Kartu, { JudulKartu, BlokTeks } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
@@ -100,6 +101,12 @@ export default function HalamanKandidat({ sesi }) {
             <span className="chip-emas">
               <span className="angka">{kandidat.length}</span> kandidat
             </span>
+            <Link
+              to="/kelola"
+              className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
+            >
+              Ubah data →
+            </Link>
           </div>
         </div>
       </Kartu>
@@ -418,7 +425,9 @@ export default function HalamanKandidat({ sesi }) {
       </div>
 
       <BlokTeks judul="Catatan data" ikon="◈">
-        Data ini adalah data acuan Tabel 7.1 dan dikunci oleh 50 unit test. Total bobot tiap DM
+        Angka Tabel 7.2/7.3 dikunci 50 unit test, tetapi isi tabel di atas adalah data yang
+        sedang aktif — bisa diganti lewat halaman{' '}
+        <span className="font-semibold text-sogan-800">Kelola Data</span>. Total bobot tiap DM
         harus {TOTAL_BOBOT_WAJIB}%; bila tidak, penyimpanan ditolak. Neptu hari dan pasaran
         bersifat pasti, tetapi tafsir kecocokan dapat berbeda antar daerah.
       </BlokTeks>

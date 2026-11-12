@@ -15,6 +15,7 @@ import HalamanDashboard from './pages/HalamanDashboard.jsx';
 import HalamanBobot from './pages/HalamanBobot.jsx';
 import HalamanPenilaian from './pages/HalamanPenilaian.jsx';
 import HalamanKandidat from './pages/HalamanKandidat.jsx';
+import HalamanKelola from './pages/HalamanKelola.jsx';
 import HalamanHasil from './pages/HalamanHasil.jsx';
 import { sesiAktif } from './auth/index.js';
 
@@ -38,6 +39,7 @@ function Aplikasi() {
                 <Route path="/bobot" element={<HalamanBobot sesi={sesi} />} />
                 <Route path="/penilaian" element={<HalamanPenilaian sesi={sesi} />} />
                 <Route path="/kandidat" element={<HalamanKandidat sesi={sesi} />} />
+                <Route path="/kelola" element={<HalamanKelola sesi={sesi} />} />
                 <Route path="/hasil" element={<HalamanHasil sesi={sesi} />} />
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
