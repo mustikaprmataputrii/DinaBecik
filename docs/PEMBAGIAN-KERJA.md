@@ -181,7 +181,7 @@ docs/panduan-proyek.pdf      ← acuan
 | N1 | Verifikasi tabel neptu hari & pasaran | Minggu 1 | ✅ (sudah diverifikasi Agni) |
 | N2 | Verifikasi aturan skor weton (sisa → skor) | Minggu 1 | ✅ |
 | N3 | Verifikasi data dummy 6 kandidat Tabel 7.1 | Minggu 1 | ✅ |
-| N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ⬜ |
+| N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ✅ (`src/fixtures/dataUjiSeri.js`) |
 | N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | ⬜ |
 | N6 | Susun slide presentasi | Minggu 4–5 | ⬜ |
 | N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
