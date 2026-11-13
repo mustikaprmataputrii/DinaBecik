@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function profile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    function isDm() {
+      return signedIn() && profile().peran in ['sesepuh', 'orangtua', 'wo'];
+    }
+    function isSelf(uid) { return isDm() && request.auth.uid == uid; }
+    function validBobot(bobot) {
+      return bobot.keys().hasOnly(['weton', 'biaya', 'gedung', 'cuaca', 'tamu'])
+        && bobot.keys().hasAll(['weton', 'biaya', 'gedung', 'cuaca', 'tamu'])
+        && bobot.weton is number && bobot.biaya is number
+        && bobot.gedung is number && bobot.cuaca is number && bobot.tamu is number
+        && bobot.weton >= 0 && bobot.biaya >= 0 && bobot.gedung >= 0
+        && bobot.cuaca >= 0 && bobot.tamu >= 0
+        && bobot.weton + bobot.biaya + bobot.gedung + bobot.cuaca + bobot.tamu == 100;
+    }
+
+    match /users/{uid} {
+      allow read: if isSelf(uid);
+      allow write: if false;
+    }
+    match /acara/{acaraId} {
+      allow read: if isDm();
+      allow create: if isDm() && profile().peran == 'sesepuh'
+        && request.resource.data.status == 'Draft';
+      // Perubahan data identitas hanya selama Draft. Perubahan status dilakukan Functions.
+      allow update: if isDm() && profile().peran == 'sesepuh'
+        && resource.data.status == 'Draft'
+        && request.resource.data.status == 'Draft'
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['nama_acara', 'jenis', 'neptu_pria', 'neptu_wanita', 'diperbarui_pada']);
+      allow delete: if false;
+
+      match /kandidat/{kandidatId} {
+        allow read: if isDm();
+        allow write: if isDm() && profile().peran == 'sesepuh'
+          && get(/databases/$(database)/documents/acara/$(acaraId)).data.status == 'Draft';
+      }
+      match /bobot/{uid} {
+        allow read: if isDm();
+        allow create, update: if isSelf(uid)
+          && get(/databases/$(database)/documents/acara/$(acaraId)).data.status in ['Draft', 'Penilaian']
+          && validBobot(request.resource.data.bobot)
+          && (!exists(/databases/$(database)/documents/acara/$(acaraId)/penilaian/$(uid))
+            || get(/databases/$(database)/documents/acara/$(acaraId)/penilaian/$(uid)).data.status_kirim != true);
+        allow delete: if false;
+      }
+      match /penilaian/{uid} {
+        allow read: if isDm();
+        // Hanya Cloud Function Admin SDK yang boleh menyimpan penilaian.
+        allow write: if false;
+      }
+      match /voting_hasil/{kandidatId} {
+        allow read: if isDm();
+        allow write: if false;
+      }
+      match /komentar/{komentarId} {
+        allow read: if isDm();
+        allow create: if isDm()
+          && request.resource.data.user_id == request.auth.uid
+          && request.resource.data.isi is string
+          && request.resource.data.isi.size() > 0;
+        allow update, delete: if false;
+      }
+    }
+    match /referensi/{dokumen}/{subkoleksi}/{id} {
+      allow read: if isDm();
+      allow write: if false;
+    }
+    match /referensi/{dokumen} {
+      allow read: if isDm();
+      allow write: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
