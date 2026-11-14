@@ -175,3 +175,80 @@ Semua sudah masuk `.gitignore`.
 | 6 | TOPSIS sebagai pembanding (opsional) | Tim — **sarankan tidak dikerjakan** |
 
 Catatan: tulisan "7-10-2026" di foto slide **sudah lewat**, bukan deadline.
+
+---
+
+## 11. Data contoh bukan kebenaran mutlak — fixture hanya ISI AWAL
+
+### Masalah
+
+Mesin WP dan Borda sudah generik (diuji dengan data rekaan: 4 kandidat P/Q/R/S,
+bobot 25/25/20/15/15 → S = 1.4163 / 1.0038 / 1.0016 / 0.7001, ΣV = 1.000000,
+dan Borda menghasilkan seri P–Q 19 poin yang dimenangkan P oleh aturan Sesepuh).
+Tetapi **aplikasinya** belum bisa menerima data lain: `ACARA_CONTOH` dan
+`KANDIDAT_TABEL_71` dipakai langsung, tanpa layar input.
+
+### Keputusan
+
+| Hal | Keputusan |
+|---|---|
+| Fixture `src/fixtures/dataAcuan.js` | **Tidak diubah.** Tetap dikunci 50 unit test untuk membuktikan Tabel 7.2/7.3 di laporan |
+| Peran fixture | Hanya **isi awal** adapter, bukan satu-satunya sumber data |
+| Data pengguna | Disimpan di `localStorage['dina-becik-data']` lewat `mockAdapter.js` |
+| Skor C1 | **Tidak pernah diinput manual** — selalu `lengkapiKandidatWeton()` |
+| Perubahan acara/kandidat | Memanggil `batalkanPenilaian()`: `terkirim`, `penilaian`, `hasilVoting` direset |
+| Hapus kandidat | Minimal **2** harus tersisa, agar WP tetap bermakna |
+
+Pemisahan ini disengaja: **fixture untuk pembuktian, adapter untuk data nyata.**
+Saat `firebaseAdapter` aktif, pindah penyimpanan cukup di `src/data/index.js`.
+
+### Konsekuensi
+
+1. `localStorage` bersifat **per perangkat** — belum dibagi antar DM sampai
+   Firestore tersambung (Issue #3, Alia). Setelah data diubah di satu peramban,
+   DM lain tidak melihatnya.
+2. Jumlah kriteria masih **dipaku 5** (C1–C5) di `constants.js`; yang bisa diubah
+   pengguna hanya bobot, bukan daftar kriteria.
+3. ID acara masih **satu**, `'acara-demo-2027'`, ditulis di `HalamanBobot.jsx`
+   (2×), `HalamanPenilaian.jsx` (1×), dan `HalamanKelola.jsx` (1×). Multi-acara
+   baru bisa setelah ID diambil dari acara aktif.
+4. Tombol "Kembalikan data contoh" memanggil `resetDemo()` — berguna saat demo,
+   tetapi menghapus data pengguna di peramban itu.
+
+---
+
+## 12. Panel Bukti Akurasi: angka laporan sebagai PEMBANDING, bukan masukan
+
+### Masalah
+
+Pengguna (dan dosen) perlu yakin bahwa aplikasi ini benar-benar menghitung,
+bukan menampilkan angka yang sudah dipatok. Menampilkan "E = 35 poin" saja
+tidak membuktikan apa pun — angka itu bisa saja ditulis mati di JSX.
+
+### Keputusan
+
+`src/components/PanelBuktiAkurasi.jsx` (dipasang di Dashboard):
+
+1. Ambil **data contoh** Tabel 7.1 dari fixture (selalu data contoh, tidak
+   terpengaruh data yang diisi pengguna).
+2. Hitung **ulang** dengan `hitungWP()` dan `hitungBorda()` — fungsi yang sama
+   persis dengan halaman Penilaian & Konsensus.
+3. Bandingkan hasil hitung dengan angka Tabel 7.2/7.3.
+4. Tampilkan berdampingan: angka hasil hitung (besar) + angka laporan (kecil)
+   + tanda ✓/!.
+
+Ada tombol "Hitung ulang" yang menjalankan mesin sekali lagi, dan penanda waktu
+supaya terlihat panelnya benar-benar bekerja saat itu, bukan hasil render statis.
+
+### Konsekuensi
+
+- Panel ini berfungsi sebagai **alarm**: kalau ada yang merusak rumus, badge
+  berubah dari "48/48 cocok" menjadi merah. Ini pelengkap 50 unit test, bukan
+  penggantinya.
+- Angka di kolom "laporan" **tidak pernah dipakai untuk menghitung apa pun** —
+  hanya sebagai pembanding. Jadi tidak ada risiko sirkular (membandingkan angka
+  dengan dirinya sendiri).
+- Toleransi pembanding nilai S: `0.00005`, karena laporan menulis 4 desimal
+  (selisih mentah terbesar yang terukur: 0.0000447).
+- Total pemeriksaan: 6 kandidat × 3 DM × 2 (nilai S + ranking) + 6 × 2
+  (poin + ranking final) = **48**.
