@@ -289,6 +289,25 @@ export async function simpanBobotDm(_acaraId, userId, bobot) {
   simpanState();
 }
 
+/**
+ * Mulai sesi penilaian: status Draft -> Penilaian.
+ * Di adapter demo ini tidak ada hak akses peran, jadi cukup validasi status.
+ * Di firebaseAdapter fungsi yang sama memanggil Worker dan hanya boleh
+ * dilakukan oleh Sesepuh.
+ */
+export async function mulaiPenilaian(_acaraId) {
+  await jeda();
+  if (state.acara.status !== STATUS_ACARA.DRAFT) {
+    throw new Error('Acara bukan berstatus Draft.');
+  }
+  if (state.kandidat.length < 2) {
+    throw new Error('Minimal dua kandidat diperlukan.');
+  }
+  state.acara.status = STATUS_ACARA.PENILAIAN;
+  simpanState();
+  return { status: STATUS_ACARA.PENILAIAN };
+}
+
 /* ---------------------------------------------------------------------------
  *  Penilaian individual (WP)
  * ------------------------------------------------------------------------- */
