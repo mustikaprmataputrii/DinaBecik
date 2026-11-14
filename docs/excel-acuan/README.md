@@ -94,11 +94,12 @@ Jalankan:
 npm test
 ```
 
-Status saat file ini diarsipkan:
+Status saat file ini diarsipkan di `main` (PR #8):
 
-- Branch `feat/data-nadya` (tempat file ini disimpan): **63 test lulus**
-  — 50 test di `acuan.test.js` + 13 test skenario seri di `seri.test.js`.
-- Branch `feat/metode-agni`: **51 test di `acuan.test.js`**, setelah
-  ditambah kasus T6 versi Excel (n = 6, A dan B seri 32 poin).
+- **63 test lulus** — 50 test di `acuan.test.js` + 13 test skenario seri
+  di `seri.test.js`.
+- PR #10 menambahkan satu kasus **T6 versi Excel** (n = 6, A dan B seri
+  32 poin), sehingga total menjadi **64 test**.
 
-Detail audit ada di Issue #1.
+Detail audit ada di Issue #1. Ringkasan status bobot (A3) ada di
+[`../EXCEL-ACUAN.md`](../EXCEL-ACUAN.md).
