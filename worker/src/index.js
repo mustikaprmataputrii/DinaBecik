@@ -116,9 +116,15 @@ function toFields(data) {
 
 async function firestoreRequest(env, path, { method = 'GET', body, transaction } = {}) {
   const token = await tokenAdmin(env);
-  const url = path.startsWith(`projects/${env.FIREBASE_PROJECT_ID}/databases/`)
-    ? new URL(`https://firestore.googleapis.com/v1/${path}`)
-    : new URL(`${firestoreBase(env)}/${path}`);
+  let url;
+  if (path.startsWith(`projects/${env.FIREBASE_PROJECT_ID}/databases/`)) {
+    url = new URL(`https://firestore.googleapis.com/v1/${path}`);
+  } else if (path.startsWith(':')) {
+    // Firestore action endpoints are suffixed directly to /documents.
+    url = new URL(`${firestoreBase(env)}${path}`);
+  } else {
+    url = new URL(`${firestoreBase(env)}/${path}`);
+  }
   const response = await fetch(url, {
     method,
     headers: {
@@ -139,12 +145,16 @@ async function firestoreRequest(env, path, { method = 'GET', body, transaction }
 }
 
 async function startTransaction(env) {
-  const result = await firestoreRequest(env, 'beginTransaction', { method: 'POST', body: { options: { readWrite: {} } } });
+  const result = await firestoreRequest(env, firestoreAction('beginTransaction'), { method: 'POST', body: { options: { readWrite: {} } } });
   return result.transaction;
 }
 
+function firestoreAction(action) {
+  return `:${action}`;
+}
+
 async function readDocuments(env, paths, transaction) {
-  const response = await firestoreRequest(env, 'batchGet', {
+  const response = await firestoreRequest(env, firestoreAction('batchGet'), {
     method: 'POST',
     body: { documents: paths.map((path) => resource(env, path)), transaction },
   });
@@ -170,7 +180,7 @@ async function readCollection(env, parent, collectionId, transaction) {
 }
 
 async function commit(env, transaction, writes) {
-  return firestoreRequest(env, 'commit', { method: 'POST', body: { writes, transaction } });
+  return firestoreRequest(env, firestoreAction('commit'), { method: 'POST', body: { writes, transaction } });
 }
 
 function updateWrite(name, data, mustNotExist = false, fieldPaths) {
@@ -182,7 +192,7 @@ function updateWrite(name, data, mustNotExist = false, fieldPaths) {
 }
 
 async function rollback(env, transaction) {
-  try { await firestoreRequest(env, 'rollback', { method: 'POST', body: { transaction } }); } catch {}
+  try { await firestoreRequest(env, firestoreAction('rollback'), { method: 'POST', body: { transaction } }); } catch {}
 }
 
 function codes(data, id) { return data.kode ?? id; }

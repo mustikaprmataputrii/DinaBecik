@@ -43,6 +43,7 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
   const servicePrivateKey = await exportPKCS8(privateKey);
   const originalFetch = globalThis.fetch;
   const documents = new Map();
+  const firestorePaths = [];
 
   const resource = (path) => `projects/${projectId}/databases/(default)/documents/${path}`;
   const toFirestoreValue = (value) => {
@@ -92,10 +93,11 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
     if (url.hostname === 'oauth2.googleapis.com') return jsonResponse({ access_token: 'worker-test-token', expires_in: 3600 });
     if (url.hostname !== 'firestore.googleapis.com') throw new Error(`Unexpected test URL: ${url}`);
     const body = init.body ? JSON.parse(init.body) : {};
+    firestorePaths.push(url.pathname);
 
-    if (url.pathname.endsWith('/documents/beginTransaction')) return jsonResponse({ transaction: 'transaction-test' });
-    if (url.pathname.endsWith('/documents/rollback')) return jsonResponse({});
-    if (url.pathname.endsWith('/documents/batchGet')) {
+    if (url.pathname.endsWith('/documents:beginTransaction')) return jsonResponse({ transaction: 'transaction-test' });
+    if (url.pathname.endsWith('/documents:rollback')) return jsonResponse({});
+    if (url.pathname.endsWith('/documents:batchGet')) {
       return jsonResponse(body.documents.map((name) => documents.has(name)
         ? { found: { name, fields: Object.fromEntries(Object.entries(documents.get(name)).map(([key, value]) => [key, toFirestoreValue(value)])) } }
         : { missing: name }));
@@ -108,7 +110,7 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
         .filter(([name]) => name.startsWith(prefix))
         .map(([name, data]) => ({ document: { name, fields: Object.fromEntries(Object.entries(data).map(([key, value]) => [key, toFirestoreValue(value)])) } })));
     }
-    if (url.pathname.endsWith('/documents/commit')) {
+    if (url.pathname.endsWith('/documents:commit')) {
       for (const write of body.writes) {
         const name = write.update.name;
         const exists = documents.has(name);
@@ -180,6 +182,15 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
 
     const resend = await post('submit', 'uid-sesepuh');
     assert.equal(resend.status, 409, 'T8: kiriman yang sudah terkunci ditolak');
+
+    const actionPaths = firestorePaths.filter((path) => /\/documents(?::|\/)(beginTransaction|batchGet|commit|rollback)$/.test(path));
+    assert.ok(actionPaths.length > 0, 'Worker harus menggunakan endpoint transaksi Firestore');
+    for (const path of actionPaths) {
+      assert.match(path, /\/documents:(beginTransaction|batchGet|commit|rollback)$/, `format endpoint Firestore salah: ${path}`);
+    }
+    assert.ok(firestorePaths.some((path) => path.endsWith('/documents:batchGet')));
+    assert.ok(firestorePaths.some((path) => path.endsWith('/documents:commit')));
+    assert.ok(!firestorePaths.some((path) => /\/documents\/documents:/.test(path)), 'path tidak boleh menggandakan segmen documents');
   } finally {
     globalThis.fetch = originalFetch;
   }
