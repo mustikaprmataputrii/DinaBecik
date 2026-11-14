@@ -1,0 +1,556 @@
+/* ============================================================================
+ *  Dina Becik — Stylesheet utama
+ * ============================================================================
+ *  Tailwind v4 + design token dari src/styles/tokens.js
+ *
+ *  ATURAN: warna, font, dan radius TIDAK ditulis hardcoded di komponen.
+ *  Semua lewat utility Tailwind (@theme) atau kelas komponen di bawah.
+ *
+ *  KONSEP TATA RUANG (revisi):
+ *    - LATAR HALAMAN  : gambar wayang kulit sungguhan, penuh, diam dengan
+ *                       animasi halus seperti digerakkan dalang.
+ *    - KARTU          : memuat motif batik di dalamnya, berukuran kecil
+ *                       supaya latar wayang tetap terlihat di sekelilingnya.
+ *
+ *  Jadi wayang = latar, batik = kain pembungkus kartu.
+ * ========================================================================== */
+
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+ * TEMA
+ * ------------------------------------------------------------------------- */
+@theme {
+  --color-sogan-50: #fbf6f0;
+  --color-sogan-100: #f5eadf;
+  --color-sogan-200: #e8d3be;
+  --color-sogan-300: #d6b694;
+  --color-sogan-400: #be9169;
+  --color-sogan-500: #a5703f;
+  --color-sogan-600: #8b5e3c;
+  --color-sogan-700: #6f4a2f;
+  --color-sogan-800: #523722;
+  --color-sogan-900: #3a2718;
+
+  --color-emas-50: #fef9ec;
+  --color-emas-100: #fcf0cc;
+  --color-emas-200: #f8e09b;
+  --color-emas-300: #f2cb63;
+  --color-emas-400: #e9b23a;
+  --color-emas-500: #d99a1e;
+  --color-emas-600: #b87c13;
+  --color-emas-700: #925e11;
+  --color-emas-800: #784c15;
+  --color-emas-900: #653f16;
+
+  --color-krem-50: #fffdfa;
+  --color-krem-100: #fdf9f3;
+  --color-krem-200: #f9f2e7;
+  --color-krem-300: #f2e8d8;
+  --color-krem-400: #e9dac5;
+
+  --color-netral-0: #ffffff;
+  --color-netral-50: #fafaf9;
+  --color-netral-100: #f4f3f1;
+  --color-netral-200: #e7e5e1;
+  --color-netral-300: #d3d0ca;
+  --color-netral-400: #a8a29a;
+  --color-netral-500: #7c766d;
+  --color-netral-600: #5c574f;
+  --color-netral-700: #403c36;
+  --color-netral-800: #2a2723;
+  --color-netral-900: #1a1815;
+
+  --color-draft: #7c766d;
+  --color-penilaian: #2f6fa8;
+  --color-voting: #b87c13;
+  --color-selesai: #2e7d4f;
+  --color-bahaya: #b3261e;
+  --color-sukses: #2e7d4f;
+  --color-peringatan: #b26a00;
+
+  --font-judul: 'Playfair Display', Georgia, serif;
+  --font-isi: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-angka: 'JetBrains Mono', Consolas, monospace;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-sm: 0 1px 2px rgba(58, 39, 24, 0.06);
+  --shadow-md: 0 2px 8px rgba(58, 39, 24, 0.08);
+  --shadow-lg: 0 4px 16px rgba(58, 39, 24, 0.1);
+  --shadow-xl: 0 8px 32px rgba(58, 39, 24, 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+ * DASAR
+ * ------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-isi);
+    color: var(--color-netral-800);
+    background-color: #1a1210;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-judul);
+    color: var(--color-sogan-800);
+    letter-spacing: -0.01em;
+  }
+
+  /* Angka selalu tabular agar kolom S/V/poin rata */
+  .angka {
+    font-family: var(--font-angka);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-emas-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * KOMPONEN
+ * ------------------------------------------------------------------------- */
+@layer components {
+  /* ==========================================================================
+   * LATAR WAYANG (PENGGANTI LATAR BATIK)
+   * ==========================================================================
+   * Gambar wayang kulit asli dipakai sebagai latar penuh halaman.
+   *
+   * Animasi "digerakkan dalang":
+   *   Wayang kulit adalah boneka pipih yang digerakkan dari bawah memakai
+   *   tongkat (cempala). Karena itu gerakannya bukan berjalan, melainkan
+   *   mengayun halus pada poros bawah + sedikit naik-turun.
+   *   Poros (transform-origin) diletakkan di bawah-tengah agar persis
+   *   menyerupai titik pegangan dalang.
+   * ====================================================================== */
+  .latar-wayang {
+    position: fixed;
+    inset: 0;
+    z-index: -20;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: #1a1210;
+  }
+
+  /* Lapisan gambar wayang */
+  .latar-wayang::before {
+    content: '';
+    position: absolute;
+    inset: -2%;
+    background-image: url('/latar/wayang-jawa.jpg');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    transform-origin: 50% 100%;
+    animation: dalang-gerak 11s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Lapisan cahaya + vignette agar teks/kartu tetap terbaca */
+  .latar-wayang::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(80% 60% at 50% 42%, rgba(255, 236, 200, 0.1) 0%, rgba(26, 18, 16, 0.35) 60%, rgba(20, 13, 11, 0.78) 100%),
+      linear-gradient(to bottom, rgba(26, 18, 16, 0.55) 0%, rgba(26, 18, 16, 0.12) 35%, rgba(20, 13, 11, 0.82) 100%);
+  }
+
+  @keyframes dalang-gerak {
+    0% {
+      transform: rotate(-1.1deg) translateY(0) scale(1.02);
+    }
+    25% {
+      transform: rotate(0.4deg) translateY(-6px) scale(1.03);
+    }
+    50% {
+      transform: rotate(1.1deg) translateY(-2px) scale(1.02);
+    }
+    75% {
+      transform: rotate(-0.3deg) translateY(-8px) scale(1.03);
+    }
+    100% {
+      transform: rotate(-1.1deg) translateY(0) scale(1.02);
+    }
+  }
+
+  /* ==========================================================================
+   * ASAP DUPA
+   * ==========================================================================
+   * Kepulan asap yang naik dari bawah latar. Dipakai di <LatarBudaya />.
+   * ====================================================================== */
+  .asap {
+    position: absolute;
+    bottom: -6rem;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 250, 238, 0.5) 0%,
+      rgba(255, 246, 222, 0.26) 42%,
+      rgba(255, 242, 208, 0) 74%
+    );
+    filter: blur(11px);
+    animation: asap-naik 14s ease-out infinite;
+    will-change: transform, opacity;
+  }
+
+  @keyframes asap-naik {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.45);
+      opacity: 0;
+    }
+    14% {
+      opacity: 0.5;
+    }
+    40% {
+      transform: translate3d(18px, -26vh, 0) scale(0.95);
+      opacity: 0.38;
+    }
+    70% {
+      transform: translate3d(-16px, -48vh, 0) scale(1.35);
+      opacity: 0.18;
+    }
+    100% {
+      transform: translate3d(14px, -66vh, 0) scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  /* ==========================================================================
+   * KARTU — MEMUAT MOTIF BATIK
+   * ==========================================================================
+   * Motif batik kawung + truntum dipasang DI DALAM kartu (bukan di latar
+   * halaman). Dua lapisan:
+   *   1. gradasi krem -> sogan muda (dasar kain)
+   *   2. motif batik halus di atasnya
+   * ====================================================================== */
+  .kartu {
+    position: relative;
+    background-color: var(--color-krem-100);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%238B5E3C' stroke-opacity='0.17' stroke-width='0.85'%3E%3Cellipse cx='36' cy='18' rx='10' ry='16'/%3E%3Cellipse cx='36' cy='54' rx='10' ry='16'/%3E%3Cellipse cx='18' cy='36' rx='16' ry='10'/%3E%3Cellipse cx='54' cy='36' rx='16' ry='10'/%3E%3Ccircle cx='36' cy='36' r='3.4'/%3E%3Ccircle cx='0' cy='0' r='3.4'/%3E%3Ccircle cx='72' cy='0' r='3.4'/%3E%3Ccircle cx='0' cy='72' r='3.4'/%3E%3Ccircle cx='72' cy='72' r='3.4'/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cg fill='%23A5703F' fill-opacity='0.13'%3E%3Ccircle cx='9' cy='9' r='1.4'/%3E%3Ccircle cx='27' cy='27' r='1.4'/%3E%3Ccircle cx='27' cy='9' r='0.8'/%3E%3Ccircle cx='9' cy='27' r='0.8'/%3E%3Ccircle cx='18' cy='18' r='1.9'/%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(158deg, #fffdf8 0%, #fbf2e3 48%, #f3e5cf 100%);
+    background-size: 72px 72px, 36px 36px, auto;
+    border: 1px solid rgba(139, 94, 60, 0.42);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 1px 2px rgba(20, 13, 11, 0.2),
+      0 16px 36px -18px rgba(20, 13, 11, 0.7),
+      inset 0 0 0 1px rgba(217, 154, 30, 0.16);
+  }
+
+  .kartu-tebal {
+    position: relative;
+    background-color: var(--color-krem-100);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='%236F4A2F' stroke-opacity='0.19' stroke-width='0.9'%3E%3Cellipse cx='36' cy='18' rx='10' ry='16'/%3E%3Cellipse cx='36' cy='54' rx='10' ry='16'/%3E%3Cellipse cx='18' cy='36' rx='16' ry='10'/%3E%3Cellipse cx='54' cy='36' rx='16' ry='10'/%3E%3Ccircle cx='36' cy='36' r='3.4'/%3E%3Ccircle cx='0' cy='0' r='3.4'/%3E%3Ccircle cx='72' cy='0' r='3.4'/%3E%3Ccircle cx='0' cy='72' r='3.4'/%3E%3Ccircle cx='72' cy='72' r='3.4'/%3E%3C/g%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 36 36'%3E%3Cg fill='%238B5E3C' fill-opacity='0.15'%3E%3Ccircle cx='9' cy='9' r='1.4'/%3E%3Ccircle cx='27' cy='27' r='1.4'/%3E%3Ccircle cx='27' cy='9' r='0.8'/%3E%3Ccircle cx='9' cy='27' r='0.8'/%3E%3Ccircle cx='18' cy='18' r='1.9'/%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(158deg, #fffdf8 0%, #f9eeda 45%, #efdfc4 100%);
+    background-size: 72px 72px, 36px 36px, auto;
+    border: 1px solid rgba(111, 74, 47, 0.5);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 2px 4px rgba(20, 13, 11, 0.22),
+      0 24px 52px -20px rgba(20, 13, 11, 0.78),
+      inset 0 0 0 1px rgba(217, 154, 30, 0.2);
+  }
+
+  /* ---------------- KARTU GELAP SOGAN (HERO) ----------------
+   * Tetap memuat motif batik emas di dalamnya.
+   * ------------------------------------------------------- */
+  .kartu-emas {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-sogan-900);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23D99A1E' stroke-opacity='0.16' stroke-width='1.1'%3E%3Cellipse cx='48' cy='24' rx='14' ry='21'/%3E%3Cellipse cx='48' cy='72' rx='14' ry='21'/%3E%3Cellipse cx='24' cy='48' rx='21' ry='14'/%3E%3Cellipse cx='72' cy='48' rx='21' ry='14'/%3E%3Ccircle cx='48' cy='48' r='5'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(90% 120% at 12% 0%, rgba(217, 154, 30, 0.22) 0%, rgba(217, 154, 30, 0) 58%),
+      linear-gradient(135deg, #3a2718 0%, #523722 42%, #6f4a2f 100%);
+    background-size: 96px 96px, auto, auto;
+    border: 1px solid rgba(217, 154, 30, 0.45);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 2px 6px rgba(20, 13, 11, 0.35),
+      0 26px 56px -26px rgba(20, 13, 11, 0.9);
+    color: var(--color-krem-200);
+  }
+
+  /* Aksen garis emas di sisi kiri — untuk blok teks */
+  .aksen-kiri {
+    border-left: 3px solid var(--color-emas-500);
+  }
+
+  /* ---------------- ORNAMEN SUDUT JAWA ----------------
+   * Dua sudut diagonal (kiri-atas & kanan-bawah) berwarna emas.
+   * ---------------------------------------------------- */
+  .bingkai-jawa::before,
+  .bingkai-jawa::after {
+    content: '';
+    position: absolute;
+    width: 1.3rem;
+    height: 1.3rem;
+    border-color: var(--color-emas-600);
+    border-style: solid;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.9;
+  }
+
+  .bingkai-jawa::before {
+    top: 0.5rem;
+    left: 0.5rem;
+    border-width: 2px 0 0 2px;
+    border-top-left-radius: 5px;
+  }
+
+  .bingkai-jawa::after {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    border-width: 0 2px 2px 0;
+    border-bottom-right-radius: 5px;
+  }
+
+  /* ---------------- PITA UKIRAN ----------------
+   * Strip tipis motif ombak/parang untuk header & footer.
+   * --------------------------------------------- */
+  .pita-emas {
+    height: 10px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='12' viewBox='0 0 28 12'%3E%3Cpath d='M0 11 Q7 1 14 11 Q21 1 28 11' stroke='%23D99A1E' stroke-width='1.5' fill='none' stroke-opacity='0.75'/%3E%3C/svg%3E");
+    background-size: 28px 12px;
+    background-repeat: repeat-x;
+    background-position: center;
+    background-color: var(--color-sogan-800);
+  }
+
+  /* ---------------- JUDUL BAGIAN ---------------- */
+  .garis-emas::after {
+    content: '';
+    display: block;
+    width: 3.5rem;
+    height: 2px;
+    margin-top: 0.6rem;
+    background: linear-gradient(90deg, var(--color-emas-600), rgba(217, 154, 30, 0));
+  }
+
+  /* ---------------- BADGE / CHIP ---------------- */
+  .chip-emas {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(217, 154, 30, 0.45);
+    background-color: rgba(217, 154, 30, 0.14);
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-emas-200);
+    white-space: nowrap;
+  }
+
+  .chip-krem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-sogan-300);
+    background-color: rgba(255, 253, 250, 0.8);
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-sogan-700);
+    white-space: nowrap;
+  }
+
+  /* ---------------- PENGGESER (SLIDER BOBOT) ----------------
+   * Slider 0-100 untuk tiap kriteria di halaman "Atur Bobot".
+   * Warna diambil dari token, bukan hardcoded.
+   * `--isi` diisi inline oleh komponen (persentase terisi).
+   * ---------------------------------------------------------- */
+  .penggeser {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 0.45rem;
+    border-radius: 9999px;
+    background-image: linear-gradient(
+      90deg,
+      var(--color-emas-500) 0%,
+      var(--color-emas-500) var(--isi, 0%),
+      var(--color-sogan-200) var(--isi, 0%),
+      var(--color-sogan-200) 100%
+    );
+    outline: none;
+    cursor: pointer;
+  }
+
+  .penggeser::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-sogan-800);
+    background-image: linear-gradient(180deg, var(--color-emas-200), var(--color-emas-500));
+    box-shadow: 0 1px 3px rgba(20, 13, 11, 0.45);
+    transition: transform 120ms ease;
+  }
+
+  .penggeser::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+  }
+
+  .penggeser::-moz-range-thumb {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--color-sogan-800);
+    background-image: linear-gradient(180deg, var(--color-emas-200), var(--color-emas-500));
+    box-shadow: 0 1px 3px rgba(20, 13, 11, 0.45);
+  }
+
+  .penggeser:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  /* ---------------- PETUNJUK GESER TABEL ----------------
+   * Muncul hanya di layar kecil, memberi tahu bahwa tabel bisa digeser.
+   * ------------------------------------------------------ */
+  .petunjuk-geser {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-bottom: 1px solid var(--color-sogan-200);
+    background-color: var(--color-sogan-50);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+    color: var(--color-netral-500);
+  }
+
+  @media (min-width: 1024px) {
+    .petunjuk-geser {
+      display: none;
+    }
+  }
+
+  /* ---------------- KOLOM ISIAN (FORM) ----------------
+   * Dipakai halaman Kelola Data. Warna dari token, bukan hardcoded.
+   * ---------------------------------------------------- */
+  .isian {
+    width: 100%;
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-sogan-300);
+    background-color: var(--color-krem-50);
+    padding: 0.5rem 0.7rem;
+    font-size: 0.875rem;
+    color: var(--color-sogan-800);
+    box-shadow: inset 0 1px 2px rgba(20, 13, 11, 0.06);
+    outline: none;
+    transition:
+      border-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .isian:focus {
+    border-color: var(--color-emas-500);
+    background-color: var(--color-netral-0);
+    box-shadow: 0 0 0 2px var(--color-emas-200);
+  }
+
+  .isian:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .isian[aria-invalid='true'] {
+    border-color: var(--color-bahaya);
+    box-shadow: 0 0 0 2px rgba(179, 38, 30, 0.15);
+  }
+
+  .label-isian {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-netral-500);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ---------------- WADAH (KONTAINER) ----------------
+   * Untuk header & footer yang melebar penuh.
+   * Kartu isi memakai lebar sendiri yang lebih sempit.
+   * ------------------------------------------------- */
+  .wadah {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+  }
+
+  /* ---------------- PANEL KACA (di atas latar wayang) ----------------
+   * Header/footer dibuat semi-transparan agar latar wayang tetap
+   * terlihat, tetapi teks tetap terbaca karena ada lapisan gelap.
+   * ---------------------------------------------------------------- */
+  .kaca-gelap {
+    background-color: rgba(26, 18, 16, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-color: rgba(217, 154, 30, 0.28);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * AKSESIBILITAS: hormati preferensi pengguna yang tidak ingin animasi
+ * ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .latar-wayang::before,
+  .asap {
+    animation: none !important;
+  }
+
+  .asap {
+    opacity: 0.18;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * CETAK
+ * ------------------------------------------------------------------------- */
+@media print {
+  .tanpa-cetak {
+    display: none !important;
+  }
+
+  .latar-wayang {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+
+  .kartu,
+  .kartu-tebal,
+  .kartu-emas {
+    box-shadow: none;
+    border: 1px solid #ccc;
+    background-image: none;
+    background-color: #fff;
+    color: #000;
+  }
+}
