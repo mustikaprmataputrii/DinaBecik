@@ -16,9 +16,13 @@
  * ============================================================================
  */
 
-// --- PILIH ADAPTER DI SINI ---
-// import * as adapter from './firebaseAdapter.js';   // <- aktifkan saat Firestore siap
-import * as adapter from './mockAdapter.js'; // <- sementara
+// Firebase dipilih otomatis bila konfigurasi VITE_FIREBASE_* tersedia.
+// Tanpa konfigurasi, mock tetap dipakai untuk pengembangan UI.
+import * as mockAdapter from './mockAdapter.js';
+import * as firebaseAdapter from './firebaseAdapter.js';
+
+const adaKonfigurasiFirebase = Boolean(import.meta.env?.VITE_FIREBASE_API_KEY && import.meta.env?.VITE_FIREBASE_PROJECT_ID);
+const adapter = adaKonfigurasiFirebase ? firebaseAdapter : mockAdapter;
 
 export default adapter;
 
@@ -35,6 +39,9 @@ export const simpanBobotDm = adapter.simpanBobotDm;
 export const getPenilaianDm = adapter.getPenilaianDm;
 export const kirimPenilaian = adapter.kirimPenilaian;
 export const getStatusSemuaDm = adapter.getStatusSemuaDm;
+export const mulaiPenilaian = adapter.mulaiPenilaian ?? (async () => {
+  throw new Error('Mulai penilaian tersedia setelah backend Firebase aktif.');
+});
 export const getHasilVoting = adapter.getHasilVoting;
 export const simpanHasilVoting = adapter.simpanHasilVoting;
 export const getKomentar = adapter.getKomentar;
