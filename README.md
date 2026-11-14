@@ -80,7 +80,7 @@ DinaBecik/
     ├── data/                     ← [ALIA] lapisan data
     │   ├── kontrak.js            ← daftar fungsi wajib
     │   ├── index.js              ← TITIK GANTI adapter
-    │   ├── mockAdapter.js        ← data tiruan (aktif sekarang)
+    │   ├── mockAdapter.js        ← data tiruan + localStorage (aktif sekarang)
     │   └── firebaseAdapter.js    ← Firestore (kerangka)
     │
     ├── auth/                     ← [ALIA] login & hak akses
@@ -168,10 +168,11 @@ Kalau ada yang merusak rumus, test langsung merah.
 | Data acuan Tabel 7.1 | ✅ Selesai (terverifikasi) |
 | Unit test 50 kasus | ✅ Lulus |
 | Design token | ✅ Selesai |
-| Lapisan data (mock) | ✅ Selesai |
-| Scaffold React/Vite | ⬜ Belum |
+| Lapisan data (mock + localStorage) | ✅ Selesai |
+| Scaffold React/Vite | ✅ Selesai |
 | Firebase Auth | ⬜ Belum |
-| Halaman-halaman | ⬜ Belum |
+| Halaman wajib (4) | ✅ Selesai |
+| Halaman Kelola Data (input sendiri) | ✅ Selesai |
 
 ---
 
