@@ -16,6 +16,10 @@ Alur backend: `Draft → Penilaian → Voting → Selesai`.
 - Setiap DM hanya dapat mengirim penilaiannya sekali.
 - Kiriman DM ketiga mengubah status menjadi `Voting`; Worker menghitung dan menyimpan hasil satu kali lalu mengubah status menjadi `Selesai`.
 
+## Catatan audit dependency
+
+`npm audit` saat ini melaporkan advisory high pada `@grpc/grpc-js`, dependency transitif dari Firebase Firestore SDK. Aplikasi memakai Firebase Web SDK di browser; hasil `vite build` tidak memuat implementasi gRPC Node. Cloudflare Worker mengakses Firestore melalui REST dan tidak memakai `@grpc/grpc-js`. Dependency tersebut tetap muncul di lockfile, jadi audit perlu diperiksa lagi saat Firebase SDK diperbarui. Hindari memaksa versi `@grpc/grpc-js` di luar rentang yang diminta Firebase tanpa uji kompatibilitas.
+
 ## Uji lokal
 
 Jalankan unit test Worker dari folder `worker`:
