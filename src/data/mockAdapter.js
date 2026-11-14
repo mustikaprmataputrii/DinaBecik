@@ -336,6 +336,15 @@ export async function getStatusSemuaDm() {
   return { ...state.terkirim };
 }
 
+export async function mulaiPenilaian() {
+  await jeda();
+  if (state.acara.status !== STATUS_ACARA.DRAFT) throw new Error('Acara bukan berstatus Draft.');
+  if (state.kandidat.length < 2) throw new Error('Minimal dua kandidat diperlukan.');
+  state.acara.status = STATUS_ACARA.PENILAIAN;
+  simpanState();
+  return { status: STATUS_ACARA.PENILAIAN };
+}
+
 /* ---------------------------------------------------------------------------
  *  Hasil konsensus
  * ------------------------------------------------------------------------- */

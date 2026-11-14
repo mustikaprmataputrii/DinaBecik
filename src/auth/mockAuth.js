@@ -20,9 +20,6 @@ const KUNCI_SESI = 'dina-becik-sesi';
 /**
  * Akun demo. Password sederhana untuk demo, TIDAK ditulis di kode publik
  * pada versi produksi. Di sini hanya untuk keperluan pengembangan tampilan.
- *
- * ⚠️ Alia: ganti dengan Firebase Authentication.
- *    Password wajib disimpan sebagai hash, bukan teks biasa.
  */
 const AKUN_DEMO = [
   { username: 'sesepuh', password: 'sesepuh123', userId: 'u-sesepuh', peran: 'sesepuh' },
@@ -32,26 +29,16 @@ const AKUN_DEMO = [
 
 /** Ambil data DM lengkap dari peran. */
 export function dmDariPeran(peran) {
-  return DECISION_MAKERS.find((d) => d.key === peran) ?? null;
+  return DECISION_MAKERS.find((item) => item.key === peran) ?? null;
 }
 
-/**
- * Login.
- * @param {string} username
- * @param {string} password
- * @returns {Promise<{userId: string, username: string, peran: string, nama: string, bobotSuara: number}>}
- */
+/** Login demo. */
 export async function login(username, password) {
-  await new Promise((r) => setTimeout(r, 120));
-
+  await new Promise((resolve) => setTimeout(resolve, 120));
   const akun = AKUN_DEMO.find(
-    (a) => a.username === String(username).trim().toLowerCase() && a.password === password
+    (item) => item.username === String(username).trim().toLowerCase() && item.password === password,
   );
-
-  if (!akun) {
-    throw new Error('Username atau password salah.');
-  }
-
+  if (!akun) throw new Error('Username atau password salah.');
   const dm = dmDariPeran(akun.peran);
   const sesi = {
     userId: akun.userId,
@@ -60,12 +47,11 @@ export async function login(username, password) {
     nama: dm.nama,
     bobotSuara: dm.bobotSuara,
   };
-
   sessionStorage.setItem(KUNCI_SESI, JSON.stringify(sesi));
   return sesi;
 }
 
-/** Logout. */
+/** Logout demo. */
 export async function logout() {
   sessionStorage.removeItem(KUNCI_SESI);
 }
@@ -73,14 +59,14 @@ export async function logout() {
 /** Ambil sesi aktif, atau null. */
 export function sesiAktif() {
   try {
-    const mentah = sessionStorage.getItem(KUNCI_SESI);
-    return mentah ? JSON.parse(mentah) : null;
+    const raw = sessionStorage.getItem(KUNCI_SESI);
+    return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
 }
 
-/** Daftar akun demo untuk ditampilkan di halaman login (hanya saat pengembangan). */
+/** Daftar akun demo untuk pengembangan saja. */
 export function daftarAkunDemo() {
-  return AKUN_DEMO.map((a) => ({ username: a.username, password: a.password, peran: a.peran }));
+  return AKUN_DEMO.map(({ username, password, peran }) => ({ username, password, peran }));
 }
