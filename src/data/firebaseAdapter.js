@@ -283,7 +283,8 @@ export async function getHasilVoting(acaraId = ACARA_DEMO_ID) {
   };
 }
 export async function simpanHasilVoting() {
-  throw new Error('Hasil voting hanya boleh dihitung dan disimpan oleh backend tepercaya (Cloud Function), bukan browser.');
+  // Worker finalizes Borda automatically when the third DM submits. Never write from the browser.
+  throw new Error('Hasil voting disimpan otomatis oleh backend tepercaya; browser tidak boleh menulis voting_hasil.');
 }
 export async function getKomentar(acaraId = ACARA_DEMO_ID) {
   const snap = await getDocs(query(collection(evento(acaraId), 'komentar')));

@@ -39,9 +39,7 @@ export const simpanBobotDm = adapter.simpanBobotDm;
 export const getPenilaianDm = adapter.getPenilaianDm;
 export const kirimPenilaian = adapter.kirimPenilaian;
 export const getStatusSemuaDm = adapter.getStatusSemuaDm;
-export const mulaiPenilaian = adapter.mulaiPenilaian ?? (async () => {
-  throw new Error('Mulai penilaian tersedia setelah backend Firebase aktif.');
-});
+export const mulaiPenilaian = adapter.mulaiPenilaian;
 export const getHasilVoting = adapter.getHasilVoting;
 export const simpanHasilVoting = adapter.simpanHasilVoting;
 export const getKomentar = adapter.getKomentar;
