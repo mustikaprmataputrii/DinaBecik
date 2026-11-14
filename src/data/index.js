@@ -24,7 +24,11 @@ export default adapter;
 
 // Re-export semua fungsi adapter agar bisa di-import langsung.
 export const getAcara = adapter.getAcara;
+export const simpanAcara = adapter.simpanAcara;
 export const getKandidat = adapter.getKandidat;
+export const tambahKandidat = adapter.tambahKandidat;
+export const ubahKandidat = adapter.ubahKandidat;
+export const hapusKandidat = adapter.hapusKandidat;
 export const getKriteria = adapter.getKriteria;
 export const getBobotDm = adapter.getBobotDm;
 export const simpanBobotDm = adapter.simpanBobotDm;
@@ -36,3 +40,4 @@ export const simpanHasilVoting = adapter.simpanHasilVoting;
 export const getKomentar = adapter.getKomentar;
 export const simpanKomentar = adapter.simpanKomentar;
 export const getRiwayatAcara = adapter.getRiwayatAcara;
+export const resetDemo = adapter.resetDemo;
