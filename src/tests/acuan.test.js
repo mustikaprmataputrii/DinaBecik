@@ -265,6 +265,28 @@ describe('hitungBorda — T6: seri dimenangkan ranking Sesepuh', () => {
     const hasil = hitungBorda(ranking);
     expect(hasil.pemenang).toBe('P');
   });
+
+  it('T6 (versi Excel): n=6, A dan B seri 32 poin, A menang', () => {
+    // Skenario yang sama dengan sheet "Uji_Seri" pada Excel acuan,
+    // supaya Excel dan unit test memakai angka yang bisa dilacak satu-satu.
+    // A = 6*3 + 5*2 + 4*1 = 32 ; B = 5*3 + 6*2 + 5*1 = 32
+    const ranking = {
+      sesepuh: { A: 1, B: 2, C: 3, D: 4, E: 5, F: 6 },
+      orangtua: { A: 2, B: 1, C: 3, D: 4, E: 5, F: 6 },
+      wo: { A: 3, B: 2, C: 1, D: 6, E: 5, F: 4 },
+    };
+    const hasil = hitungBorda(ranking);
+    const peta = Object.fromEntries(hasil.rincian.map((r) => [r.kode, r]));
+
+    expect(peta.A.totalPoin).toBe(32);
+    expect(peta.B.totalPoin).toBe(32);
+    expect(peta.C.totalPoin).toBe(26);
+    expect(peta.D.totalPoin).toBe(16);
+    expect(peta.E.totalPoin).toBe(12);
+    expect(peta.F.totalPoin).toBe(8);
+    expect(hasil.seriTeratasi).toBe(true);
+    expect(hasil.pemenang).toBe('A');
+  });
 });
 
 /* ==========================================================================
