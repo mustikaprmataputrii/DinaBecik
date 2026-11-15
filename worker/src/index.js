@@ -115,23 +115,43 @@ function toFields(data) {
 }
 
 /**
- * Firestore REST memakai endpoint "action" dengan titik dua, bukan slash:
+ * Firestore REST memakai endpoint "action" dengan titik dua yang menempel
+ * langsung pada kata `documents`, BUKAN sub-path:
  *   POST .../documents:beginTransaction
  *   POST .../documents:batchGet
  *   POST .../documents:commit
  *   POST .../documents:rollback
- * Path dokumen biasa tetap memakai slash. Lihat discovery document
- * Cloud Firestore v1 (`v1/{+database}/documents:batchGet`, dst).
+ *
+ * Perhatikan: firestoreBase(env) sudah berakhir dengan `/documents`, jadi
+ * endpoint action harus ditempel TANPA garis miring. Menambahkan '/' akan
+ * menghasilkan `/documents/documents:commit` yang tidak dikenal Firestore.
+ * Path dokumen biasa tetap memakai slash: `.../documents/acara/<id>`.
+ *
+ * Acuan: discovery document Cloud Firestore v1, `v1/{+database}/documents:batchGet`.
  */
-function firestoreAction(env, action) {
-  return `documents:${action}`;
+function firestoreAction(action) {
+  return `:${action}`;
+}
+
+/**
+ * Bentuk URL Firestore dari sebuah path.
+ *   - `projects/...`  -> path lengkap (dipakai untuk field `documents` di batchGet)
+ *   - `:action`       -> endpoint action, ditempel langsung ke `.../documents`
+ *   - lainnya         -> path dokumen, dipisah garis miring
+ */
+function urlFirestore(env, path) {
+  if (path.startsWith(`projects/${env.FIREBASE_PROJECT_ID}/databases/`)) {
+    return new URL(`https://firestore.googleapis.com/v1/${path}`);
+  }
+  if (path.startsWith(':')) {
+    return new URL(`${firestoreBase(env)}${path}`);
+  }
+  return new URL(`${firestoreBase(env)}/${path}`);
 }
 
 async function firestoreRequest(env, path, { method = 'GET', body, transaction } = {}) {
   const token = await tokenAdmin(env);
-  const url = path.startsWith(`projects/${env.FIREBASE_PROJECT_ID}/databases/`)
-    ? new URL(`https://firestore.googleapis.com/v1/${path}`)
-    : new URL(`${firestoreBase(env)}/${path}`);
+  const url = urlFirestore(env, path);
   const response = await fetch(url, {
     method,
     headers: {
@@ -152,12 +172,12 @@ async function firestoreRequest(env, path, { method = 'GET', body, transaction }
 }
 
 async function startTransaction(env) {
-  const result = await firestoreRequest(env, firestoreAction(env, 'beginTransaction'), { method: 'POST', body: { options: { readWrite: {} } } });
+  const result = await firestoreRequest(env, firestoreAction('beginTransaction'), { method: 'POST', body: { options: { readWrite: {} } } });
   return result.transaction;
 }
 
 async function readDocuments(env, paths, transaction) {
-  const response = await firestoreRequest(env, firestoreAction(env, 'batchGet'), {
+  const response = await firestoreRequest(env, firestoreAction('batchGet'), {
     method: 'POST',
     body: { documents: paths.map((path) => resource(env, path)), transaction },
   });
@@ -183,7 +203,7 @@ async function readCollection(env, parent, collectionId, transaction) {
 }
 
 async function commit(env, transaction, writes) {
-  return firestoreRequest(env, firestoreAction(env, 'commit'), { method: 'POST', body: { writes, transaction } });
+  return firestoreRequest(env, firestoreAction('commit'), { method: 'POST', body: { writes, transaction } });
 }
 
 function updateWrite(name, data, mustNotExist = false, fieldPaths) {
@@ -195,7 +215,7 @@ function updateWrite(name, data, mustNotExist = false, fieldPaths) {
 }
 
 async function rollback(env, transaction) {
-  try { await firestoreRequest(env, firestoreAction(env, 'rollback'), { method: 'POST', body: { transaction } }); } catch {}
+  try { await firestoreRequest(env, firestoreAction('rollback'), { method: 'POST', body: { transaction } }); } catch {}
 }
 
 function codes(data, id) { return data.kode ?? id; }

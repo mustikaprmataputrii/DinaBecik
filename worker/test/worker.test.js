@@ -96,7 +96,16 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
     const body = init.body ? JSON.parse(init.body) : {};
     firestorePaths.push(url.pathname);
 
-    // Firestore REST memakai endpoint action bertitik dua (bukan slash).
+    // Firestore REST memakai endpoint action bertitik dua yang menempel pada
+    // `documents` (bukan sub-path). Tolak bentuk salah secara eksplisit agar
+    // regresi tidak lolos diam-diam.
+    if (url.pathname.includes('/documents/documents')) {
+      throw new Error(`Endpoint Firestore salah (segmen documents ganda): ${url.pathname}`);
+    }
+    if (/\/documents\/(beginTransaction|batchGet|commit|rollback)$/.test(url.pathname)) {
+      throw new Error(`Endpoint Firestore salah (harus titik dua, bukan slash): ${url.pathname}`);
+    }
+
     if (url.pathname.endsWith('/documents:beginTransaction')) return jsonResponse({ transaction: 'transaction-test' });
     if (url.pathname.endsWith('/documents:rollback')) return jsonResponse({});
     if (url.pathname.endsWith('/documents:batchGet')) {
@@ -185,34 +194,52 @@ test('T1/T4/T7/T8: auth, gerbang tiga DM, hasil bersama, dan penilaian terkunci'
     const resend = await post('submit', 'uid-sesepuh');
     assert.equal(resend.status, 409, 'T8: kiriman yang sudah terkunci ditolak');
 
-    // Regresi: Firestore REST memakai endpoint action bertitik dua.
-    // Bug sebelumnya membentuk .../documents/commit (slash) sehingga
-    // transaksi akan gagal terhadap Firestore sungguhan.
-    const aksi = firestorePaths.filter((p) => /\/documents[:/](beginTransaction|batchGet|commit|rollback)$/.test(p));
-    assert.ok(aksi.length > 0, 'harus ada panggilan transaksi Firestore');
-    for (const path of aksi) {
-      assert.match(
-        path,
-        /\/documents:(beginTransaction|batchGet|commit|rollback)$/,
-        `endpoint Firestore harus memakai titik dua, bukan slash: ${path}`
+    // ------------------------------------------------------------------
+    // Regresi endpoint transaksi Firestore.
+    //
+    // REST API v1 memakai endpoint *action* yang menempel langsung pada kata
+    // `documents`: .../databases/(default)/documents:commit
+    //
+    // Dua bug yang pernah lolos ke branch ini:
+    //   1) .../documents/commit            (slash, bukan titik dua)
+    //   2) .../documents/documents:commit  (segmen `documents` ganda, karena
+    //      firestoreBase() sudah berakhir dengan `/documents`)
+    //
+    // Keduanya membuat SELURUH transaksi Worker gagal pada Firestore nyata,
+    // sementara test tetap hijau karena mock menerima bentuk yang sama.
+    // ------------------------------------------------------------------
+    const PREFIX = `/v1/projects/${projectId}/databases/(default)/documents`;
+
+    // Keempat action wajib muncul dan pathname-nya harus PERSIS.
+    // `rollback` ikut terpanggil karena test ini sengaja memicu 403
+    // (peran selain Sesepuh mencoba `start`) sehingga transaksi dibatalkan.
+    for (const action of ['beginTransaction', 'batchGet', 'commit', 'rollback']) {
+      const diharapkan = `${PREFIX}:${action}`;
+      assert.ok(
+        firestorePaths.includes(diharapkan),
+        `harus memanggil ${diharapkan}; path tercatat: ${JSON.stringify(firestorePaths)}`
       );
     }
-    assert.ok(
-      firestorePaths.some((p) => p.endsWith('/documents:commit')),
-      'commit harus memakai /documents:commit'
-    );
-    assert.ok(
-      firestorePaths.some((p) => p.endsWith('/documents:batchGet')),
-      'batchGet harus memakai /documents:batchGet'
-    );
-    assert.ok(
-      firestorePaths.some((p) => p.endsWith('/documents:beginTransaction')),
-      'beginTransaction harus memakai /documents:beginTransaction'
-    );
-    assert.ok(
-      !firestorePaths.some((p) => /\/documents\/(beginTransaction|batchGet|commit|rollback)$/.test(p)),
-      'tidak boleh ada endpoint action berbentuk slash'
-    );
+
+    // Tidak boleh ada satu pun path yang menyimpang dari bentuk baku.
+    for (const path of firestorePaths) {
+      if (path.startsWith(PREFIX) && /[:/](beginTransaction|batchGet|commit|rollback)$/.test(path)) {
+        const action = path.slice(path.lastIndexOf(path.includes(':') ? ':' : '/') + 1);
+        assert.equal(
+          path,
+          `${PREFIX}:${action}`,
+          `path action harus persis ${PREFIX}:${action}, bukan ${path}`
+        );
+      }
+      assert.ok(
+        !path.includes('/documents/documents'),
+        `tidak boleh ada segmen documents ganda: ${path}`
+      );
+      assert.ok(
+        !/\/documents\/(beginTransaction|batchGet|commit|rollback)$/.test(path),
+        `endpoint action tidak boleh berbentuk slash: ${path}`
+      );
+    }
   } finally {
     globalThis.fetch = originalFetch;
   }
