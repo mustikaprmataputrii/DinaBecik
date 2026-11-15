@@ -40,6 +40,12 @@ jobs:
       - name: Jalankan unit test acuan
         run: npm test
 
+      - name: Install Worker dependencies
+        run: npm ci --prefix worker
+
+      - name: Jalankan Worker tests
+        run: npm test --prefix worker
+
       # ---------------------------------------------------------------
       # Pemeriksaan tambahan: memastikan tidak ada yang menyalin
       # kunci admin Firebase ke repo.

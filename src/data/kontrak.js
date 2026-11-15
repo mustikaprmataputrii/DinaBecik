@@ -16,18 +16,24 @@
  *  Daftar fungsi yang WAJIB ada di setiap adapter:
  *
  *   getAcara(acaraId)                    -> Acara
+ *   simpanAcara(acaraId, patch)           -> Acara
  *   getKandidat(acaraId)                 -> Kandidat[]
+ *   tambahKandidat(acaraId, data)         -> Kandidat
+ *   ubahKandidat(acaraId, kode, patch)    -> Kandidat
+ *   hapusKandidat(acaraId, kode)          -> void
  *   getKriteria()                        -> Kriteria[]
  *   getBobotDm(acaraId, userId)          -> { [keyKriteria]: persen }
  *   simpanBobotDm(acaraId, userId, bobot)-> void
  *   getPenilaianDm(acaraId, userId)      -> { statusKirim, hasil: [...] }
  *   kirimPenilaian(acaraId, userId, data)-> void
  *   getStatusSemuaDm(acaraId)            -> { sesepuh: bool, orangtua: bool, wo: bool }
+ *   mulaiPenilaian(acaraId)               -> { status: 'Penilaian' }
  *   getHasilVoting(acaraId)              -> HasilVoting | null
  *   simpanHasilVoting(acaraId, hasil)    -> void
  *   getKomentar(acaraId)                 -> Komentar[]
  *   simpanKomentar(acaraId, userId, isi) -> void
  *   getRiwayatAcara()                    -> Acara[]
+ *   resetDemo()                           -> void (adapter demo saja)
  *
  *  Bentuk objek mengikuti nama field tabel di Panduan bagian 9 (snake_case),
  *  supaya pemetaan ke Firestore/relasional tidak perlu diubah.
@@ -36,16 +42,22 @@
 
 export const KONTRAK_ADAPTER = Object.freeze([
   'getAcara',
+  'simpanAcara',
   'getKandidat',
+  'tambahKandidat',
+  'ubahKandidat',
+  'hapusKandidat',
   'getKriteria',
   'getBobotDm',
   'simpanBobotDm',
   'getPenilaianDm',
   'kirimPenilaian',
   'getStatusSemuaDm',
+  'mulaiPenilaian',
   'getHasilVoting',
   'simpanHasilVoting',
   'getKomentar',
   'simpanKomentar',
   'getRiwayatAcara',
+  'resetDemo',
 ]);

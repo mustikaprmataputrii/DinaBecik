@@ -252,3 +252,95 @@ supaya terlihat panelnya benar-benar bekerja saat itu, bukan hasil render statis
   (selisih mentah terbesar yang terukur: 0.0000447).
 - Total pemeriksaan: 6 kandidat × 3 DM × 2 (nilai S + ranking) + 6 × 2
   (poin + ranking final) = **48**.
+
+---
+
+## 13. Endpoint transaksi Firestore harus memakai titik dua
+
+Cloud Firestore REST v1 memakai endpoint *action* yang menempel langsung pada
+kata `documents`, **bukan** sub-path:
+
+```
+POST .../databases/(default)/documents:beginTransaction
+POST .../databases/(default)/documents:batchGet
+POST .../databases/(default)/documents:commit
+POST .../databases/(default)/documents:rollback
+```
+
+Acuan: discovery document Cloud Firestore v1, `v1/{+database}/documents:batchGet`.
+
+### Dua kesalahan yang pernah terjadi di `worker/src/index.js`
+
+| Bentuk salah | Akibat |
+|---|---|
+| `.../documents/commit` | 404 — Firestore tidak mengenal sub-path action |
+| `.../documents/documents:commit` | 404 — `firestoreBase()` sudah berakhir `/documents`, jadi menambah `documents:` membuat segmen ganda |
+
+Keduanya membuat **seluruh transaksi Worker gagal** terhadap Firestore
+sungguhan, sementara test tetap hijau karena mock memakai bentuk yang sama.
+
+### Aturan penulisan URL
+
+`firestoreBase(env)` mengembalikan
+`https://firestore.googleapis.com/v1/projects/<proj>/databases/(default)/documents`
+— sudah berakhir dengan `/documents`. Jadi:
+
+- endpoint action: tempel **tanpa** garis miring → `firestoreBase(env) + ':commit'`
+- path dokumen: pakai garis miring → `firestoreBase(env) + '/acara/<id>'`
+
+Helper `urlFirestore()` di Worker menangani kedua bentuk ini.
+
+### Test penjaga
+
+`worker/test/worker.test.js` mencatat setiap `url.pathname` yang dipanggil,
+lalu:
+
+1. mewajibkan **keempat** endpoint action ada dengan pathname **persis**
+   `/v1/projects/<proj>/databases/(default)/documents:<action>` —
+   `beginTransaction`, `batchGet`, `commit`, dan `rollback`;
+2. menolak segmen `documents/documents` (ganda);
+3. menolak bentuk slash `/documents/<action>`.
+
+`rollback` ikut terpanggil karena test sengaja memicu 403 (peran selain
+Sesepuh mencoba `start`), sehingga transaksi dibatalkan.
+
+Mock-nya sendiri juga melempar error bila menerima bentuk salah, sehingga
+regresi tidak bisa lolos diam-diam.
+
+Diverifikasi dengan mengembalikan kedua bug satu per satu: test **gagal**
+pada masing-masing, lalu lulus lagi setelah diperbaiki. Assertion eksplisit
+juga diuji terpisah (penolakan mock dimatikan sementara) dan tetap gagal
+dengan pesan `harus memanggil .../documents:beginTransaction`. Jadi bukan
+mock yang menangkap, tapi assertion-nya sendiri.
+
+---
+
+## 14. Status `npm audit` (4 high) — bukan masalah runtime
+
+`npm audit` melaporkan 4 kerentanan high dari rantai:
+
+```
+firebase -> @firebase/firestore -> @grpc/grpc-js@1.9.16
+```
+
+(GHSA-m9gg-hp2v-232j dan GHSA-f596-whhp-79r4)
+
+### Kenapa tidak berdampak ke aplikasi ini
+
+1. **Tidak masuk bundle browser.** Sudah diperiksa pada `dist/assets/*.js`:
+   tidak ada `@grpc/grpc-js`, `createClient`, `grpc-web`, maupun `http2`.
+   Kata `grpc` yang muncul di bundle hanyalah nama opsi konfigurasi
+   (`grpcFlowControlWindow`), bukan kode gRPC.
+2. **Aplikasi memakai transport WebChannel**, bukan gRPC. Yang di-import hanya
+   `firebase/app`, `firebase/auth`, dan `firebase/firestore`.
+3. **`@grpc/grpc-js` adalah dependensi Node** untuk Firestore di lingkungan
+   server. Di browser, Firestore memakai WebChannel/HTTP.
+
+### Keputusan
+
+- **Tidak** menjalankan `npm audit fix --force`, karena perintah itu menurunkan
+  `firebase` ke `9.14.0` — regresi besar yang akan merusak kode yang ada.
+- Kerentanan dicatat sebagai **risiko yang diterima** untuk lingkup praktikum.
+- Bila nanti dipakai produksi, mitigasinya: naikkan versi `firebase` begitu
+  rilis yang membawa `@grpc/grpc-js` lebih baru tersedia, lalu jalankan ulang
+  `npm audit` dan test.

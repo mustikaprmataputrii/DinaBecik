@@ -2,18 +2,42 @@
  * ============================================================================
  *  Dina Becik — TITIK GANTI AUTH
  * ============================================================================
- *  Satu-satunya file yang perlu diubah saat Firebase Auth siap.
+ *  Satu-satunya file yang perlu diubah saat backend auth berganti.
  *
- *  Sekarang : mockAuth      (akun demo di memori)
- *  Nanti    : firebaseAuth  (Firebase Authentication)
+ *  Adapter dipilih OTOMATIS:
+ *    - VITE_FIREBASE_* tersedia  -> firebaseAuth (Firebase Authentication)
+ *    - tidak tersedia            -> mockAuth     (akun demo, untuk dev UI)
+ *
+ *  Komponen tetap meng-import dari sini, tidak pernah dari file adapter.
  * ============================================================================
  */
 
-// import * as auth from './firebaseAuth.js';   // <- aktifkan saat Firebase siap
-import * as auth from './mockAuth.js'; // <- sementara
+import * as firebaseAuth from './firebaseAuth.js';
+import * as mockAuth from './mockAuth.js';
 
-export const login = auth.login;
-export const logout = auth.logout;
-export const sesiAktif = auth.sesiAktif;
-export const daftarAkunDemo = auth.daftarAkunDemo;
-export const dmDariPeran = auth.dmDariPeran;
+const gunakanFirebase = Boolean(
+  import.meta.env?.VITE_FIREBASE_API_KEY && import.meta.env?.VITE_FIREBASE_PROJECT_ID
+);
+const authAdapter = gunakanFirebase ? firebaseAuth : mockAuth;
+
+export const login = authAdapter.login;
+export const logout = authAdapter.logout;
+export const sesiAktif = authAdapter.sesiAktif;
+export const daftarAkunDemo = authAdapter.daftarAkunDemo;
+export const dmDariPeran = authAdapter.dmDariPeran;
+
+/**
+ * Dipakai nanti bila UI ingin mengikuti perubahan status login Firebase
+ * secara langsung. Saat memakai mock, fungsi ini tidak tersedia sehingga
+ * dilempar ke error yang jelas, bukan gagal diam-diam.
+ */
+export const pantauSesi =
+  authAdapter.pantauSesi ??
+  (() => {
+    throw new Error('pantauSesi hanya tersedia saat Firebase Auth aktif.');
+  });
+export const penggunaSaatIni =
+  authAdapter.penggunaSaatIni ??
+  (() => {
+    throw new Error('penggunaSaatIni hanya tersedia saat Firebase Auth aktif.');
+  });

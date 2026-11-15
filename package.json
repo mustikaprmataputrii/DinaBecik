@@ -8,8 +8,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run src/tests",
+    "test:watch": "vitest",
+    "worker:dev": "npm --prefix worker run dev",
+    "worker:deploy": "npm --prefix worker run deploy"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.5",
@@ -20,6 +22,7 @@
     "vitest": "^5.1.0"
   },
   "dependencies": {
+    "firebase": "^13.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^7.18.5"

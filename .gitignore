@@ -11,6 +11,7 @@ node_modules/
 dist/
 build/
 .vite/
+functions/lib/
 
 # --- RAHASIA: kunci admin Firebase ---
 # Bocor = database bisa dihapus orang lain. TIDAK BOLEH masuk repo.
@@ -18,6 +19,8 @@ serviceAccountKey.json
 *serviceAccount*.json
 *-firebase-adminsdk-*.json
 .firebase/
+.wrangler/
+.dev.vars
 
 # --- Environment variables ---
 .env
