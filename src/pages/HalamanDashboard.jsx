@@ -15,7 +15,7 @@ import Kartu, { JudulKartu } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
 import PanelBuktiAkurasi from '../components/PanelBuktiAkurasi.jsx';
-import { getAcara, getStatusSemuaDm, getHasilVoting } from '../data/index.js';
+import { getAcara, getStatusSemuaDm, getHasilVoting, mulaiPenilaian } from '../data/index.js';
 import { DECISION_MAKERS, URUTAN_DM, STATUS_ACARA, METODE } from '../shared/constants.js';
 
 const PINTASAN = [
@@ -31,6 +31,21 @@ export default function HalamanDashboard({ sesi }) {
   const [statusDm, setStatusDm] = useState(null);
   const [hasil, setHasil] = useState(null);
   const [memuat, setMemuat] = useState(true);
+  const [mulaiSibuk, setMulaiSibuk] = useState(false);
+  const [galatMulai, setGalatMulai] = useState('');
+
+  async function tanganiMulaiPenilaian() {
+    setMulaiSibuk(true);
+    setGalatMulai('');
+    try {
+      await mulaiPenilaian();
+      setAcara(await getAcara());
+    } catch (error) {
+      setGalatMulai(error.message || 'Acara gagal dimulai.');
+    } finally {
+      setMulaiSibuk(false);
+    }
+  }
 
   useEffect(() => {
     let batal = false;
@@ -76,6 +91,16 @@ export default function HalamanDashboard({ sesi }) {
               {METODE.penilaianIndividual} → {METODE.konsensus.split(' (')[0]}
             </span>
             {acara?.status && <BadgeStatus status={acara.status} gelap ukuran="sm" />}
+            {acara?.status === STATUS_ACARA.DRAFT && sesi?.peran === 'sesepuh' && (
+              <button
+                type="button"
+                onClick={tanganiMulaiPenilaian}
+                disabled={mulaiSibuk}
+                className="rounded-md bg-gradient-to-b from-emas-400 to-emas-600 px-3 py-1.5 text-xs font-semibold text-sogan-900 shadow-md transition hover:from-emas-300 hover:to-emas-500 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {mulaiSibuk ? 'Memulai…' : 'Mulai penilaian'}
+              </button>
+            )}
             <a
               href="#bukti-akurasi"
               className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
@@ -85,6 +110,8 @@ export default function HalamanDashboard({ sesi }) {
           </div>
         </div>
       </Kartu>
+
+      {galatMulai && <p role="alert" className="rounded-md border border-[#F2C4C0] bg-[#FDECEA] px-3 py-2 text-sm text-bahaya">{galatMulai}</p>}
 
       {memuat ? (
         <Kartu className="p-6 text-sm text-netral-500">Memuat data acara…</Kartu>
@@ -221,7 +248,7 @@ export default function HalamanDashboard({ sesi }) {
             <Kartu varian="tebal">
               <JudulKartu keterangan="Menu utama">Pintasan</JudulKartu>
               <div className="space-y-2 p-4">
-                {PINTASAN.map((p) => (
+                {PINTASAN.filter((p) => p.ke !== '/kelola' || sesi?.peran === 'sesepuh').map((p) => (
                   <Link
                     key={p.ke}
                     to={p.ke}
