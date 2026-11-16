@@ -35,12 +35,34 @@ Cara pakai Git: **[docs/ALUR-GIT.md](docs/ALUR-GIT.md)**
 
 ```bash
 npm install
-npm test          # jalankan 50 unit test acuan
-npm run dev       # jalankan website (butuh React/Vite terpasang)
+npm test          # 67 unit test (51 acuan + 13 seri + 3 kontrak)
+npm run dev       # jalankan website
+npm run build     # build produksi ke dist/
 ```
 
-> **Catatan:** saat ini repo berisi **pondasi + modul perhitungan + test**.
-> Scaffold React/Vite ditambahkan pada langkah berikutnya.
+### Mode demo vs mode Firebase
+
+Aplikasi memilih adapter **otomatis**:
+
+| Kondisi | Yang dipakai | Data disimpan di |
+|---|---|---|
+| `VITE_FIREBASE_*` kosong | `mockAdapter` + `mockAuth` | `localStorage` browser |
+| `VITE_FIREBASE_*` terisi | `firebaseAdapter` + `firebaseAuth` | Firestore |
+
+Untuk mode demo, cukup `npm run dev` lalu login dengan akun contoh yang
+tertulis di halaman login. Untuk mode Firebase, salin `.env.example` menjadi
+`.env.local` dan isi nilainya.
+
+### Backend (opsional, untuk mode Firebase)
+
+```bash
+npm install --prefix worker
+npm test --prefix worker     # 5 test Worker (T1/T4/T7/T8)
+npm run worker:dev           # jalankan Worker lokal
+```
+
+Worker menangani operasi yang tidak boleh dilakukan klien: memulai penilaian,
+mengirim penilaian, dan menghitung konsensus Weighted Borda sekali di server.
 
 ---
 
@@ -75,13 +97,15 @@ DinaBecik/
     │   └── dataAcuan.js          ← Tabel 7.1, 7.2, 7.3
     │
     ├── tests/                    ← [AGNI] uji kebenaran
-    │   └── acuan.test.js         ← 50 test mengunci angka acuan
+    │   ├── acuan.test.js         ← 51 test mengunci angka acuan
+    │   ├── seri.test.js          ← 13 test skenario seri (T6)
+    │   └── kontrak.test.js       ← 3 test kelengkapan adapter
     │
     ├── data/                     ← [ALIA] lapisan data
     │   ├── kontrak.js            ← daftar fungsi wajib
     │   ├── index.js              ← TITIK GANTI adapter
-    │   ├── mockAdapter.js        ← data tiruan + localStorage (aktif sekarang)
-    │   └── firebaseAdapter.js    ← Firestore (kerangka)
+    │   ├── mockAdapter.js        ← data tiruan + localStorage (mode demo)
+    │   └── firebaseAdapter.js    ← Firestore (19 fungsi, dipakai bila env terisi)
     │
     ├── auth/                     ← [ALIA] login & hak akses
     ├── styles/                   ← [SRI] design token
@@ -157,7 +181,7 @@ Kalau ada yang merusak rumus, test langsung merah.
 
 ---
 
-## 6. Status Pondasi
+## 6. Status Proyek
 
 | Komponen | Status |
 |---|---|
@@ -166,13 +190,16 @@ Kalau ada yang merusak rumus, test langsung merah.
 | Modul Weighted Product | ✅ Selesai (teruji) |
 | Modul Weighted Borda | ✅ Selesai (teruji) |
 | Data acuan Tabel 7.1 | ✅ Selesai (terverifikasi) |
-| Unit test 50 kasus | ✅ Lulus |
+| Unit test (51 acuan + 13 seri + 3 kontrak) | ✅ Lulus (67) |
 | Design token | ✅ Selesai |
 | Lapisan data (mock + localStorage) | ✅ Selesai |
 | Scaffold React/Vite | ✅ Selesai |
-| Firebase Auth | ⬜ Belum |
-| Halaman wajib (4) | ✅ Selesai |
+| Firebase Auth | ✅ Selesai (auto-switch, `firebaseAuth.js`) |
+| Firestore adapter (19 fungsi) | ✅ Selesai |
+| Cloudflare Worker + `firestore.rules` | ✅ Selesai |
+| Halaman wajib (7) | ✅ Selesai |
 | Halaman Kelola Data (input sendiri) | ✅ Selesai |
+| Panel Bukti Akurasi (48 pemeriksaan) | ✅ Selesai |
 
 ---
 
