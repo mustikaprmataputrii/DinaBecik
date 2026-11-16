@@ -39,8 +39,8 @@ Draft  ->  Penilaian  ->  Voting  ->  Selesai
 ## 3.2 Data Masukan dan Kriteria
 
 Data masukan berupa enam kandidat tanggal (Tabel 7.1 Panduan Proyek) dengan
-lima kriteria. Dua kriteria bersifat *benefit* (makin besar makin baik) dan
-satu bersifat *cost* (makin kecil makin baik).
+lima kriteria. Empat kriteria bersifat *benefit* (makin besar makin baik) dan
+satu bersifat *cost* (makin kecil makin baik), yaitu C2.
 
 | Kode | Kriteria | Tipe | Skala / satuan |
 |---|---|---|---|
