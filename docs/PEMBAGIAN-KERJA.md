@@ -119,12 +119,12 @@ public/             ← aset gambar, motif batik
 | # | Tugas | Prioritas | Target | Status |
 |---|---|---|---|---|
 | S1 | Design token + layout dasar (navbar, footer) | Wajib | Minggu 1 | 🟡 Token selesai |
-| S2 | Halaman Login (3 peran) | Wajib | Minggu 1–2 | ⬜ |
-| S3 | Dashboard (status acara + status 3 DM) | Wajib | Minggu 2 | ⬜ |
-| S4 | Halaman Data Acara & Kandidat | Wajib | Minggu 2 | ⬜ |
-| S5 | Halaman Atur Bobot (5 slider + validasi 100%) | Wajib | Minggu 3 | ⬜ |
-| S6 | Halaman Hasil Penilaian Saya (tabel S, V, ranking + Kirim) | Wajib | Minggu 3 | ⬜ |
-| S7 | Halaman Konsensus & Hasil (kartu pemenang + tabel Borda) | Wajib | Minggu 4 | ⬜ |
+| S2 | Halaman Login (3 peran) | Wajib | Minggu 1–2 | ✅ |
+| S3 | Dashboard (status acara + status 3 DM) | Wajib | Minggu 2 | ✅ |
+| S4 | Halaman Data Acara & Kandidat | Wajib | Minggu 2 | ✅ |
+| S5 | Halaman Atur Bobot (5 slider + validasi 100%) | Wajib | Minggu 3 | ✅ |
+| S6 | Halaman Hasil Penilaian Saya (tabel S, V, ranking + Kirim) | Wajib | Minggu 3 | ✅ |
+| S7 | Halaman Konsensus & Hasil (kartu pemenang + tabel Borda) | Wajib | Minggu 4 | ✅ |
 | S8 | Grafik perbandingan ranking | Plus | Minggu 5 | ⬜ |
 | S9 | Kalender visual dengan weton | Plus | Minggu 5 | ⬜ |
 | S10 | Ekspor PDF | Plus | Minggu 5 | ⬜ |
