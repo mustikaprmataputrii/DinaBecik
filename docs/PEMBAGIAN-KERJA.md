@@ -25,7 +25,7 @@ src/shared/constants.js      ← sumber kebenaran semua nilai
 src/shared/weton.js          ← hitungWeton, hitungSkorWeton
 src/shared/wp.js             ← hitungWP, normalisasiBobot
 src/shared/borda.js          ← hitungBorda, cekGerbangVoting
-src/tests/acuan.test.js      ← 50 test pengunci kebenaran
+src/tests/acuan.test.js      ← 51 test pengunci angka Tabel 7.2/7.3
 docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 ```
 
@@ -33,12 +33,12 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 
 | # | Tugas | Target | Status |
 |---|---|---|---|
-| A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (50 test lulus) |
-| A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ⬜ |
-| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | ⬜ |
-| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ |
-| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ |
-| A6 | Tulis bagian metode pada laporan | Minggu 5 | ⬜ |
+| A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (51 test acuan; 67 test root) |
+| A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ✅ (`docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx`, 28 PASS) |
+| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | 🟡 Dikonfirmasi 16 Nov; PR #15 dan #18 menunggu merge |
+| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ Menunggu konfirmasi Agni setelah validasi database |
+| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ Menunggu konfirmasi Agni |
+| A6 | Tulis bagian metode pada laporan | Minggu 5 | 🟡 Draf Bab 3 di PR #16; dua koreksi menunggu |
 
 ### Yang kamu jaga
 
@@ -118,7 +118,7 @@ public/             ← aset gambar, motif batik
 
 | # | Tugas | Prioritas | Target | Status |
 |---|---|---|---|---|
-| S1 | Design token + layout dasar (navbar, footer) | Wajib | Minggu 1 | 🟡 Token selesai |
+| S1 | Design token + layout dasar (navbar, footer) | Wajib | Minggu 1 | ✅ |
 | S2 | Halaman Login (3 peran) | Wajib | Minggu 1–2 | ✅ |
 | S3 | Dashboard (status acara + status 3 DM) | Wajib | Minggu 2 | ✅ |
 | S4 | Halaman Data Acara & Kandidat | Wajib | Minggu 2 | ✅ |
