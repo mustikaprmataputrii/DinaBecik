@@ -8,8 +8,9 @@
  *  ATURAN: sama seperti lapisan data — komponen TIDAK boleh memanggil
  *  Firebase Auth langsung. Selalu lewat src/auth/index.js
  *
- *  Saat Firebase siap, buat firebaseAuth.js dengan signature yang SAMA,
- *  lalu ganti import di src/auth/index.js
+ *  STATUS: firebaseAuth.js sudah aktif. File ini HANYA dipakai saat
+ *  VITE_FIREBASE_* tidak tersedia (mode demo / pengembangan UI).
+ *  JANGAN DIPAKAI DI PRODUKSI.
  * ============================================================================
  */
 
@@ -18,11 +19,9 @@ import { DECISION_MAKERS } from '../shared/constants.js';
 const KUNCI_SESI = 'dina-becik-sesi';
 
 /**
- * Akun demo. Password sederhana untuk demo, TIDAK ditulis di kode publik
- * pada versi produksi. Di sini hanya untuk keperluan pengembangan tampilan.
- *
- * ⚠️ Alia: ganti dengan Firebase Authentication.
- *    Password wajib disimpan sebagai hash, bukan teks biasa.
+ * Akun demo untuk pengembangan UI. JANGAN dipakai di produksi: password di sini
+ * teks biasa dan sesi disimpan di sessionStorage. Saat VITE_FIREBASE_* terisi,
+ * src/auth/index.js otomatis memakai firebaseAuth.js (Firebase Authentication).
  */
 const AKUN_DEMO = [
   { username: 'sesepuh', password: 'sesepuh123', userId: 'u-sesepuh', peran: 'sesepuh' },
