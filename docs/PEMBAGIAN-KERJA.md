@@ -185,7 +185,7 @@ docs/panduan-proyek.pdf      ← acuan
 | N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | 🟡 Draf (`docs/laporan/BAB1-2-...md`) |
 | N6 | Susun slide presentasi | Minggu 4–5 | ⬜ |
 | N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
-| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ⬜ |
+| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
 
 ### Catatan penting untuk kamu
 
