@@ -62,10 +62,11 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 ```
 src/data/kontrak.js          ← daftar fungsi wajib
 src/data/index.js            ← titik ganti adapter
-src/data/mockAdapter.js      ← SUDAH ADA (jangan rusak, dipakai Sri)
-src/data/firebaseAdapter.js  ← kerangka, isi ini
+src/data/mockAdapter.js      ← adapter demo saat Firebase belum dikonfigurasi
+src/data/firebaseAdapter.js  ← implementasi Firestore (19 fungsi kontrak)
 src/auth/                    ← login & hak akses
-docs/FIRESTORE-RULES.md      ← aturan keamanan
+worker/src/index.js          ← backend tepercaya (Cloudflare Worker)
+firestore.rules              ← aturan keamanan Firestore
 .env.example
 ```
 
@@ -73,19 +74,19 @@ docs/FIRESTORE-RULES.md      ← aturan keamanan
 
 | # | Tugas | Target | Status |
 |---|---|---|---|
-| B1 | Buat Firebase project + 3 akun Auth | Minggu 2 | ⬜ |
-| B2 | Implementasi `firebaseAdapter.js` (13 fungsi) | Minggu 2 | ⬜ |
-| B3 | Tulis Firestore rules (DM tidak bisa nilai atas nama lain) | Minggu 2 | ⬜ |
-| B4 | Halaman login + hak akses per peran | Minggu 2 | ⬜ |
-| B5 | Status acara (Draft→Penilaian→Voting→Selesai) | Minggu 2–3 | ⬜ |
-| B6 | Kunci penilaian terkirim (tidak bisa diubah) | Minggu 3 | ⬜ |
-| B7 | Gerbang voting (terbuka hanya jika 3 DM kirim) | Minggu 4 | ⬜ |
-| B8 | Simpan `voting_hasil` sekali via transaction/Cloud Function | Minggu 4 | ⬜ |
-| B9 | Uji T1, T4, T7, T8 | Minggu 4–5 | ⬜ |
+| B1 | Buat Firebase project + 3 akun Auth | Minggu 2 | ✅ (dikonfirmasi Alia) |
+| B2 | Implementasi `firebaseAdapter.js` (19 fungsi) | Minggu 2 | ✅ (`src/tests/kontrak.test.js`) |
+| B3 | Tulis Firestore rules (DM tidak bisa nilai atas nama lain) | Minggu 2 | ✅ (`firestore.rules`, default deny) |
+| B4 | Halaman login + hak akses per peran | Minggu 2 | ✅ (`firebaseAuth.js`, pembatasan peran) |
+| B5 | Status acara (Draft→Penilaian→Voting→Selesai) | Minggu 2–3 | ✅ (Worker + Dashboard) |
+| B6 | Kunci penilaian terkirim (tidak bisa diubah) | Minggu 3 | ✅ (rules + Worker; uji T8) |
+| B7 | Gerbang voting (terbuka hanya jika 3 DM kirim) | Minggu 4 | ✅ (Worker; uji T4) |
+| B8 | Simpan `voting_hasil` sekali via transaksi Firestore | Minggu 4 | ✅ (Worker; uji T7) |
+| B9 | Uji T1, T4, T7, T8 | Minggu 4–5 | ✅ (5 test Worker; CI lulus) |
 
 ### Kontrak yang WAJIB kamu patuhi
 
-Signature 13 fungsi di `src/data/kontrak.js` **tidak boleh berubah**. Sri sudah
+Signature 19 fungsi di `src/data/kontrak.js` **tidak boleh berubah**. Sri sudah
 membangun halaman di atas signature itu. Kalau kamu mengubahnya, frontend rusak.
 
 Semua fungsi **harus async**, meskipun datanya instan.
@@ -184,7 +185,7 @@ docs/panduan-proyek.pdf      ← acuan
 | N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ✅ (`src/fixtures/dataUjiSeri.js`) |
 | N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | 🟡 Draf (`docs/laporan/BAB1-2-...md`) |
 | N6 | Susun slide presentasi | Minggu 4–5 | 🟡 Draf (`docs/laporan/SLIDE-PRESENTASI-N6.md`) |
-| N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
+| N7 | Tulis naskah demo 7 menit | Minggu 5 | 🟡 Draf (`docs/laporan/NASKAH-DEMO-N7.md`) |
 | N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
 
 ### Catatan penting untuk kamu
