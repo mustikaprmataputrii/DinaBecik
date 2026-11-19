@@ -15,7 +15,7 @@ import { describe, it, expect } from 'vitest';
 import { hitungWeton, hitungSkorWeton, hitungSisaWeton } from '../shared/weton.js';
 import { hitungWP, validasiBobot, normalisasiBobot, rankingDariWP } from '../shared/wp.js';
 import { hitungBorda, cekGerbangVoting, poinBorda } from '../shared/borda.js';
-import { BOBOT_AWAL, ATURAN_WETON, TOTAL_BOBOT_WAJIB } from '../shared/constants.js';
+import { BOBOT_AWAL, BOBOT_JABATAN, ATURAN_WETON, TOTAL_BOBOT_WAJIB } from '../shared/constants.js';
 import {
   KANDIDAT_TABEL_71,
   KANDIDAT_UNTUK_WP,
@@ -100,12 +100,25 @@ describe('skor C1 weton — Tabel 7.1 kolom C1', () => {
  * ======================================================================== */
 
 describe('validasi bobot — T3: total bukan 100% harus ditolak', () => {
-  it('bobot bawaan tiap DM totalnya 100%', () => {
+  it('bobot final A3 tiap DM totalnya 100% dan angkanya terkunci', () => {
+    // Angka di bawah adalah KEPUTUSAN A3 (konfirmasi dosen, 16 Nov 2026).
+    // Kalau berubah, ubah docs/EXCEL-ACUAN.md + constants.js + test ini
+    // dalam satu PR yang jelas — jangan "memperbaiki" test diam-diam.
+    const bobotFinalA3 = {
+      sesepuh: { weton: 40, biaya: 10, gedung: 15, cuaca: 15, tamu: 20 },
+      orangtua: { weton: 15, biaya: 35, gedung: 15, cuaca: 10, tamu: 25 },
+      wo: { weton: 10, biaya: 20, gedung: 35, cuaca: 20, tamu: 15 },
+    };
+
     for (const dm of ['sesepuh', 'orangtua', 'wo']) {
       const v = validasiBobot(BOBOT_AWAL[dm]);
       expect(v.valid).toBe(true);
       expect(v.total).toBe(TOTAL_BOBOT_WAJIB);
+      expect(BOBOT_AWAL[dm]).toEqual(bobotFinalA3[dm]);
     }
+
+    // Bobot jabatan untuk Weighted Borda ikut dikunci di A3: 3 : 2 : 1.
+    expect(BOBOT_JABATAN).toEqual({ sesepuh: 3, orangtua: 2, wo: 1 });
   });
 
   it('bobot 90% ditolak', () => {

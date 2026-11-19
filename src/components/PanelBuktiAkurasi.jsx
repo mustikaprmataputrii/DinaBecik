@@ -58,8 +58,8 @@ function Tanda({ cocok }) {
       aria-hidden="true"
       className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[0.6rem] font-bold ring-1 ${
         cocok
-          ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
-          : 'bg-[#FDECEA] text-bahaya ring-[#F2C4C0]'
+          ? 'bg-selesai-50 text-selesai ring-selesai-300'
+          : 'bg-bahaya-50 text-bahaya ring-bahaya-200'
       }`}
     >
       {cocok ? '✓' : '!'}
@@ -209,8 +209,8 @@ export default function PanelBuktiAkurasi() {
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-semibold shadow-sm ring-1 ${
                 bukti.semuaCocok
-                  ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
-                  : 'bg-[#FDECEA] text-bahaya ring-[#F2C4C0]'
+                  ? 'bg-selesai-50 text-selesai ring-selesai-300'
+                  : 'bg-bahaya-50 text-bahaya ring-bahaya-200'
               }`}
             >
               {bukti.semuaCocok ? '✓' : '!'} {bukti.totalCocok}/{bukti.totalPemeriksaan} cocok
@@ -236,7 +236,7 @@ export default function PanelBuktiAkurasi() {
             <div
               key={k.label}
               className={`rounded-lg border px-3 py-2 ${
-                penuh ? 'border-[#9CCBAE] bg-[#EAF5EE]' : 'border-[#F2C4C0] bg-[#FDECEA]'
+                penuh ? 'border-selesai-300 bg-selesai-50' : 'border-bahaya-200 bg-bahaya-50'
               }`}
             >
               <div className="text-[0.62rem] font-semibold uppercase tracking-wide text-netral-500">

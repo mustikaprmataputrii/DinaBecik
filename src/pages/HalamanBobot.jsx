@@ -81,7 +81,7 @@ function BarisKriteria({ kriteria, nilai, onUbah, nonaktif }) {
             <span
               className={`rounded px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide ring-1 ${
                 cost
-                  ? 'bg-[#EDF4FA] text-penilaian ring-[#A9C7E0]'
+                  ? 'bg-penilaian-50 text-penilaian ring-penilaian-300'
                   : 'bg-emas-100 text-emas-800 ring-emas-300'
               }`}
             >
@@ -221,9 +221,9 @@ export default function HalamanBobot({ sesi }) {
 
   const gayaPesan =
     pesan?.jenis === 'sukses'
-      ? 'border-[#9CCBAE] bg-[#EAF5EE] text-selesai'
+      ? 'border-selesai-300 bg-selesai-50 text-selesai'
       : pesan?.jenis === 'galat'
-        ? 'border-[#F2C4C0] bg-[#FDECEA] text-bahaya'
+        ? 'border-bahaya-200 bg-bahaya-50 text-bahaya'
         : 'border-sogan-200 bg-krem-100/80 text-netral-600';
 
   return (
@@ -273,8 +273,8 @@ export default function HalamanBobot({ sesi }) {
               <span
                 className={`angka rounded-full px-3 py-1 text-sm font-bold shadow-sm ring-1 ${
                   valid
-                    ? 'bg-gradient-to-b from-[#EAF5EE] to-[#CFE8D8] text-selesai ring-[#9CCBAE]'
-                    : 'bg-gradient-to-b from-[#FDECEA] to-[#F8D7D3] text-bahaya ring-[#F2C4C0]'
+                    ? 'bg-gradient-to-b from-selesai-50 to-selesai-100 text-selesai ring-selesai-300'
+                    : 'bg-gradient-to-b from-bahaya-50 to-bahaya-100 text-bahaya ring-bahaya-200'
                 }`}
               >
                 {total}%

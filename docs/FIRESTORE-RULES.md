@@ -18,7 +18,11 @@ Alur backend: `Draft → Penilaian → Voting → Selesai`.
 
 ## Catatan audit dependency
 
-`npm audit` saat ini melaporkan advisory high pada `@grpc/grpc-js`, dependency transitif dari Firebase Firestore SDK. Aplikasi memakai Firebase Web SDK di browser; hasil `vite build` tidak memuat implementasi gRPC Node. Cloudflare Worker mengakses Firestore melalui REST dan tidak memakai `@grpc/grpc-js`. Dependency tersebut tetap muncul di lockfile, jadi audit perlu diperiksa lagi saat Firebase SDK diperbarui. Hindari memaksa versi `@grpc/grpc-js` di luar rentang yang diminta Firebase tanpa uji kompatibilitas.
+`npm audit` sebelumnya melaporkan 4 advisory high pada `@grpc/grpc-js@1.9.16`, dependency transitif dari Firebase Firestore SDK. Aplikasi memakai Firebase Web SDK di browser; hasil `vite build` tidak memuat implementasi gRPC Node. Cloudflare Worker mengakses Firestore melalui REST dan tidak memakai `@grpc/grpc-js`.
+
+Sejak PR #21, `package.json` memakai `overrides` untuk `@grpc/grpc-js@^1.14.7` (di luar rentang advisory `<=1.13.5`). Firebase tetap `^13.3.0` — tidak ada downgrade. Kompatibilitas sudah diuji: `npm test` 67/67, `npm --prefix worker test` 5/5, `npm run build` OK, dan bundle browser tetap bebas implementasi gRPC. Hasil `npm audit` sekarang **0 vulnerability**.
+
+Kalau Firebase SDK diperbarui, jalankan ulang `npm audit`, `npm test`, dan `npm run build` sebelum mengubah `overrides`.
 
 ## Uji lokal
 

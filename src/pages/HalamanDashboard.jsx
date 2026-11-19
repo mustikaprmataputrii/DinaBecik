@@ -111,7 +111,7 @@ export default function HalamanDashboard({ sesi }) {
         </div>
       </Kartu>
 
-      {galatMulai && <p role="alert" className="rounded-md border border-[#F2C4C0] bg-[#FDECEA] px-3 py-2 text-sm text-bahaya">{galatMulai}</p>}
+      {galatMulai && <p role="alert" className="rounded-md border border-bahaya-200 bg-bahaya-50 px-3 py-2 text-sm text-bahaya">{galatMulai}</p>}
 
       {memuat ? (
         <Kartu className="p-6 text-sm text-netral-500">Memuat data acara…</Kartu>
@@ -191,7 +191,7 @@ export default function HalamanDashboard({ sesi }) {
                           aria-hidden="true"
                           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold shadow-sm ring-1 ${
                             sudah
-                              ? 'bg-gradient-to-b from-[#EAF5EE] to-[#CFE8D8] text-selesai ring-[#9CCBAE]'
+                              ? 'bg-gradient-to-b from-selesai-50 to-selesai-100 text-selesai ring-selesai-300'
                               : 'bg-gradient-to-b from-netral-50 to-netral-200 text-netral-400 ring-netral-300'
                           }`}
                         >
@@ -215,7 +215,7 @@ export default function HalamanDashboard({ sesi }) {
                       <span
                         className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium shadow-sm ring-1 ${
                           sudah
-                            ? 'bg-gradient-to-b from-[#EAF5EE] to-[#CFE8D8] text-selesai ring-[#9CCBAE]'
+                            ? 'bg-gradient-to-b from-selesai-50 to-selesai-100 text-selesai ring-selesai-300'
                             : 'bg-gradient-to-b from-netral-50 to-netral-200 text-netral-500 ring-netral-300'
                         }`}
                       >
@@ -229,7 +229,7 @@ export default function HalamanDashboard({ sesi }) {
               {/* Gerbang voting */}
               <div className="border-t border-sogan-200 px-5 py-3.5">
                 {jumlahSudah === URUTAN_DM.length ? (
-                  <p className="rounded-md border border-[#9CCBAE] bg-[#EAF5EE] px-3 py-2 text-sm text-selesai">
+                  <p className="rounded-md border border-selesai-300 bg-selesai-50 px-3 py-2 text-sm text-selesai">
                     ✓ Ketiga DM sudah menilai. Konsensus Weighted Borda sudah dapat dihitung.
                   </p>
                 ) : (

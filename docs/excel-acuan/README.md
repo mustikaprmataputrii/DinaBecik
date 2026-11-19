@@ -94,12 +94,14 @@ Jalankan:
 npm test
 ```
 
-Status saat file ini diarsipkan di `main` (PR #8):
+Status terkini di `main` (per 16 November 2026):
 
-- **63 test lulus** — 50 test di `acuan.test.js` + 13 test skenario seri
-  di `seri.test.js`.
-- PR #10 menambahkan satu kasus **T6 versi Excel** (n = 6, A dan B seri
-  32 poin), sehingga total menjadi **64 test**.
+- **67 test lulus** — 51 test di `acuan.test.js`, 13 test skenario seri
+  di `seri.test.js`, dan 3 test kelengkapan adapter di `kontrak.test.js`.
+- Kasus **T6 versi Excel** (n = 6, A dan B seri 32 poin) ada di
+  `acuan.test.js` dan memakai angka yang sama dengan sheet `Uji_Seri`.
+- Bobot final (A3) ikut dikunci di test: mengubah angka bobot membuat test
+  gagal, bukan hanya tampil beda.
 
 Detail audit ada di Issue #1. Ringkasan status bobot (A3) ada di
 [`../EXCEL-ACUAN.md`](../EXCEL-ACUAN.md).
