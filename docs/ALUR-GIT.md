@@ -7,17 +7,25 @@
 ## 1. Peta Branch
 
 ```
-main                  ← selalu hijau (50 test lulus). Hanya diisi lewat Pull Request.
+main                  ← integrasi; masuk hanya lewat Pull Request. CI: 67 test root + 5 test Worker.
 ├── feat/metode-agni    ← Agni   (logika metode)
 ├── feat/backend-alia   ← Alia   (backend & database)
 ├── feat/frontend-sri   ← Sri    (frontend & desain)
 └── feat/data-nadya     ← Nadya  (data & dokumentasi)
 ```
 
-Keempat branch **sudah dibuat** dan berisi pondasi yang sama (`70ce962`).
+Branch `feat/*` menunjukkan kepemilikan kerja, bukan status apakah tugasnya
+masih terbuka. Per 16 November 2026, frontend masuk lewat PR #9, data Excel
+lewat PR #8, metode/test lewat PR #10, dan backend lewat PR #12 (menggantikan
+PR #6). PR tugas tertentu juga dapat memakai branch `docs/*`, `fix/*`, atau
+`gabung/*`; semua perubahan tetap digabung ke `main` melalui Pull Request.
 
 **Aturan:** setiap orang **hanya** push ke branch-nya sendiri. Jangan pernah push
 langsung ke `main`.
+
+Status saat ini: fondasi, frontend, Excel acuan, dan backend telah digabung ke
+`main` melalui PR. Sinkronkan branch kerja dengan `origin/main` sebelum memulai
+pekerjaan baru.
 
 ---
 
@@ -28,33 +36,35 @@ langsung ke `main`.
 git clone https://github.com/mustikaprmataputrii/DinaBecik.git
 cd DinaBecik
 
-# 2. Install dependensi
-npm install
+# 2. Install dependensi root dan Worker
+npm ci
+npm ci --prefix worker
 
-# 3. Pastikan pondasi sehat — harus 50 test lulus
+# 3. Pastikan semua test sehat: 67 test aplikasi + 5 test Worker
 npm test
+npm test --prefix worker
 
 # 4. Pindah ke branch kamu sendiri
-git checkout feat/frontend-sri     # ganti sesuai namamu
+git checkout feat/data-nadya       # ganti sesuai branch kerjamu
 ```
 
-> ⚠️ Jika PowerShell menolak `npm`, pakai `npm.cmd install` dan `npm.cmd test`.
+> ⚠️ Jika PowerShell menolak `npm`, gunakan `npm.cmd` untuk perintah di atas.
 
 ---
 
 ## 3. Alur Kerja Harian
 
 ```bash
-# 1. Mulai hari: ambil update terbaru dari main
-git checkout main
-git pull
-git checkout feat/frontend-sri
-git merge main                     # bawa update terbaru ke branch kamu
+# 1. Mulai hari: ambil main terbaru ke branch kerjamu
+git fetch origin
+git checkout feat/data-nadya       # ganti sesuai branch kerjamu
+git merge origin/main
 
 # 2. Kerja... edit file...
 
-# 3. Cek tidak ada yang rusak
+# 3. Jalankan semua test sebelum commit
 npm test
+npm test --prefix worker
 
 # 4. Simpan
 git add .
@@ -155,8 +165,8 @@ git push
 | Edit file milik orang lain tanpa izin | Bikin konflik & kerja dobel |
 | Commit `node_modules/` | Sudah diblokir `.gitignore` — jangan di-force add |
 | Commit `.env` atau `serviceAccountKey.json` | **Bocor = database bisa dihapus** |
-| Merge saat `npm test` gagal | Merusak fondasi seluruh kelompok |
-| Ubah `src/fixtures/dataAcuan.js` | Dikunci 50 test. Bikin file baru jika butuh data uji |
+| Merge saat `npm test` atau `npm test --prefix worker` gagal | Merusak fondasi seluruh kelompok |
+| Ubah `src/fixtures/dataAcuan.js` | Dikunci 51 test acuan. Bikin file baru jika butuh data uji |
 | Ubah `src/shared/constants.js` sendirian | Mempengaruhi semua modul. Diskusikan dulu |
 
 ---
@@ -172,6 +182,9 @@ git checkout -- namafile      # batalkan perubahan pada satu file
 git stash                     # simpan sementara perubahan
 git stash pop                 # ambil kembali
 git pull                      # ambil update
+npm test                      # 67 test aplikasi
+npm test --prefix worker      # 5 test backend Worker
+npm run build                 # verifikasi build frontend
 ```
 
 ---
