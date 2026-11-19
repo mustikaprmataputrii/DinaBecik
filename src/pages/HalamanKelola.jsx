@@ -52,8 +52,8 @@ const KANDIDAT_KOSONG = { tanggal: '', biaya: '', gedung: '3', cuaca: '3', tamu:
 
 /** Kelas pesan sesuai jenisnya. */
 function gayaPesan(jenis) {
-  if (jenis === 'sukses') return 'border-[#9CCBAE] bg-[#EAF5EE] text-selesai';
-  if (jenis === 'galat') return 'border-[#F2C4C0] bg-[#FDECEA] text-bahaya';
+  if (jenis === 'sukses') return 'border-selesai-300 bg-selesai-50 text-selesai';
+  if (jenis === 'galat') return 'border-bahaya-200 bg-bahaya-50 text-bahaya';
   return 'border-sogan-200 bg-krem-100/80 text-netral-600';
 }
 
@@ -608,7 +608,7 @@ export default function HalamanKelola({ sesi }) {
                         type="button"
                         onClick={() => hapus(k.kode)}
                         disabled={sibuk}
-                        className="rounded border border-[#F2C4C0] bg-[#FDECEA] px-2 py-1 text-[0.7rem] font-medium text-bahaya transition hover:bg-[#F8D7D3] disabled:opacity-50"
+                        className="rounded border border-bahaya-200 bg-bahaya-50 px-2 py-1 text-[0.7rem] font-medium text-bahaya transition hover:bg-bahaya-100 disabled:opacity-50"
                       >
                         Hapus
                       </button>
@@ -646,7 +646,7 @@ export default function HalamanKelola({ sesi }) {
                   <span
                     className={`angka shrink-0 rounded px-2 py-0.5 text-xs font-semibold ring-1 ${
                       a.skor >= 4
-                        ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                        ? 'bg-selesai-50 text-selesai ring-selesai-300'
                         : a.skor >= 3
                           ? 'bg-emas-100 text-emas-800 ring-emas-300'
                           : 'bg-netral-100 text-netral-600 ring-netral-300'
@@ -676,7 +676,7 @@ export default function HalamanKelola({ sesi }) {
                   <span
                     className={`shrink-0 rounded px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide ring-1 ${
                       k.tipe === 'cost'
-                        ? 'bg-[#EDF4FA] text-penilaian ring-[#A9C7E0]'
+                        ? 'bg-penilaian-50 text-penilaian ring-penilaian-300'
                         : 'bg-emas-100 text-emas-800 ring-emas-300'
                     }`}
                   >

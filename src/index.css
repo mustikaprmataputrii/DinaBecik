@@ -69,6 +69,30 @@
   --color-sukses: #2e7d4f;
   --color-peringatan: #b26a00;
 
+  /* --- Nuansa status (latar badge, panel, dan pesan) ---
+   * Nilainya PERSIS sama dengan yang sebelumnya ditulis sebagai arbitrary
+   * value di komponen (mis. bg-[#EDF4FA]). Dipindah ke token supaya tidak
+   * ada warna hardcoded di src/pages/ dan src/components/, tanpa mengubah
+   * satu pun warna yang tampil. */
+  --color-penilaian-50: #edf4fa;
+  --color-penilaian-100: #d9e8f4;
+  --color-penilaian-200: #cfe4f5;
+  --color-penilaian-300: #a9c7e0;
+  --color-penilaian-400: #7fafd6;
+
+  --color-selesai-50: #eaf5ee;
+  --color-selesai-100: #cfe8d8;
+  --color-selesai-200: #c6e8d3;
+  --color-selesai-300: #9ccbae;
+  --color-selesai-400: #7fc49b;
+
+  --color-bahaya-50: #fdecea;
+  --color-bahaya-100: #f8d7d3;
+  --color-bahaya-200: #f2c4c0;
+
+  /* Tirai gelap transparan di atas kartu sogan tua. */
+  --color-tirai: #1a1210;
+
   --font-judul: 'Playfair Display', Georgia, serif;
   --font-isi: 'Inter', 'Segoe UI', system-ui, sans-serif;
   --font-angka: 'JetBrains Mono', Consolas, monospace;

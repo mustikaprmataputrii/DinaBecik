@@ -76,6 +76,35 @@ export const WARNA = Object.freeze({
     peringatan: '#B26A00',
   },
 
+  // --- Nuansa muda warna status (latar badge, panel, pesan) ---
+  // Nilai ini identik dengan arbitrary value yang dulu ditulis langsung di
+  // komponen. Sekarang jadi token: komponen cukup memakai bg-penilaian-50
+  // dan sejenisnya. Sumber runtime-nya tetap blok @theme di src/index.css.
+  statusMuda: {
+    penilaian: {
+      50: '#EDF4FA',
+      100: '#D9E8F4',
+      200: '#CFE4F5',
+      300: '#A9C7E0',
+      400: '#7FAFD6',
+    },
+    selesai: {
+      50: '#EAF5EE',
+      100: '#CFE8D8',
+      200: '#C6E8D3',
+      300: '#9CCBAE',
+      400: '#7FC49B',
+    },
+    bahaya: {
+      50: '#FDECEA',
+      100: '#F8D7D3',
+      200: '#F2C4C0',
+    },
+  },
+
+  /** Tirai gelap transparan di atas kartu sogan tua. */
+  tirai: '#1A1210',
+
   // --- Warna ranking (untuk grafik & badge) ---
   ranking: {
     pertama: '#D99A1E', // emas — pemenang
