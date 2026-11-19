@@ -24,6 +24,8 @@ import * as firebaseAdapter from './firebaseAdapter.js';
 const adaKonfigurasiFirebase = Boolean(import.meta.env?.VITE_FIREBASE_API_KEY && import.meta.env?.VITE_FIREBASE_PROJECT_ID);
 const adapter = adaKonfigurasiFirebase ? firebaseAdapter : mockAdapter;
 
+export const MENGGUNAKAN_FIREBASE = adaKonfigurasiFirebase;
+
 export default adapter;
 
 // Re-export semua fungsi adapter agar bisa di-import langsung.

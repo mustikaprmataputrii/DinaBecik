@@ -1,5 +1,5 @@
 # ============================================================================
-#  Dina Becik — CI: jalankan 50 unit test acuan
+#  Dina Becik — CI: jalankan 67 test aplikasi + 5 test Worker
 # ============================================================================
 #  Workflow ini berjalan otomatis setiap:
 #    - ada Pull Request ke main
@@ -21,7 +21,7 @@ on:
 
 jobs:
   test:
-    name: npm test (50 test acuan)
+    name: npm test (67 test + 5 worker)
     runs-on: ubuntu-latest
 
     steps:

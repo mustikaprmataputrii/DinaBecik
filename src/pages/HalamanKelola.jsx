@@ -34,6 +34,7 @@ import {
   ubahKandidat,
   hapusKandidat,
   resetDemo,
+  MENGGUNAKAN_FIREBASE,
 } from '../data/index.js';
 import { hitungSkorWeton } from '../shared/weton.js';
 import { KRITERIA, ATURAN_WETON } from '../shared/constants.js';
@@ -374,14 +375,16 @@ export default function HalamanKelola({ sesi }) {
               >
                 {sibuk ? 'Menyimpan…' : 'Simpan identitas'}
               </button>
-              <button
-                type="button"
-                onClick={kembalikanContoh}
-                disabled={sibuk}
-                className="rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-sm font-medium text-sogan-700 shadow-sm transition hover:border-emas-500 hover:bg-emas-50 disabled:opacity-50"
-              >
-                Kembalikan data contoh
-              </button>
+              {!MENGGUNAKAN_FIREBASE && (
+                <button
+                  type="button"
+                  onClick={kembalikanContoh}
+                  disabled={sibuk}
+                  className="rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-sm font-medium text-sogan-700 shadow-sm transition hover:border-emas-500 hover:bg-emas-50 disabled:opacity-50"
+                >
+                  Kembalikan data contoh
+                </button>
+              )}
             </div>
           </form>
         </Kartu>
