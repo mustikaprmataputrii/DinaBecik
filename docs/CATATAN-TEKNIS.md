@@ -207,7 +207,7 @@ Tetapi **aplikasinya** belum bisa menerima data lain: `ACARA_CONTOH` dan
 
 | Hal | Keputusan |
 |---|---|
-| Fixture `src/fixtures/dataAcuan.js` | **Tidak diubah.** Tetap dikunci 50 unit test untuk membuktikan Tabel 7.2/7.3 di laporan |
+| Fixture `src/fixtures/dataAcuan.js` | **Tidak diubah.** Tetap dikunci 51 unit test untuk membuktikan Tabel 7.2/7.3 di laporan |
 | Peran fixture | Hanya **isi awal** adapter, bukan satu-satunya sumber data |
 | Data pengguna | Disimpan di `localStorage['dina-becik-data']` lewat `mockAdapter.js` |
 | Skor C1 | **Tidak pernah diinput manual** — selalu `lengkapiKandidatWeton()` |
@@ -258,7 +258,7 @@ supaya terlihat panelnya benar-benar bekerja saat itu, bukan hasil render statis
 ### Konsekuensi
 
 - Panel ini berfungsi sebagai **alarm**: kalau ada yang merusak rumus, badge
-  berubah dari "48/48 cocok" menjadi merah. Ini pelengkap 50 unit test, bukan
+  berubah dari "48/48 cocok" menjadi merah. Ini pelengkap 51 unit test, bukan
   penggantinya.
 - Angka di kolom "laporan" **tidak pernah dipakai untuk menghitung apa pun** —
   hanya sebagai pembanding. Jadi tidak ada risiko sirkular (membandingkan angka
