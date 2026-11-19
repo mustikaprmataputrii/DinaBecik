@@ -124,7 +124,7 @@ export default function HalamanHasil({ sesi }) {
                       aria-hidden="true"
                       className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ring-1 ${
                         sudah
-                          ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                          ? 'bg-selesai-50 text-selesai ring-selesai-300'
                           : 'bg-netral-100 text-netral-400 ring-netral-300'
                       }`}
                     >
@@ -142,7 +142,7 @@ export default function HalamanHasil({ sesi }) {
                   <span
                     className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ${
                       sudah
-                        ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                        ? 'bg-selesai-50 text-selesai ring-selesai-300'
                         : 'bg-netral-50 text-netral-500 ring-netral-300'
                     }`}
                   >
@@ -226,7 +226,7 @@ export default function HalamanHasil({ sesi }) {
               return (
                 <div
                   key={key}
-                  className="rounded-lg border border-emas-500/25 bg-[rgba(26,18,16,0.35)] px-3 py-2.5"
+                  className="rounded-lg border border-emas-500/25 bg-tirai/35 px-3 py-2.5"
                 >
                   <div className="text-[0.62rem] uppercase tracking-wide text-emas-300/70">
                     {dm?.nama}

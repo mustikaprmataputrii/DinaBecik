@@ -154,8 +154,8 @@ export default function HalamanKandidat({ sesi }) {
             <span
               className={`rounded-full px-2.5 py-0.5 text-xs font-medium shadow-sm ring-1 ${
                 semuaCocok
-                  ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
-                  : 'bg-[#FDECEA] text-bahaya ring-[#F2C4C0]'
+                  ? 'bg-selesai-50 text-selesai ring-selesai-300'
+                  : 'bg-bahaya-50 text-bahaya ring-bahaya-200'
               }`}
             >
               {semuaCocok ? '✓ ' : '! '}
@@ -233,7 +233,7 @@ export default function HalamanKandidat({ sesi }) {
                       <span
                         className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 font-semibold ring-1 ${
                           k.skorWeton >= 4
-                            ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                            ? 'bg-selesai-50 text-selesai ring-selesai-300'
                             : k.skorWeton >= 3
                               ? 'bg-emas-100 text-emas-800 ring-emas-300'
                               : 'bg-netral-100 text-netral-600 ring-netral-300'
@@ -302,7 +302,7 @@ export default function HalamanKandidat({ sesi }) {
 
             {/* Langkah rumus, ditulis apa adanya agar bisa dicek ulang */}
             <div className="grid gap-2 sm:grid-cols-4">
-              <div className="rounded-lg border border-emas-500/25 bg-[rgba(26,18,16,0.35)] px-3 py-2.5">
+              <div className="rounded-lg border border-emas-500/25 bg-tirai/35 px-3 py-2.5">
                 <div className="text-[0.62rem] uppercase tracking-wide text-emas-300/70">
                   Neptu pria
                 </div>
@@ -310,7 +310,7 @@ export default function HalamanKandidat({ sesi }) {
                   {acara.neptu_pria}
                 </div>
               </div>
-              <div className="rounded-lg border border-emas-500/25 bg-[rgba(26,18,16,0.35)] px-3 py-2.5">
+              <div className="rounded-lg border border-emas-500/25 bg-tirai/35 px-3 py-2.5">
                 <div className="text-[0.62rem] uppercase tracking-wide text-emas-300/70">
                   Neptu wanita
                 </div>
@@ -318,7 +318,7 @@ export default function HalamanKandidat({ sesi }) {
                   {acara.neptu_wanita}
                 </div>
               </div>
-              <div className="rounded-lg border border-emas-500/25 bg-[rgba(26,18,16,0.35)] px-3 py-2.5">
+              <div className="rounded-lg border border-emas-500/25 bg-tirai/35 px-3 py-2.5">
                 <div className="text-[0.62rem] uppercase tracking-wide text-emas-300/70">
                   Neptu weton tanggal
                 </div>
@@ -336,7 +336,7 @@ export default function HalamanKandidat({ sesi }) {
               </div>
             </div>
 
-            <div className="rounded-lg border border-emas-500/25 bg-[rgba(26,18,16,0.45)] px-3 py-2.5">
+            <div className="rounded-lg border border-emas-500/25 bg-tirai/45 px-3 py-2.5">
               <p className="angka text-xs leading-relaxed text-krem-200/85">
                 sisa = ({acara.neptu_pria} + {acara.neptu_wanita} + {detail.hitung.neptuWeton}) mod
                 5 ={' '}
@@ -348,8 +348,8 @@ export default function HalamanKandidat({ sesi }) {
             <div
               className={`rounded-md border px-3 py-2 text-xs ${
                 detail.cocok
-                  ? 'border-[#7FC49B]/50 bg-[#2E7D4F]/20 text-[#C6E8D3]'
-                  : 'border-[#F2C4C0]/60 bg-[#B3261E]/20 text-[#F8D7D3]'
+                  ? 'border-selesai-400/50 bg-selesai/20 text-selesai-200'
+                  : 'border-bahaya-200/60 bg-bahaya/20 text-bahaya-100'
               }`}
             >
               {detail.cocok
@@ -380,7 +380,7 @@ export default function HalamanKandidat({ sesi }) {
                   <span
                     className={`angka shrink-0 rounded px-2 py-0.5 text-xs font-semibold ring-1 ${
                       a.skor >= 4
-                        ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                        ? 'bg-selesai-50 text-selesai ring-selesai-300'
                         : a.skor >= 3
                           ? 'bg-emas-100 text-emas-800 ring-emas-300'
                           : 'bg-netral-100 text-netral-600 ring-netral-300'
@@ -408,7 +408,7 @@ export default function HalamanKandidat({ sesi }) {
                   <span
                     className={`shrink-0 rounded px-1.5 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide ring-1 ${
                       k.tipe === 'cost'
-                        ? 'bg-[#EDF4FA] text-penilaian ring-[#A9C7E0]'
+                        ? 'bg-penilaian-50 text-penilaian ring-penilaian-300'
                         : 'bg-emas-100 text-emas-800 ring-emas-300'
                     }`}
                   >

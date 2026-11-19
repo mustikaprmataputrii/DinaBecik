@@ -120,8 +120,8 @@ export default function HalamanPenilaian({ sesi }) {
 
   const gayaPesan =
     pesan?.jenis === 'sukses'
-      ? 'border-[#9CCBAE] bg-[#EAF5EE] text-selesai'
-      : 'border-[#F2C4C0] bg-[#FDECEA] text-bahaya';
+      ? 'border-selesai-300 bg-selesai-50 text-selesai'
+      : 'border-bahaya-200 bg-bahaya-50 text-bahaya';
 
   const pemenang = hasil.find((h) => h.ranking === 1);
 
@@ -324,7 +324,7 @@ export default function HalamanPenilaian({ sesi }) {
         {/* ---- Aksi kirim ---- */}
         <div className="border-t border-sogan-200 px-5 py-4">
           {terkunci ? (
-            <div className="rounded-md border border-[#9CCBAE] bg-[#EAF5EE] px-3 py-2.5">
+            <div className="rounded-md border border-selesai-300 bg-selesai-50 px-3 py-2.5">
               <p className="text-sm font-medium text-selesai">
                 ✓ Penilaian Anda sudah terkirim dan terkunci.
               </p>
@@ -380,7 +380,7 @@ export default function HalamanPenilaian({ sesi }) {
                       aria-hidden="true"
                       className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold ring-1 ${
                         sudah
-                          ? 'bg-[#EAF5EE] text-selesai ring-[#9CCBAE]'
+                          ? 'bg-selesai-50 text-selesai ring-selesai-300'
                           : 'bg-netral-100 text-netral-400 ring-netral-300'
                       }`}
                     >

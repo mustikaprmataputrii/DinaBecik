@@ -125,7 +125,7 @@ export default function HalamanLogin({ onLogin }) {
             {galat && (
               <p
                 role="alert"
-                className="rounded-md border border-[#F2C4C0] bg-[#FDECEA] px-3 py-2 text-xs text-bahaya"
+                className="rounded-md border border-bahaya-200 bg-bahaya-50 px-3 py-2 text-xs text-bahaya"
               >
                 {galat}
               </p>
@@ -166,7 +166,7 @@ export default function HalamanLogin({ onLogin }) {
         </div>
 
         {/* ---------- Catatan metode di bawah kartu ---------- */}
-        <div className="mt-3 rounded-lg border border-emas-500/30 bg-[rgba(26,18,16,0.72)] px-3 py-2 text-center backdrop-blur">
+        <div className="mt-3 rounded-lg border border-emas-500/30 bg-tirai/[0.72] px-3 py-2 text-center backdrop-blur">
           <p className="text-[0.66rem] leading-relaxed text-krem-200/75">
             Neptu hari dan pasaran bersifat pasti; tafsir kecocokan dapat berbeda antar daerah.
           </p>
