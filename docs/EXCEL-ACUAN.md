@@ -4,7 +4,7 @@ File kerja: [`excel-acuan/Dina_Becik_Excel_Acuan.xlsx`](./excel-acuan/Dina_Becik
 Catatan pemakaian lengkap: [`excel-acuan/README.md`](./excel-acuan/README.md)
 
 Dokumen ini adalah pintu masuk singkat. Isinya: kegunaan file, angka kunci,
-dan **status penguncian bobot (A3)** yang masih menunggu konfirmasi dosen.
+dan **keputusan bobot final (A3)** yang sudah dikunci per 16 November 2026.
 
 ## Kegunaan
 
@@ -34,11 +34,24 @@ Cara cepat memeriksa:
 3. Kalau muncul `ADA YANG GAGAL`, file sudah berubah — jangan dipakai sebagai
    pembanding sebelum dipulihkan.
 
-## Status penguncian bobot (A3)
+## Keputusan bobot final (A3)
 
-**Status: menunggu konfirmasi dosen.** Nilai di bawah adalah yang dipakai
-Excel acuan dan unit test saat ini. Selama belum dikunci, nilai ini berstatus
-*contoh dari Panduan bagian 5*, bukan keputusan final.
+**Status: FINAL — dikunci 16 November 2026.**
+
+Tiga hal sudah dikonfirmasi ke dosen pembimbing pada tanggal tersebut, sehingga
+nilai di bawah berstatus **acuan resmi**, bukan lagi *contoh dari Panduan
+bagian 5*.
+
+| Butir | Keputusan |
+|---|---|
+| Bobot C1–C5 per DM | Diterima apa adanya, sesuai tabel di bawah |
+| Bobot jabatan Weighted Borda | **3 : 2 : 1** (Sesepuh : Orang Tua : WO) |
+| Aturan skor weton (C1) | Sisa 3 = 5, 1 = 4, 2 = 3, 4 = 2, 0 = 1 — sesuai |
+
+Angka ini **dikunci oleh unit test** di `src/tests/acuan.test.js`
+(blok `validasi bobot`): kalau salah satu bobot berubah, `npm test` gagal.
+Perubahan hanya sah bila ada keputusan baru dari dosen dan dokumen ini
+diperbarui bersamaan.
 
 Bobot ditulis sebagai **desimal** (`0,4` = 40%). Total tiap kolom = 100%.
 
@@ -53,22 +66,27 @@ Bobot ditulis sebagai **desimal** (`0,4` = 40%). Total tiap kolom = 100%.
 
 Bobot jabatan untuk konsensus: **Sesepuh 3, Orang Tua 2, WO 1.**
 
-### Yang perlu ditanyakan ke dosen
+### Kalau nanti ada perubahan
 
-1. Apakah bobot C1–C5 per DM di atas sudah final, atau ada angka yang harus
-   diganti?
-2. Apakah bobot jabatan **3 : 2 : 1** untuk Weighted Borda sudah sesuai?
-3. Apakah aturan skor weton (sisa 3 = 5, 1 = 4, 2 = 3, 4 = 2, 0 = 1) sesuai
-   tradisi yang dipakai untuk praktikum?
+Perubahan bobot **tidak boleh** dilakukan diam-diam. Urutannya:
 
-Kalau ada yang berubah, yang perlu disunting hanya sheet `Bobot` dan
-`Referensi`. Setelah itu tekan hitung ulang, lalu **jalankan `npm test`** —
-kalau angka acuan ikut berubah, test perlu diperbarui secara sadar, bukan
-diam-diam.
+1. Dapatkan keputusan baru dari dosen (tertulis lebih baik).
+2. Sunting sheet `Bobot` dan `Referensi` di file Excel.
+3. Tekan hitung ulang, pastikan `Cek!B3` kembali `SEMUA CEK LOLOS`.
+4. Perbarui tabel di dokumen ini beserta tanggal keputusannya.
+5. Perbarui `BOBOT_AWAL` di `src/shared/constants.js` **dan** angka di test —
+   keduanya dalam satu PR, supaya terlihat jelas bahwa angkanya memang sengaja
+   berubah.
+6. Jalankan `npm test`. Kalau ada angka acuan lain (S, V, poin Borda) yang
+   ikut bergeser, periksa satu per satu; jangan sekadar menimpa angka test.
+
+Langkah 5 penting: kalau bobot diubah tanpa memperbarui test, CI akan merah —
+itu memang tujuannya, supaya metode tidak bergeser tanpa persetujuan.
 
 ## Hubungan dengan unit test
 
-- `src/tests/acuan.test.js` mengunci angka WP dan Borda, termasuk E = 35.
+- `src/tests/acuan.test.js` mengunci angka WP dan Borda, termasuk E = 35,
+  serta bobot final A3 (C1–C5 per DM dan bobot jabatan 3 : 2 : 1).
 - `src/tests/seri.test.js` mengunci skenario seri T6.
 - PR #10 menambahkan kasus T6 versi Excel yang memakai angka sama dengan
   sheet `Uji_Seri`.

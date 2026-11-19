@@ -25,7 +25,7 @@ src/shared/constants.js      ← sumber kebenaran semua nilai
 src/shared/weton.js          ← hitungWeton, hitungSkorWeton
 src/shared/wp.js             ← hitungWP, normalisasiBobot
 src/shared/borda.js          ← hitungBorda, cekGerbangVoting
-src/tests/acuan.test.js      ← 50 test pengunci kebenaran
+src/tests/acuan.test.js      ← 51 test pengunci angka Tabel 7.2/7.3
 docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 ```
 
@@ -33,12 +33,12 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 
 | # | Tugas | Target | Status |
 |---|---|---|---|
-| A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (50 test lulus) |
-| A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ⬜ |
-| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | ⬜ |
-| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ |
-| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ |
-| A6 | Tulis bagian metode pada laporan | Minggu 5 | ⬜ |
+| A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (51 test acuan; 67 test root) |
+| A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ✅ (`docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx`, 28 PASS) |
+| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | 🟡 Dikonfirmasi 16 Nov; PR #15 dan #18 menunggu merge |
+| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ Menunggu konfirmasi Agni setelah validasi database |
+| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ Menunggu konfirmasi Agni |
+| A6 | Tulis bagian metode pada laporan | Minggu 5 | 🟡 Draf Bab 3 di PR #16; dua koreksi menunggu |
 
 ### Yang kamu jaga
 
@@ -62,10 +62,11 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 ```
 src/data/kontrak.js          ← daftar fungsi wajib
 src/data/index.js            ← titik ganti adapter
-src/data/mockAdapter.js      ← SUDAH ADA (jangan rusak, dipakai Sri)
-src/data/firebaseAdapter.js  ← kerangka, isi ini
+src/data/mockAdapter.js      ← adapter demo saat Firebase belum dikonfigurasi
+src/data/firebaseAdapter.js  ← implementasi Firestore (19 fungsi kontrak)
 src/auth/                    ← login & hak akses
-docs/FIRESTORE-RULES.md      ← aturan keamanan
+worker/src/index.js          ← backend tepercaya (Cloudflare Worker)
+firestore.rules              ← aturan keamanan Firestore
 .env.example
 ```
 
@@ -73,19 +74,19 @@ docs/FIRESTORE-RULES.md      ← aturan keamanan
 
 | # | Tugas | Target | Status |
 |---|---|---|---|
-| B1 | Buat Firebase project + 3 akun Auth | Minggu 2 | ⬜ |
-| B2 | Implementasi `firebaseAdapter.js` (13 fungsi) | Minggu 2 | ⬜ |
-| B3 | Tulis Firestore rules (DM tidak bisa nilai atas nama lain) | Minggu 2 | ⬜ |
-| B4 | Halaman login + hak akses per peran | Minggu 2 | ⬜ |
-| B5 | Status acara (Draft→Penilaian→Voting→Selesai) | Minggu 2–3 | ⬜ |
-| B6 | Kunci penilaian terkirim (tidak bisa diubah) | Minggu 3 | ⬜ |
-| B7 | Gerbang voting (terbuka hanya jika 3 DM kirim) | Minggu 4 | ⬜ |
-| B8 | Simpan `voting_hasil` sekali via transaction/Cloud Function | Minggu 4 | ⬜ |
-| B9 | Uji T1, T4, T7, T8 | Minggu 4–5 | ⬜ |
+| B1 | Buat Firebase project + 3 akun Auth | Minggu 2 | ✅ (dikonfirmasi Alia) |
+| B2 | Implementasi `firebaseAdapter.js` (19 fungsi) | Minggu 2 | ✅ (`src/tests/kontrak.test.js`) |
+| B3 | Tulis Firestore rules (DM tidak bisa nilai atas nama lain) | Minggu 2 | ✅ (`firestore.rules`, default deny) |
+| B4 | Halaman login + hak akses per peran | Minggu 2 | ✅ (`firebaseAuth.js`, pembatasan peran) |
+| B5 | Status acara (Draft→Penilaian→Voting→Selesai) | Minggu 2–3 | ✅ (Worker + Dashboard) |
+| B6 | Kunci penilaian terkirim (tidak bisa diubah) | Minggu 3 | ✅ (rules + Worker; uji T8) |
+| B7 | Gerbang voting (terbuka hanya jika 3 DM kirim) | Minggu 4 | ✅ (Worker; uji T4) |
+| B8 | Simpan `voting_hasil` sekali via transaksi Firestore | Minggu 4 | ✅ (Worker; uji T7) |
+| B9 | Uji T1, T4, T7, T8 | Minggu 4–5 | ✅ (5 test Worker; CI lulus) |
 
 ### Kontrak yang WAJIB kamu patuhi
 
-Signature 13 fungsi di `src/data/kontrak.js` **tidak boleh berubah**. Sri sudah
+Signature 19 fungsi di `src/data/kontrak.js` **tidak boleh berubah**. Sri sudah
 membangun halaman di atas signature itu. Kalau kamu mengubahnya, frontend rusak.
 
 Semua fungsi **harus async**, meskipun datanya instan.
@@ -118,13 +119,13 @@ public/             ← aset gambar, motif batik
 
 | # | Tugas | Prioritas | Target | Status |
 |---|---|---|---|---|
-| S1 | Design token + layout dasar (navbar, footer) | Wajib | Minggu 1 | 🟡 Token selesai |
-| S2 | Halaman Login (3 peran) | Wajib | Minggu 1–2 | ⬜ |
-| S3 | Dashboard (status acara + status 3 DM) | Wajib | Minggu 2 | ⬜ |
-| S4 | Halaman Data Acara & Kandidat | Wajib | Minggu 2 | ⬜ |
-| S5 | Halaman Atur Bobot (5 slider + validasi 100%) | Wajib | Minggu 3 | ⬜ |
-| S6 | Halaman Hasil Penilaian Saya (tabel S, V, ranking + Kirim) | Wajib | Minggu 3 | ⬜ |
-| S7 | Halaman Konsensus & Hasil (kartu pemenang + tabel Borda) | Wajib | Minggu 4 | ⬜ |
+| S1 | Design token + layout dasar (navbar, footer) | Wajib | Minggu 1 | ✅ |
+| S2 | Halaman Login (3 peran) | Wajib | Minggu 1–2 | ✅ |
+| S3 | Dashboard (status acara + status 3 DM) | Wajib | Minggu 2 | ✅ |
+| S4 | Halaman Data Acara & Kandidat | Wajib | Minggu 2 | ✅ |
+| S5 | Halaman Atur Bobot (5 slider + validasi 100%) | Wajib | Minggu 3 | ✅ |
+| S6 | Halaman Hasil Penilaian Saya (tabel S, V, ranking + Kirim) | Wajib | Minggu 3 | ✅ |
+| S7 | Halaman Konsensus & Hasil (kartu pemenang + tabel Borda) | Wajib | Minggu 4 | ✅ |
 | S8 | Grafik perbandingan ranking | Plus | Minggu 5 | ⬜ |
 | S9 | Kalender visual dengan weton | Plus | Minggu 5 | ⬜ |
 | S10 | Ekspor PDF | Plus | Minggu 5 | ⬜ |
@@ -183,9 +184,9 @@ docs/panduan-proyek.pdf      ← acuan
 | N3 | Verifikasi data dummy 6 kandidat Tabel 7.1 | Minggu 1 | ✅ |
 | N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ✅ (`src/fixtures/dataUjiSeri.js`) |
 | N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | 🟡 Draf (`docs/laporan/BAB1-2-...md`) |
-| N6 | Susun slide presentasi | Minggu 4–5 | ⬜ |
+| N6 | Susun slide presentasi | Minggu 4–5 | 🟡 Draf (`docs/laporan/SLIDE-PRESENTASI-N6.md`) |
 | N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
-| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ⬜ |
+| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
 
 ### Catatan penting untuk kamu
 

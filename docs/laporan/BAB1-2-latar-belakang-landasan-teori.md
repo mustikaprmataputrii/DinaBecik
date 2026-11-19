@@ -19,7 +19,9 @@ pelaksanaan sering kali tidak dapat dilepaskan dari tradisi **weton**, yaitu
 gabungan hari dan pasaran (Legi, Pahing, Pon, Wage, Kliwon) yang dipercaya
 membawa makna tertentu bagi keluarga. Praktik ini masih hidup di masyarakat,
 namun penentuannya umumnya dilakukan secara lisan dan sangat bergantung pada
-pengetahuan seorang sesepuh.
+pengetahuan seorang sesepuh. Kajian tentang weton dalam pernikahan juga
+membahasnya sebagai praktik budaya yang berperan dalam perencanaan dan
+kehidupan keluarga (Ratnasari, 2023; Wahyudin et al., 2024).
 
 Ketergantungan pada satu orang menimbulkan beberapa masalah. Pertama,
 penilaian menjadi **subjektif** dan sulit dipertanggungjawabkan karena tidak
@@ -142,7 +144,9 @@ sekali dan dibaca bersama.
 
 **Weton** adalah gabungan hari dalam sepekan (7 hari) dengan pasaran dalam
 siklus lima hari (Legi, Pahing, Pon, Wage, Kliwon). Setiap hari dan pasaran
-memiliki **neptu** (nilai) sebagai berikut.
+memiliki **neptu** (nilai) sebagai berikut. Weton sebagai bagian dari praktik
+budaya Jawa dalam konteks perkawinan dibahas oleh Ratnasari (2023) dan
+Wahyudin et al. (2024).
 
 | Hari | Neptu | | Pasaran | Neptu |
 |---|---|---|---|---|
@@ -178,12 +182,18 @@ bahwa angka pada Tabel 7.1 hanya dapat direproduksi jika yang dipakai adalah
 dinamai `neptuWetonH`. Temuan ini perlu dikonfirmasi kepada dosen sebelum
 laporan final.
 
+Pemetaan sisa ke skor pada penelitian ini mengikuti **Panduan Proyek Dina
+Becik v1.0, bagian 6.1**. Pemetaan tersebut merupakan aturan operasional
+skenario proyek, bukan klaim bahwa seluruh masyarakat Jawa menggunakan satu
+tafsir weton yang seragam.
+
 ## 2.4 Multi-Criteria Decision Making dan Weighted Product
 
 Weighted Product (WP) adalah metode MCDM yang menilai alternatif melalui
 perkalian nilai kriteria yang dipangkatkan dengan bobotnya. Berbeda dengan
 metode penjumlahan terbobot, WP memperhitungkan interaksi multiplikatif antar
-kriteria dan tidak memerlukan normalisasi nilai mentah ke skala yang sama.
+kriteria dan tidak memerlukan normalisasi nilai mentah ke skala yang sama
+(Hwang & Yoon, 1981; Triantaphyllou, 2000).
 
 Langkah-langkah WP:
 
@@ -217,9 +227,9 @@ membuat hasil tidak sesuai angka acuan.
 
 ## 2.5 Metode Borda dan Weighted Borda
 
-Metode Borda (de Borda, 1781) menggabungkan preferensi beberapa pemilih
-dengan memberikan poin berdasarkan posisi alternatif dalam peringkat. Untuk
-`n` kandidat:
+Metode Borda, yang berasal dari karya Jean-Charles de Borda, menggabungkan
+preferensi beberapa pemilih dengan memberikan poin berdasarkan posisi
+alternatif dalam peringkat (Rothe, 2019). Untuk `n` kandidat:
 
 ```
 poin = n - ranking + 1
@@ -234,7 +244,8 @@ totalPoin_i = Σ_dm ( poinBorda(ranking_i, n) × bobotSuara_dm )
 ```
 
 Dina Becik memakai bobot jabatan Sesepuh 3, Orang Tua 2, dan Wedding Organizer
-1. Kandidat dengan total poin tertinggi menjadi pemenang. Pendekatan ini
+1, sesuai Panduan Proyek bagian 6.3. Kandidat dengan total poin tertinggi
+menjadi pemenang. Pendekatan ini
 menjaga agar pihak dengan tanggung jawab tradisional tertinggi memiliki
 pengaruh besar, sementara suara pihak lain tetap diperhitungkan.
 
@@ -265,13 +276,14 @@ ulang tampilan.
 
 ## 2.8 Posisi Penelitian
 
-Penelitian tentang weton umumnya berhenti pada perhitungan kecocokan tanggal.
-Dina Becik menambahkan dua hal: (1) penggabungan kriteria tradisional dengan
-kriteria teknis dan biaya dalam satu model WP, dan (2) konsensus kelompok
-berbobot jabatan melalui Weighted Borda, termasuk aturan penyelesaian seri
-yang eksplisit. Dengan demikian sistem tidak hanya menghitung tanggal "baik"
-menurut primbon, tetapi juga mendukung keputusan bersama keluarga secara
-terdokumentasi.
+Ratnasari (2023) membahas perhitungan weton dalam perkawinan dari sudut
+pemaknaan tradisi, sedangkan Wahyudin et al. (2024) mengkaji dinamika
+perhitungan weton dalam perencanaan pernikahan. Dina Becik mengambil konteks
+tersebut sebagai salah satu masukan keputusan, lalu menggabungkannya dengan
+kriteria teknis dan biaya menggunakan WP serta menyatukan penilaian tiga
+pengambil keputusan melalui Weighted Borda. Kontribusi sistem terletak pada
+alur keputusan kelompok yang eksplisit dan dapat diuji; sistem tidak
+menetapkan tafsir weton sebagai kebenaran universal.
 
 ## 2.9 Kerangka Pemikiran
 
@@ -282,21 +294,33 @@ yang disimpan dan ditampilkan ke ketiga akun.
 
 ---
 
-## Daftar Pustaka Awal
+## Daftar Pustaka
 
-> Daftar ini baru **awal**; N8 akan melengkapi dan memverifikasi formatnya
-> (gaya sitasi menyesuaikan panduan kampus).
-
-1. Hwang, C.-L., & Yoon, K. (1981). *Multiple Attribute Decision Making:
-   Methods and Applications*. Springer-Verlag.
-2. Yoon, K., & Hwang, C.-L. (1995). *Multiple Attribute Decision Making:
-   An Introduction*. Sage Publications.
-3. DeSanctis, G., & Gallupe, R. B. (1987). A foundation for the study of group
+1. DeSanctis, G., & Gallupe, R. B. (1987). A foundation for the study of group
    decision support systems. *Management Science, 33*(5), 589–609.
-4. de Borda, J.-C. (1781). *Mémoire sur les élections au scrutin*.
-5. Arrow, K. J. (1951). *Social Choice and Individual Values*. Wiley.
-6. Koentjaraningrat. (1984). *Kebudayaan Jawa*. Balai Pustaka.
-7. Google. (2026). *Cloud Firestore Documentation*.
-   https://firebase.google.com/docs/firestore
-8. Dina Becik. (2026). *Panduan Proyek Dina Becik v1.0*.
+   https://doi.org/10.1287/mnsc.33.5.589
+2. Hwang, C.-L., & Yoon, K. (1981). Methods for multiple attribute decision
+   making. In *Multiple Attribute Decision Making: Methods and Applications:
+   A State-of-the-Art Survey* (Lecture Notes in Economics and Mathematical
+   Systems, Vol. 186, pp. 58–191). Springer.
+   https://doi.org/10.1007/978-3-642-48318-9_3
+3. Ratnasari, D. (2023). A philosophical study of the weton tradition
+   calculation in Javanese marriage. *QURU’: Journal of Family Law and
+   Culture, 1*(1), 1–18. https://doi.org/10.59698/quru.v1i1.93
+4. Rothe, J. (2019). Borda count in collective decision making: A summary of
+   recent results. *Proceedings of the AAAI Conference on Artificial
+   Intelligence, 33*(1), 9830–9836.
+   https://doi.org/10.1609/aaai.v33i01.33019830
+5. Triantaphyllou, E. (2000). *Multi-criteria decision making methods: A
+   comparative study*. Applied Optimization (Vol. 44). Springer US.
+   https://doi.org/10.1007/978-1-4757-3157-6
+6. Wahyudin, M., Syafe’i, Z., & Ma’rifah, N. (2024). The dynamics of Javanese
+   weton calculation in wedding planning. *Jurnal Multidisiplin Madani, 4*(8),
+   1271–1285. https://doi.org/10.55927/mudima.v4i8.11102
+7. Dina Becik. (2026). *Panduan Proyek Dina Becik v1.0* (bagian 6.1–6.3 dan 7).
    `docs/panduan-proyek.pdf`.
+
+> Catatan: metadata dan DOI referensi akademik diverifikasi melalui laman
+> penerbit/Crossref. Format akhir perlu menyesuaikan pedoman kampus. Aturan
+> skor sisa weton merujuk panduan proyek dan perlu dikonfirmasi dosen; sumber
+> budaya di atas tidak dimaksudkan sebagai pembenaran satu tafsir universal.
