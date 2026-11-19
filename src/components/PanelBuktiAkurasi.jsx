@@ -6,7 +6,7 @@
  *  hitung bekerja benar — bukan sekadar angka yang ditulis mati di halaman.
  *
  *  Cara kerjanya (ini yang membedakan "bukti" dari "hiasan"):
- *    1. Ambil data contoh dari fixture yang dikunci 50 unit test.
+ *    1. Ambil data contoh dari fixture yang dikunci 51 unit test.
  *    2. Hitung ULANG dengan hitungWP() + hitungBorda() — fungsi yang sama
  *       persis dengan yang dipakai halaman Penilaian dan Konsensus.
  *    3. Bandingkan hasil hitung dengan angka yang tertulis di laporan.
@@ -49,6 +49,25 @@ function tanggalPanjang(iso) {
   if (!iso) return '—';
   const d = new Date(`${iso}T00:00:00`);
   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+/**
+ * Cap waktu lengkap (tanggal + jam) untuk membuktikan panel ini benar-benar
+ * dihitung ULANG di browser saat itu, bukan angka yang ditempel di halaman.
+ */
+function stempelLengkap(d) {
+  const tanggal = d.toLocaleDateString('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  const jam = d.toLocaleTimeString('id-ID', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  return `${tanggal}, ${jam}`;
 }
 
 /** Lencana kecil "cocok / tidak". */
@@ -222,6 +241,12 @@ export default function PanelBuktiAkurasi() {
             >
               Hitung ulang
             </button>
+            <span
+              className="angka rounded-full border border-sogan-200 bg-krem-100 px-2.5 py-0.5 text-[0.62rem] font-medium text-netral-600"
+              title={`Pemeriksaan ke-${putaran + 1} dijalankan di browser ini`}
+            >
+              hitung ke-{putaran + 1} · {stempelLengkap(waktu)}
+            </span>
           </div>
         }
       >
@@ -274,9 +299,6 @@ export default function PanelBuktiAkurasi() {
             </span>{' '}
             · Rp {bukti.kandidatPemenang?.biaya ?? PEMENANG_ACUAN.biaya} juta
           </p>
-          <span className="text-[0.62rem] text-netral-400">
-            dihitung {waktu.toLocaleTimeString('id-ID')}
-          </span>
         </div>
       </div>
 

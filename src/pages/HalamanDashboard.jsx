@@ -15,7 +15,7 @@ import Kartu, { JudulKartu } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
 import PanelBuktiAkurasi from '../components/PanelBuktiAkurasi.jsx';
-import { getAcara, getStatusSemuaDm, getHasilVoting, mulaiPenilaian } from '../data/index.js';
+import { getAcara, getKandidat, getStatusSemuaDm, getHasilVoting, mulaiPenilaian } from '../data/index.js';
 import { DECISION_MAKERS, URUTAN_DM, STATUS_ACARA, METODE } from '../shared/constants.js';
 
 const PINTASAN = [
@@ -26,8 +26,16 @@ const PINTASAN = [
   { ke: '/hasil', judul: 'Konsensus', isi: 'Hasil Weighted Borda', ikon: '★' },
 ];
 
+/** Format tanggal Indonesia dari string ISO. */
+function tanggalPanjang(iso) {
+  if (!iso) return '—';
+  const d = new Date(`${iso}T00:00:00`);
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
 export default function HalamanDashboard({ sesi }) {
   const [acara, setAcara] = useState(null);
+  const [kandidat, setKandidat] = useState([]);
   const [statusDm, setStatusDm] = useState(null);
   const [hasil, setHasil] = useState(null);
   const [memuat, setMemuat] = useState(true);
@@ -50,9 +58,15 @@ export default function HalamanDashboard({ sesi }) {
   useEffect(() => {
     let batal = false;
     (async () => {
-      const [a, s, h] = await Promise.all([getAcara(), getStatusSemuaDm(), getHasilVoting()]);
+      const [a, k, s, h] = await Promise.all([
+        getAcara(),
+        getKandidat(),
+        getStatusSemuaDm(),
+        getHasilVoting(),
+      ]);
       if (batal) return;
       setAcara(a);
+      setKandidat(k);
       setStatusDm(s);
       setHasil(h);
       setMemuat(false);
@@ -64,6 +78,13 @@ export default function HalamanDashboard({ sesi }) {
 
   const jumlahSudah = statusDm ? URUTAN_DM.filter((d) => statusDm[d]).length : 0;
   const dmSaya = DECISION_MAKERS.find((d) => d.key === sesi?.peran);
+
+  // Pemenang dibaca dari hasil konsensus, lalu dicocokkan ke data kandidat.
+  // Tidak ada nama tanggal yang ditulis mati di sini.
+  const pemenangFinal = hasil?.rincian?.[0] ?? null;
+  const kandidatPemenang = pemenangFinal
+    ? kandidat.find((k) => k.kode === pemenangFinal.kode) ?? null
+    : null;
 
   return (
     <div className="space-y-6">
@@ -289,15 +310,39 @@ export default function HalamanDashboard({ sesi }) {
               <div className="flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <div className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-emas-300/70">
-                    Kandidat {hasil.rincian?.[0]?.kode ?? '—'}
+                    Kandidat {pemenangFinal?.kode ?? '—'}
                   </div>
-                  <div className="mt-1.5 font-judul text-xl font-semibold text-emas-100">
-                    {acara?.tanggal_terpilih ? (
-                      <BadgeWeton {...acara.tanggal_terpilih} gelap />
+                  <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-judul text-xl font-semibold text-emas-100">
+                    {kandidatPemenang ? (
+                      <>
+                        <BadgeWeton
+                          hari={kandidatPemenang.hari}
+                          pasaran={kandidatPemenang.pasaran}
+                          gelap
+                        />
+                        <span className="text-sm font-normal text-krem-200/80">
+                          {tanggalPanjang(kandidatPemenang.tanggal)}
+                        </span>
+                      </>
                     ) : (
-                      'Kandidat E — Sabtu Legi'
+                      <span className="text-base font-normal text-krem-200/70">
+                        Data kandidat terpilih tidak ditemukan
+                      </span>
                     )}
                   </div>
+                  {pemenangFinal && (
+                    <div className="mt-1.5 text-xs text-krem-200/70">
+                      <span className="angka font-semibold text-emas-200">
+                        {pemenangFinal.totalPoin} poin
+                      </span>
+                      {kandidatPemenang && (
+                        <>
+                          {' · '}
+                          <span className="angka">Rp {kandidatPemenang.biaya} juta</span>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <Link
                   to="/hasil"
