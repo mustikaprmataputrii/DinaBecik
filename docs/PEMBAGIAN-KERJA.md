@@ -35,10 +35,10 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 |---|---|---|---|
 | A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (51 test acuan; 67 test root) |
 | A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ✅ (`docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx`, 28 PASS) |
-| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | 🟡 Dikonfirmasi 16 Nov; PR #15 dan #18 menunggu merge |
+| A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | ✅ Dikonfirmasi 16 Nov 2026; masuk lewat PR #15 (lihat `docs/EXCEL-ACUAN.md`) |
 | A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ Menunggu konfirmasi Agni setelah validasi database |
 | A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ Menunggu konfirmasi Agni |
-| A6 | Tulis bagian metode pada laporan | Minggu 5 | 🟡 Draf Bab 3 di PR #16; dua koreksi menunggu |
+| A6 | Tulis bagian metode pada laporan | Minggu 5 | ✅ `docs/laporan/BAB3-metode.md` (PR #16) |
 
 ### Yang kamu jaga
 
@@ -190,7 +190,7 @@ docs/panduan-proyek.pdf      ← acuan
 
 ### Catatan penting untuk kamu
 
-⚠️ **Jangan mengubah `src/fixtures/dataAcuan.js`.** File itu dikunci oleh 50 unit
+⚠️ **Jangan mengubah `src/fixtures/dataAcuan.js`.** File itu dikunci oleh 51 unit
 test. Jika diubah, test merah dan seluruh kelompok terblokir.
 
 Jika butuh data uji baru (misalnya skenario seri), buat file **terpisah**:

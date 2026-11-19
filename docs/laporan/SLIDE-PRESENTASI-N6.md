@@ -49,7 +49,7 @@ Tujuan: memilih satu tanggal terbaik dari beberapa kandidat melalui penilaian mu
 | Orang tua | 15% | 35% | 15% | 10% | 25% |
 | WO | 10% | 20% | 35% | 20% | 15% |
 
-**Catatan penyaji:** Gunakan angka ini sebagai bobot final setelah konsistensi PR #15 dan #18 dikonfirmasi/tergabung.
+**Catatan penyaji:** Angka ini sudah final — bobot dikunci 16 November 2026 dan dijaga unit test (`validasi bobot` di `src/tests/acuan.test.js`).
 
 ## Slide 5 — Weton dan Neptu
 
