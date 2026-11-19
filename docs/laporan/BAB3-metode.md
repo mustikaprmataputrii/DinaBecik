@@ -88,7 +88,7 @@ seri poin, tanpa menghapus suara dua pihak lain.
 
 Weton ditentukan dari hari dan pasaran tanggal kandidat. Neptu weton adalah
 jumlah neptu hari dan neptu pasaran, lalu dihitung sisa baginya terhadap 5
-terhadap jumlah neptu kedua mempelai:
+dari jumlah neptu kedua mempelai:
 
 ```
 sisa = (neptu_pria + neptu_wanita + neptu_weton_kandidat) mod 5
@@ -143,7 +143,7 @@ dari sudut pandang Sesepuh (bobot 0,40 / 0,10 / 0,15 / 0,15 / 0,20):
 
 ```
 S_E = 5^0,40 × 40^(-0,10) × 4^0,15 × 5^0,15 × 5^0,20
-    = 1,9037 × 0,6914 × 1,2311 × 1,2731 × 1,3797
+    = 1,9037 × 0,6915 × 1,2311 × 1,2731 × 1,3797
     ≈ 2,8466
 ```
 
@@ -201,7 +201,10 @@ Seri dapat terjadi pada dua tingkat:
    Borda bisa dihitung. Pengurutan memakai nilai S penuh (tanpa pembulatan
    tampilan); bila dua nilai benar-benar sama, urutan masukan dipertahankan
    karena pengurutan bersifat stabil, sehingga tidak ada dua kandidat yang
-   memperoleh peringkat sama.
+   memperoleh peringkat sama. Sifat stabil ini dijamin spesifikasi
+   ECMAScript sejak ES2019; perilakunya belum dikunci unit test tersendiri
+   karena tidak ada skenario acuan yang menghasilkan seri sempurna pada
+   nilai WP.
 2. **Seri total poin Borda antar kandidat.** Pemenang ditentukan oleh
    **ranking Sesepuh** — jabatan tertinggi. Aturan ini sudah disepakati
    sebagai bagian dari metode, bukan tambahan teknis.
