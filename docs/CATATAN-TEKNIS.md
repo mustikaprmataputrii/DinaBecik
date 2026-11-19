@@ -165,10 +165,25 @@ Semua sudah masuk `.gitignore`.
 
 ## 10. Keputusan yang masih terbuka
 
+### Sudah terjawab
+
+Tiga hal berikut sudah dikonfirmasi dosen pembimbing dan **tidak lagi terbuka**.
+Angkanya dikunci unit test, jadi tidak bisa bergeser diam-diam.
+
+| Hal | Keputusan | Rujukan |
+|---|---|---|
+| Bobot C1–C5 per DM | Diterima seperti pada Panduan bagian 5 | `BOBOT_AWAL` di `src/shared/constants.js` |
+| Bobot jabatan Weighted Borda | **3 : 2 : 1** (Sesepuh : Orang Tua : WO) | `BOBOT_JABATAN` di `src/shared/constants.js` |
+| Metode WP + Weighted Borda | Disetujui; SAW tidak dipakai | `docs/EXCEL-ACUAN.md` bagian keputusan bobot final |
+
+Bila nanti ada keputusan baru dari dosen, prosedur perubahannya ada di
+`docs/EXCEL-ACUAN.md` bagian "Kalau nanti ada perubahan": Excel → hitung ulang →
+dokumen → `constants.js` + test dalam satu PR.
+
+### Masih terbuka
+
 | # | Hal | Perlu konfirmasi ke |
 |---|---|---|
-| 1 | Apakah bobot suara jabatan memenuhi "voting dari jabatan tertinggi" | Dosen |
-| 2 | Apakah WP dan Borda boleh dipakai | Dosen |
 | 3 | Apakah AI untuk membantu kode diperbolehkan | Dosen |
 | 4 | Tanggal pengumpulan & format penilaian | Dosen |
 | 5 | Rename `neptu_hari_h` → `neptu_weton_h` | Tim |
