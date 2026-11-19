@@ -14,8 +14,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login, daftarAkunDemo } from '../auth/index.js';
-import { DECISION_MAKERS } from '../shared/constants.js';
+import { login } from '../auth/index.js';
 import LatarBudaya from '../components/LatarBudaya.jsx';
 
 export default function HalamanLogin({ onLogin }) {
@@ -24,7 +23,6 @@ export default function HalamanLogin({ onLogin }) {
   const [password, setPassword] = useState('');
   const [galat, setGalat] = useState('');
   const [memuat, setMemuat] = useState(false);
-  const akunDemo = daftarAkunDemo();
 
   async function kirim(e) {
     e.preventDefault();
@@ -39,12 +37,6 @@ export default function HalamanLogin({ onLogin }) {
     } finally {
       setMemuat(false);
     }
-  }
-
-  function isiCepat(u, p) {
-    setUsername(u);
-    setPassword(p);
-    setGalat('');
   }
 
   return (
@@ -139,32 +131,6 @@ export default function HalamanLogin({ onLogin }) {
               {memuat ? 'Memeriksa…' : 'Masuk'}
             </button>
           </form>
-
-          {/* Akun demo hanya muncul saat mode mock tanpa Firebase */}
-          {akunDemo.length > 0 && (
-            <div className="mt-4 rounded-lg border border-sogan-300 bg-krem-100/80 p-2.5">
-              <p className="mb-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-netral-500">
-                Akun demo
-              </p>
-              <div className="grid grid-cols-3 gap-1.5">
-                {akunDemo.map((a) => (
-                  <button
-                    key={a.username}
-                    type="button"
-                    onClick={() => isiCepat(a.username, a.password)}
-                    className="rounded border border-sogan-300 bg-netral-0 px-1.5 py-1.5 text-left text-[0.66rem] shadow-sm transition hover:border-emas-500 hover:bg-emas-50"
-                  >
-                    <span className="block font-semibold leading-tight text-sogan-700">
-                      {a.username}
-                    </span>
-                    <span className="block truncate leading-tight text-netral-500">
-                      ×{DECISION_MAKERS.find((d) => d.key === a.peran)?.bobotSuara}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* ---------- Catatan metode di bawah kartu ---------- */}
