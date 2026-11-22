@@ -49,8 +49,16 @@ Aplikasi memilih adapter **otomatis**:
 | `VITE_FIREBASE_*` kosong | `mockAdapter` + `mockAuth` | `localStorage` browser |
 | `VITE_FIREBASE_*` terisi | `firebaseAdapter` + `firebaseAuth` | Firestore |
 
-Untuk mode demo, cukup `npm run dev` lalu login dengan akun contoh yang
-tertulis di halaman login. Untuk mode Firebase, salin `.env.example` menjadi
+Untuk mode demo, cukup `npm run dev` lalu login dengan akun contoh:
+
+| Username | Password | Peran |
+|---|---|---|
+| `sesepuh` | `sesepuh123` | Sesepuh (bobot suara 3) |
+| `orangtua` | `orangtua123` | Orang Tua / Penyelenggara (2) |
+| `wo` | `wo123` | Wedding Organizer (1) |
+
+Kartu akun demo sengaja **tidak** ditampilkan lagi di halaman login agar tidak
+terbawa ke produksi. Untuk mode Firebase, salin `.env.example` menjadi
 `.env.local` dan isi nilainya.
 
 ### Backend (opsional, untuk mode Firebase)
@@ -200,6 +208,11 @@ Kalau ada yang merusak rumus, test langsung merah.
 | Halaman wajib (7) | ✅ Selesai |
 | Halaman Kelola Data (input sendiri) | ✅ Selesai |
 | Panel Bukti Akurasi (48 pemeriksaan) | ✅ Selesai |
+| Plus S8 — grafik perbandingan ranking | ✅ Selesai |
+| Plus S9 — kalender visual dengan weton | ✅ Selesai |
+| Plus S10 — ekspor PDF (`window.print`) | ✅ Selesai |
+| Plus S11 — riwayat keputusan (`/riwayat`) | ✅ Selesai |
+| Plus S12 — komentar DM + hitung mundur hari-H | ✅ Selesai |
 
 ---
 
