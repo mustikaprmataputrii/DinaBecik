@@ -22,7 +22,7 @@ hajatan dari beberapa tanggal kandidat, dengan menggabungkan penilaian individua
 | Anggota | GitHub | Branch |
 |---|---|---|
 | Agni | `@agnigaluhev-svg` | `feat/metode-agni` |
-| Alia | `@al-11111` | `feat/backend-alia` |
+| Alia | `@aliajuly` | `feat/backend-alia` |
 | Sri | `@mustikaprmataputrii` | `feat/frontend-sri` |
 | Nadya | `@nadyaclarisa` | `feat/data-nadya` |
 

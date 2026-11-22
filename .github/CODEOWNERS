@@ -6,7 +6,7 @@
 #
 #  Username sudah terisi (diverifikasi 11 Nov 2026):
 #    Agni  Galuh Essa Vandriya          -> @agnigaluhev-svg
-#    Alia  Julyanti                     -> @al-11111
+#    Alia  Julyanti                     -> @aliajuly
 #    Sri   Mustika Indah Permata Putri  -> @mustikaprmataputrii
 #    Nadya Clarisa Az-zahra             -> @nadyaclarisa
 # ============================================================================
@@ -20,9 +20,9 @@
 /docs/EXCEL-ACUAN.md            @agnigaluhev-svg
 
 # --- Backend & database: ALIA ---
-/src/data/                      @al-11111 @mustikaprmataputrii
-/src/auth/                      @al-11111 @mustikaprmataputrii
-/docs/FIRESTORE-RULES.md        @al-11111
+/src/data/                      @aliajuly @mustikaprmataputrii
+/src/auth/                      @aliajuly @mustikaprmataputrii
+/docs/FIRESTORE-RULES.md        @aliajuly
 
 # --- Frontend & desain: SRI ---
 /src/pages/                     @mustikaprmataputrii
