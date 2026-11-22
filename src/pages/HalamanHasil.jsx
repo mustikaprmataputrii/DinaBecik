@@ -208,6 +208,14 @@ export default function HalamanHasil({ sesi }) {
             <span className="chip-emas">
               Total <span className="angka font-semibold">{pemenang?.totalPoin ?? 0}</span> poin
             </span>
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="tanpa-cetak rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
+              title="Cetak atau simpan halaman ini sebagai PDF"
+            >
+              <span aria-hidden="true">⤓</span> Ekspor PDF
+            </button>
           </div>
         </div>
 
