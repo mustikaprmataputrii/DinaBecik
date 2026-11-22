@@ -553,28 +553,87 @@
 }
 
 /* ---------------------------------------------------------------------------
- * CETAK
+ * CETAK / EKSPOR PDF
+ * ---------------------------------------------------------------------------
+ *  Dipakai tombol "Ekspor PDF" di halaman Hasil (uji T10: isi PDF = isi layar).
+ *  Prinsipnya: hanya kerangka aplikasi dan hiasan yang dibuang; seluruh isi
+ *  (pemenang, tabel WP, tabel Borda) tetap tercetak lengkap.
  * ------------------------------------------------------------------------- */
 @media print {
-  .tanpa-cetak {
-    display: none !important;
+  @page {
+    size: A4 portrait;
+    margin: 14mm 12mm;
   }
 
-  .latar-wayang {
-    display: none !important;
-  }
-
+  html,
   body {
-    background: white !important;
+    background: #fff !important;
   }
 
+  /* Kerangka aplikasi + hiasan: tidak ikut tercetak. */
+  .tanpa-cetak,
+  .latar-wayang,
+  .asap,
+  .pita-emas,
+  .petunjuk-geser,
+  .bingkai-jawa::before,
+  .bingkai-jawa::after {
+    display: none !important;
+  }
+
+  /* Isi memakai lebar penuh kertas, bukan max-w-5xl layar. */
+  main > div {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Kartu disederhanakan: latar putih, garis tipis, sudut lurus. */
   .kartu,
   .kartu-tebal,
   .kartu-emas {
-    box-shadow: none;
-    border: 1px solid #ccc;
-    background-image: none;
-    background-color: #fff;
-    color: #000;
+    background: #fff !important;
+    background-image: none !important;
+    border: 1px solid #b9b2a8 !important;
+    border-radius: 0 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* WAJIB: kartu emas memakai teks terang. Di atas kertas putih teks itu
+     tidak terbaca, jadi seluruh isinya dipaksa gelap. */
+  .kartu-emas,
+  .kartu-emas * {
+    color: #1a1815 !important;
+  }
+
+  /* Tabel harus utuh, tidak terpotong oleh overflow-x layar. */
+  .overflow-x-auto {
+    overflow: visible !important;
+  }
+
+  table {
+    width: 100% !important;
+    font-size: 9.5pt;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  td,
+  th {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a {
+    color: #1a1815 !important;
+    text-decoration: none !important;
   }
 }
