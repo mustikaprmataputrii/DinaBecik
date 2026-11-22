@@ -19,7 +19,8 @@ import { Link } from 'react-router-dom';
 import Kartu, { JudulKartu, BlokTeks } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
-import { getAcara, getKandidat } from '../data/index.js';
+import KalenderWeton from '../components/KalenderWeton.jsx';
+import { getAcara, getKandidat, getHasilVoting } from '../data/index.js';
 import { hitungSkorWeton } from '../shared/weton.js';
 import { KRITERIA, ATURAN_WETON, TOTAL_BOBOT_WAJIB } from '../shared/constants.js';
 
@@ -34,14 +35,16 @@ export default function HalamanKandidat({ sesi }) {
   const [kandidat, setKandidat] = useState([]);
   const [memuat, setMemuat] = useState(true);
   const [kodeTerpilih, setKodeTerpilih] = useState(null);
+  const [kodePemenang, setKodePemenang] = useState(null);
 
   useEffect(() => {
     let batal = false;
     (async () => {
-      const [a, k] = await Promise.all([getAcara(), getKandidat()]);
+      const [a, k, h] = await Promise.all([getAcara(), getKandidat(), getHasilVoting()]);
       if (batal) return;
       setAcara(a);
       setKandidat(k);
+      setKodePemenang(h?.rincian?.find((r) => r.rankingFinal === 1)?.kode ?? null);
       setMemuat(false);
     })();
     return () => {
@@ -268,6 +271,25 @@ export default function HalamanKandidat({ sesi }) {
             C4 = cuaca · C5 = tamu. Klik baris untuk melihat perhitungannya.
           </p>
         </div>
+      </Kartu>
+
+      {/* ================= KALENDER WETON ================= */}
+      <Kartu varian="tebal" bingkai>
+        <JudulKartu
+          keterangan="Tanggal kandidat dilihat dalam kalender, lengkap dengan hari, pasaran, dan skor C1"
+          aksi={
+            kodePemenang ? (
+              <span className="rounded-full bg-emas-100 px-2.5 py-0.5 text-xs font-semibold text-emas-800 ring-1 ring-emas-300">
+                ★ terpilih: {kodePemenang}
+              </span>
+            ) : (
+              <span className="chip-krem">belum ada pemenang</span>
+            )
+          }
+        >
+          Kalender Kandidat
+        </JudulKartu>
+        <KalenderWeton kandidat={kandidat} kodeTerpilih={kodePemenang} />
       </Kartu>
 
       {/* ================= DETAIL PERHITUNGAN WETON ================= */}
