@@ -21,6 +21,7 @@ const MENU = [
   { ke: '/bobot', label: 'Atur Bobot' },
   { ke: '/penilaian', label: 'Penilaian Saya' },
   { ke: '/hasil', label: 'Konsensus' },
+  { ke: '/riwayat', label: 'Riwayat' },
 ];
 
 export default function Layout({ sesi, onLogout, children }) {
