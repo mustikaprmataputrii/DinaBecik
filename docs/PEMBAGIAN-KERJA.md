@@ -245,12 +245,17 @@ Setiap anggota harus bisa menjawab:
 Dan kelompok harus lulus:
 
 - [ ] T1 Login 3 akun + akun salah ditolak
-- [ ] T2 WP = Tabel 7.2 sampai 4 desimal
-- [ ] T3 Bobot bukan 100% ditolak
-- [ ] T4 Voting terkunci saat baru 2 DM kirim
-- [ ] T5 Pemenang E, 35 poin
-- [ ] T6 Seri dimenangkan ranking Sesepuh
+- [x] T2 WP = Tabel 7.2 sampai 4 desimal — `src/tests/acuan.test.js` (18/18 nilai S & ranking)
+- [x] T3 Bobot bukan 100% ditolak — `src/tests/acuan.test.js` (90% dan 110% ditolak)
+- [x] T4 Voting terkunci saat baru 2 DM kirim — `src/tests/acuan.test.js` (`cekGerbangVoting`)
+- [x] T5 Pemenang E, 35 poin — `src/tests/acuan.test.js` (Tabel 7.3)
+- [x] T6 Seri dimenangkan ranking Sesepuh — `src/tests/acuan.test.js` + `src/tests/seri.test.js`
 - [ ] T7 Hasil identik di 3 browser
-- [ ] T8 Penilaian terkirim tidak bisa diubah
-- [ ] T9 Ganti bobot 1 DM tidak mempengaruhi DM lain
+- [x] T8 Penilaian terkirim tidak bisa diubah — `worker/test/worker.test.js` (kiriman ulang ditolak `409`)
+- [x] T9 Ganti bobot 1 DM tidak mempengaruhi DM lain — `src/tests/acuan.test.js`
 - [ ] T10 Ekspor PDF = isi layar
+
+Catatan: T2–T6, T8, T9 dicentang karena ada test otomatis yang menguncinya di `main`
+(67 test root + 5 test Worker). T1, T7, dan T10 belum dicentang karena butuh uji
+langsung: tiga akun Firebase asli di browser (kartu akun demo sudah dihapus di PR #26),
+tiga browser berbeda, dan ekspor PDF (S10) yang belum dibuat.
