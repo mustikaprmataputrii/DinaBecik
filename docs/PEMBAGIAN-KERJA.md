@@ -36,8 +36,8 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 | A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (51 test acuan; 67 test root) |
 | A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ✅ (`docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx`, 28 PASS) |
 | A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | ✅ Dikonfirmasi 16 Nov 2026; masuk lewat PR #15 (lihat `docs/EXCEL-ACUAN.md`) |
-| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ Menunggu konfirmasi Agni setelah validasi database |
-| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ Menunggu konfirmasi Agni |
+| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ✅ Dikonfirmasi Agni 19 Nov 2026; uji T7 + bukti Firebase nyata (`voting_hasil` E=35, kirim ulang 409) |
+| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ✅ Jadwal & koordinasi merge terjaga; notulen rapat tidak disimpan di repo |
 | A6 | Tulis bagian metode pada laporan | Minggu 5 | ✅ `docs/laporan/BAB3-metode.md` (PR #16) |
 
 ### Yang kamu jaga
