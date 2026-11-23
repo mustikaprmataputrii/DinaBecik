@@ -126,11 +126,11 @@ public/             ← aset gambar, motif batik
 | S5 | Halaman Atur Bobot (5 slider + validasi 100%) | Wajib | Minggu 3 | ✅ |
 | S6 | Halaman Hasil Penilaian Saya (tabel S, V, ranking + Kirim) | Wajib | Minggu 3 | ✅ |
 | S7 | Halaman Konsensus & Hasil (kartu pemenang + tabel Borda) | Wajib | Minggu 4 | ✅ |
-| S8 | Grafik perbandingan ranking | Plus | Minggu 5 | ⬜ |
-| S9 | Kalender visual dengan weton | Plus | Minggu 5 | ⬜ |
-| S10 | Ekspor PDF | Plus | Minggu 5 | ⬜ |
-| S11 | Riwayat keputusan | Plus | Minggu 5 | ⬜ |
-| S12 | Komentar DM + countdown hari-H | Plus | Minggu 5 | ⬜ |
+| S8 | Grafik perbandingan ranking | Plus | Minggu 5 | ✅ (`src/components/GrafikBorda.jsx`, PR #33) |
+| S9 | Kalender visual dengan weton | Plus | Minggu 5 | ✅ (`src/components/KalenderWeton.jsx`, PR #33) |
+| S10 | Ekspor PDF | Plus | Minggu 5 | ✅ (`HalamanHasil.jsx`, PR #32) |
+| S11 | Riwayat keputusan | Plus | Minggu 5 | ✅ (`src/pages/HalamanRiwayat.jsx`, PR #33) |
+| S12 | Komentar DM + countdown hari-H | Plus | Minggu 5 | ✅ (`src/components/PanelKomentar.jsx`, PR #33) |
 
 ### Kamu bisa mulai SEKARANG tanpa menunggu siapa pun
 
