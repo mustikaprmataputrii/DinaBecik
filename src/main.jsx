@@ -17,6 +17,7 @@ import HalamanPenilaian from './pages/HalamanPenilaian.jsx';
 import HalamanKandidat from './pages/HalamanKandidat.jsx';
 import HalamanKelola from './pages/HalamanKelola.jsx';
 import HalamanHasil from './pages/HalamanHasil.jsx';
+import HalamanRiwayat from './pages/HalamanRiwayat.jsx';
 import { sesiAktif } from './auth/index.js';
 
 function Aplikasi() {
@@ -44,6 +45,7 @@ function Aplikasi() {
                   element={sesi.peran === 'sesepuh' ? <HalamanKelola sesi={sesi} /> : <Navigate to="/dashboard" replace />}
                 />
                 <Route path="/hasil" element={<HalamanHasil sesi={sesi} />} />
+                <Route path="/riwayat" element={<HalamanRiwayat sesi={sesi} />} />
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
             </Layout>

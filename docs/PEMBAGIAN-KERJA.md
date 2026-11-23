@@ -36,8 +36,8 @@ docs/EXCEL-ACUAN.md          ← dokumentasi hitungan Excel
 | A1 | Verifikasi fungsi WP/Borda terhadap Tabel 7.2 & 7.3 | Minggu 1 | ✅ Selesai (51 test acuan; 67 test root) |
 | A2 | Buat Excel acuan terpisah (bukti hitung manual) | Minggu 1 | ✅ (`docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx`, 28 PASS) |
 | A3 | Kunci kriteria & bobot final setelah konfirmasi dosen | Minggu 1 | ✅ Dikonfirmasi 16 Nov 2026; masuk lewat PR #15 (lihat `docs/EXCEL-ACUAN.md`) |
-| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ⬜ Menunggu konfirmasi Agni setelah validasi database |
-| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ⬜ Menunggu konfirmasi Agni |
+| A4 | Tinjau hasil hitung di database (peninjau silang untuk Alia) | Minggu 2–4 | ✅ Dikonfirmasi Agni 19 Nov 2026; uji T7 + bukti Firebase nyata (`voting_hasil` E=35, kirim ulang 409) |
+| A5 | Jaga jadwal & pimpin rapat 2×/minggu | Minggu 1–5 | ✅ Jadwal & koordinasi merge terjaga; notulen rapat tidak disimpan di repo |
 | A6 | Tulis bagian metode pada laporan | Minggu 5 | ✅ `docs/laporan/BAB3-metode.md` (PR #16) |
 
 ### Yang kamu jaga
@@ -245,12 +245,17 @@ Setiap anggota harus bisa menjawab:
 Dan kelompok harus lulus:
 
 - [ ] T1 Login 3 akun + akun salah ditolak
-- [ ] T2 WP = Tabel 7.2 sampai 4 desimal
-- [ ] T3 Bobot bukan 100% ditolak
-- [ ] T4 Voting terkunci saat baru 2 DM kirim
-- [ ] T5 Pemenang E, 35 poin
-- [ ] T6 Seri dimenangkan ranking Sesepuh
+- [x] T2 WP = Tabel 7.2 sampai 4 desimal — `src/tests/acuan.test.js` (18/18 nilai S & ranking)
+- [x] T3 Bobot bukan 100% ditolak — `src/tests/acuan.test.js` (90% dan 110% ditolak)
+- [x] T4 Voting terkunci saat baru 2 DM kirim — `src/tests/acuan.test.js` (`cekGerbangVoting`)
+- [x] T5 Pemenang E, 35 poin — `src/tests/acuan.test.js` (Tabel 7.3)
+- [x] T6 Seri dimenangkan ranking Sesepuh — `src/tests/acuan.test.js` + `src/tests/seri.test.js`
 - [ ] T7 Hasil identik di 3 browser
-- [ ] T8 Penilaian terkirim tidak bisa diubah
-- [ ] T9 Ganti bobot 1 DM tidak mempengaruhi DM lain
+- [x] T8 Penilaian terkirim tidak bisa diubah — `worker/test/worker.test.js` (kiriman ulang ditolak `409`)
+- [x] T9 Ganti bobot 1 DM tidak mempengaruhi DM lain — `src/tests/acuan.test.js`
 - [ ] T10 Ekspor PDF = isi layar
+
+Catatan: T2–T6, T8, T9 dicentang karena ada test otomatis yang menguncinya di `main`
+(67 test root + 5 test Worker). T1, T7, dan T10 belum dicentang karena butuh uji
+langsung: tiga akun Firebase asli di browser (kartu akun demo sudah dihapus di PR #26),
+tiga browser berbeda, dan ekspor PDF (S10) yang belum dibuat.

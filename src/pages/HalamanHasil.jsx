@@ -17,6 +17,8 @@ import { useEffect, useMemo, useState } from 'react';
 import Kartu, { JudulKartu, BlokTeks } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
+import GrafikBorda from '../components/GrafikBorda.jsx';
+import PanelKomentar from '../components/PanelKomentar.jsx';
 import {
   getAcara,
   getKandidat,
@@ -38,6 +40,8 @@ function tanggalPanjang(iso) {
   const d = new Date(`${iso}T00:00:00`);
   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+const ACARA_ID = 'acara-demo-2027';
 
 export default function HalamanHasil({ sesi }) {
   const [acara, setAcara] = useState(null);
@@ -176,6 +180,15 @@ export default function HalamanHasil({ sesi }) {
   const kandidatPemenang = pemenang ? petaKandidat[pemenang.kode] : null;
   const maksPoin = Math.max(...hasil.rincian.map((r) => r.totalPoin));
 
+  // Hitung mundur ke tanggal terpilih (S12).
+  const sisaHari = (() => {
+    if (!kandidatPemenang?.tanggal) return null;
+    const target = new Date(`${kandidatPemenang.tanggal}T00:00:00`);
+    const hariIni = new Date();
+    hariIni.setHours(0, 0, 0, 0);
+    return Math.round((target.getTime() - hariIni.getTime()) / 86400000);
+  })();
+
   return (
     <div className="space-y-6">
       {/* ================= HERO PEMENANG ================= */}
@@ -208,6 +221,24 @@ export default function HalamanHasil({ sesi }) {
             <span className="chip-emas">
               Total <span className="angka font-semibold">{pemenang?.totalPoin ?? 0}</span> poin
             </span>
+            {sisaHari !== null && (
+              <span className="chip-emas" title={`Menuju ${tanggalPanjang(kandidatPemenang?.tanggal)}`}>
+                <span aria-hidden="true">⏳</span>
+                {sisaHari > 0
+                  ? `${sisaHari} hari lagi`
+                  : sisaHari === 0
+                    ? 'hari ini'
+                    : `${Math.abs(sisaHari)} hari lalu`}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="tanpa-cetak rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
+              title="Cetak atau simpan halaman ini sebagai PDF"
+            >
+              <span aria-hidden="true">⤓</span> Ekspor PDF
+            </button>
           </div>
         </div>
 
@@ -440,6 +471,20 @@ export default function HalamanHasil({ sesi }) {
           </table>
         </div>
       </Kartu>
+
+      {/* ================= GRAFIK PERBANDINGAN (S8) ================= */}
+      <Kartu varian="tebal" bingkai>
+        <JudulKartu
+          keterangan="Total poin Borda tiap kandidat, dipecah menurut asal poin dari masing-masing decision maker"
+          aksi={<span className="chip-krem">n = {jumlahKandidat}</span>}
+        >
+          Grafik Perbandingan Ranking
+        </JudulKartu>
+        <GrafikBorda rincian={hasil.rincian} maksPoin={maksPoin} />
+      </Kartu>
+
+      {/* ================= KOMENTAR DM (S12) ================= */}
+      <PanelKomentar acaraId={ACARA_ID} sesi={sesi} />
 
       {/* ================= JEJAK PERHITUNGAN ================= */}
       <BlokTeks judul="Cara membaca hasil" ikon="◈">
