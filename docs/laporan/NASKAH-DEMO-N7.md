@@ -38,6 +38,18 @@
 | 6:10–6:40 | Beralih ke tiga profil; jelaskan T6 | “Ketiga akun membaca hasil final yang sama. Jika total Borda seri, kandidat dengan ranking Sesepuh lebih tinggi menang. T6 diuji terpisah dengan fixture dan test otomatis; saya tidak mengubah data acara live untuk memperagakannya.” |
 | 6:40–7:00 | Kembali ke slide penutup | “Kesimpulannya, Dina Becik menggabungkan weton dan pertimbangan praktis melalui WP, kemudian menyatukan tiga peringkat dengan Weighted Borda. Terima kasih.” |
 
+## Jawaban 5 pertanyaan penguji
+
+Jika ditanya saat penguji, jawaban bisa langsung digelar sebagai deskripsi kelompok:
+
+1. **WP bukan SAW?** WP memakai pangkat positif untuk kriteria benefit dan pangkat negatif untuk kriteria cost. SAW adalah penjumlahan linear yang sensitif terhadap skala nilai; WP memprioritaskan struktur bentuk sehingga kecil pada satu kriteria tidak terlalu mengurangi nilai besar yang lain.
+2. **Borda berbobot jabatan 3 : 2 : 1?** Bobot suara jabatan: Sesepuh = 3, Orang Tua = 2, WO = 1 — disetujui di BAB3 3.3/3.5 dan `BOBOT_JABATAN` di `src/shared/constants.js`.
+3. **Bagaimana seri ditentukan?** Aturan seri di BAB3 3.7 dan uji T6 (A dan B seimbang; A menang karena ranking Sesepuh lebih tinggi).
+4. **Dari mana data dummy berasal?** `src/fixtures/dataUjiSeri.js` (N4), serta fixture lain di `src/fixtures/`.
+5. **Mengapa hasil dihitung di server?** Supaya tiga akun membaca hasil yang sama (Worker → Firestore `voting_hasil`, T7).
+
+(Sumber daya: langsung ke `docs/laporan/BAB3-metode.md` & `docs/EXCEL-ACUAN.md`; gunakan jawaban di BAB5 untuk BAB4.)
+
 ## Jika demo terlambat atau ada kendala
 
 - Prioritaskan: login → data/weton → kirim tiga penilaian → hasil konsensus.
