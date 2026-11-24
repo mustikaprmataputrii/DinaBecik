@@ -13,7 +13,7 @@ Hasil eksperimen digunakan untuk perbandingan dan sebagai basis bahasan Bab 4.
 | 4.1.1 | Uji integrasi Worker (T7) | Lulus | 3 penilaian terkirim, gerbang tiga DM, hasil sekali |
 | 4.1.2 | Test Worker | 5/5 lulus | Di `worker/test/worker.test.js` |
 | 4.1.3 | Test aplikasi | 67/67 lulus | Di root `src/tests` |
-| 4.1.4 | Hasil statik Dashboard | 0 error konsol | Di `HalamanHasil.jsx` |
+| 4.1.4 | Hasil statik Dashboard | Tidak ada error konsol yang terbaca | Di `HalamanHasil.jsx` |
 
 Hasil integrasi Worker (produktif):
 
