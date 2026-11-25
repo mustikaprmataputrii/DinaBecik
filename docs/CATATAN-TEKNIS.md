@@ -85,16 +85,20 @@ Jika satuan berubah dari juta ke rupiah penuh, hasil S berubah drastis dan
 **Aturan:** komponen React tidak boleh mengakses Firestore langsung.
 
 ```
-Komponen  →  src/data/index.js  →  mockAdapter.js   (sekarang)
-                                →  firebaseAdapter.js (nanti)
+Komponen  →  src/data/index.js  →  mockAdapter.js      (tanpa konfigurasi Firebase)
+                                →  firebaseAdapter.js  (bila VITE_FIREBASE_* tersedia)
 ```
 
 Semua fungsi adapter **async**, meskipun mock-nya instan. Ini supaya signature
 tidak berubah saat backend siap.
 
-Ganti adapter cukup di **satu baris** di `src/data/index.js`.
+Pemilihan adapter otomatis di `src/data/index.js` berdasarkan
+`VITE_FIREBASE_API_KEY` dan `VITE_FIREBASE_PROJECT_ID`. Komponen tidak perlu
+diubah saat berpindah backend; tanpa konfigurasi, `mockAdapter` dipakai untuk
+pengembangan UI dan demo lokal.
 
-**Kontrak lengkap:** `src/data/kontrak.js` (13 fungsi).
+**Kontrak lengkap:** `src/data/kontrak.js` (19 fungsi), dikunci
+`src/tests/kontrak.test.js`.
 
 ---
 
