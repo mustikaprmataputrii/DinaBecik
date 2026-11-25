@@ -14,6 +14,7 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Kartu, { JudulKartu, BlokTeks } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
@@ -41,9 +42,14 @@ function tanggalPanjang(iso) {
   return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-const ACARA_ID = 'acara-demo-2027';
+const ACARA_DEFAULT = 'acara-demo-2027';
 
 export default function HalamanHasil({ sesi }) {
+  // /hasil menampilkan acara contoh; /hasil/:acaraId dipakai dari Riwayat
+  // supaya tombol "Lihat hasil" membuka acara yang benar, bukan selalu acara contoh.
+  const { acaraId } = useParams();
+  const acaraIdAktif = acaraId || ACARA_DEFAULT;
+
   const [acara, setAcara] = useState(null);
   const [kandidat, setKandidat] = useState([]);
   const [statusDm, setStatusDm] = useState(null);
@@ -54,10 +60,10 @@ export default function HalamanHasil({ sesi }) {
     let batal = false;
     (async () => {
       const [a, k, s, h] = await Promise.all([
-        getAcara(),
-        getKandidat(),
-        getStatusSemuaDm(),
-        getHasilVoting(),
+        getAcara(acaraIdAktif),
+        getKandidat(acaraIdAktif),
+        getStatusSemuaDm(acaraIdAktif),
+        getHasilVoting(acaraIdAktif),
       ]);
       if (batal) return;
       setAcara(a);
@@ -69,7 +75,7 @@ export default function HalamanHasil({ sesi }) {
     return () => {
       batal = true;
     };
-  }, []);
+  }, [acaraIdAktif]);
 
   const gerbang = useMemo(() => cekGerbangVoting(statusDm ?? {}), [statusDm]);
   const petaKandidat = useMemo(
@@ -484,7 +490,7 @@ export default function HalamanHasil({ sesi }) {
       </Kartu>
 
       {/* ================= KOMENTAR DM (S12) ================= */}
-      <PanelKomentar acaraId={ACARA_ID} sesi={sesi} />
+      <PanelKomentar acaraId={acaraIdAktif} sesi={sesi} />
 
       {/* ================= JEJAK PERHITUNGAN ================= */}
       <BlokTeks judul="Cara membaca hasil" ikon="◈">

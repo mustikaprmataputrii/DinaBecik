@@ -45,6 +45,7 @@ function Aplikasi() {
                   element={sesi.peran === 'sesepuh' ? <HalamanKelola sesi={sesi} /> : <Navigate to="/dashboard" replace />}
                 />
                 <Route path="/hasil" element={<HalamanHasil sesi={sesi} />} />
+                <Route path="/hasil/:acaraId" element={<HalamanHasil sesi={sesi} />} />
                 <Route path="/riwayat" element={<HalamanRiwayat sesi={sesi} />} />
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>

@@ -120,7 +120,7 @@ export default function HalamanRiwayat() {
                   </div>
                 </div>
                 <Link
-                  to="/hasil"
+                  to={`/hasil/${encodeURIComponent(a.id)}`}
                   className="shrink-0 rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-xs font-medium text-sogan-700 transition hover:border-emas-500 hover:bg-emas-50"
                 >
                   Lihat hasil →

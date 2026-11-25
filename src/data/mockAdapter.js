@@ -18,7 +18,7 @@
  * ============================================================================
  */
 
-import { KRITERIA, BOBOT_AWAL, STATUS_ACARA } from '../shared/constants.js';
+import { KRITERIA, BOBOT_AWAL, STATUS_ACARA, DECISION_MAKERS } from '../shared/constants.js';
 import { hitungWP } from '../shared/wp.js';
 import { hitungBorda } from '../shared/borda.js';
 import { lengkapiKandidatWeton } from '../shared/weton.js';
@@ -381,10 +381,17 @@ export async function getKomentar() {
 
 export async function simpanKomentar(_acaraId, userId, isi) {
   await jeda();
+  const teks = String(isi ?? '').trim();
+  if (!teks) throw new Error('Komentar tidak boleh kosong.');
+  const dm = DECISION_MAKERS.find((d) => `u-${d.username}` === userId);
   state.komentar.push({
     id: `k${state.komentar.length + 1}`,
     user_id: userId,
-    isi,
+    // Nama disimpan bersama komentar agar penulis tetap terbaca di mode Firebase,
+    // tempat uid DM lain tidak bisa dibaca dari koleksi users.
+    nama: dm?.nama ?? 'Decision Maker',
+    peran: dm?.key ?? null,
+    isi: teks,
     waktu: new Date().toISOString(),
   });
   simpanState();
