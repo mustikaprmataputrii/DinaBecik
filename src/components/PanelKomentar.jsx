@@ -36,10 +36,18 @@ function formatWaktu(nilai) {
   });
 }
 
-/** Nama penulis dari user_id. Di mode mock user_id berbentuk "u-<username>". */
-function namaPenulis(userId, sesi) {
-  if (sesi?.userId && userId === sesi.userId) return `${sesi.nama} (Anda)`;
-  const cocok = DECISION_MAKERS.find((d) => `u-${d.username}` === userId);
+/**
+ * Nama penulis komentar.
+ * `nama` disimpan bersama komentar saat dibuat, karena aturan Firestore hanya
+ * mengizinkan pengguna membaca profilnya sendiri — uid DM lain tidak bisa
+ * diterjemahkan menjadi nama lewat koleksi `users`. Untuk komentar lama yang
+ * belum punya `nama`, dipakai pemetaan user_id mode mock ("u-<username>").
+ */
+function namaPenulis(k, sesi) {
+  const nama = k?.nama ?? null;
+  if (sesi?.userId && k?.user_id === sesi.userId) return `${nama || sesi.nama} (Anda)`;
+  if (nama) return nama;
+  const cocok = DECISION_MAKERS.find((d) => `u-${d.username}` === k?.user_id);
   return cocok?.nama ?? 'Decision Maker';
 }
 
@@ -130,7 +138,7 @@ export default function PanelKomentar({ acaraId, sesi }) {
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <span className="text-xs font-semibold text-sogan-800">
-                    {namaPenulis(k.user_id, sesi)}
+                    {namaPenulis(k, sesi)}
                   </span>
                   <span className="angka text-[0.62rem] text-netral-400">
                     {formatWaktu(k.waktu)}

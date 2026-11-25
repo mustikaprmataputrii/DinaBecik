@@ -294,7 +294,17 @@ export async function simpanKomentar(acaraId = ACARA_DEMO_ID, userId, isi) {
   const user = await usuarioActual(userId);
   const teks = String(isi ?? '').trim();
   if (!teks) throw new Error('Komentar tidak boleh kosong.');
-  await addDoc(collection(evento(acaraId), 'komentar'), { user_id: user.uid, isi: teks, waktu: serverTimestamp() });
+  // Simpan nama & peran bersama komentar: aturan Firestore hanya mengizinkan
+  // pembacaan profil sendiri, jadi uid DM lain tidak bisa diubah menjadi nama
+  // saat komentar ditampilkan.
+  const profilDm = await profil(user);
+  await addDoc(collection(evento(acaraId), 'komentar'), {
+    user_id: user.uid,
+    nama: profilDm.nama ?? null,
+    peran: profilDm.peran ?? null,
+    isi: teks,
+    waktu: serverTimestamp(),
+  });
 }
 export async function getRiwayatAcara() {
   const user = await usuarioActual();
