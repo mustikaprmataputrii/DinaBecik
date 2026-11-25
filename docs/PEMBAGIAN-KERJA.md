@@ -185,7 +185,7 @@ docs/panduan-proyek.pdf      ← acuan
 | N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ✅ (`src/fixtures/dataUjiSeri.js`) |
 | N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | 🟡 Draf (`docs/laporan/BAB1-2-...md`) |
 | N6 | Susun slide presentasi | Minggu 4–5 | 🟡 Draf (`docs/laporan/SLIDE-PRESENTASI-N6.md`) |
-| N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
+| N7 | Tulis naskah demo 7 menit | Minggu 5 | 🟡 Draf (`docs/laporan/NASKAH-DEMO-N7.md`) |
 | N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
 
 ### Catatan penting untuk kamu
