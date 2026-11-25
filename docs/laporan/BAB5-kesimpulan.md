@@ -10,9 +10,12 @@ menjadi pemenang dengan 35 poin.
 ## 5.2 Kesimpulan pengujian
 
 - 67/67 test aplikasi lulus (`src/tests`).
-- 5/5 test Worker lulus (`worker/test/worker.test.js`).
-- Integrasi Worker menunjukkan `voting_hasil` tersimpan sekali dan identik untuk
-  tiga peran.
+- 5/5 test Worker lulus (`worker/test/worker.test.js`) dengan Firestore tiruan
+  (mock fetch), bukan koneksi Firestore nyata.
+- Uji logika Worker menunjukkan `voting_hasil` ditulis sekali setelah gerbang
+  3 DM terpenuhi.
+- T7 (hasil identik di tiga browser) **belum diuji** karena menunggu
+  `.env.local` + Worker aktif.
 - Hasil Borda sesuai acuan: E 35, F 29, A 26, B 17, C 13, D 6.
 
 ## 5.3 Rekomendasi presentasi

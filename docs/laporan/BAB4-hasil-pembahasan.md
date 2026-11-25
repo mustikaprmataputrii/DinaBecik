@@ -1,19 +1,18 @@
 ﻿# BAB 4 HASIL & PEMBAHASAN
 
 > Status: draf (N9, Minggu 4). Angka di bab ini diambil dari hasil uji di
-> `main` (`f0cf0db`): 67 test aplikasi, 5 test Worker, dan integrasi Worker
-> pada alur penilaian-voting.
+> `main` (`f0cf0db`): 67 test aplikasi, 5 test Worker, dan uji logika Worker dengan Firestore tiruan pada alur penilaian-voting.
 
 ## 4.1 Hasil eksperimen
 
 | No | Pengujian | Hasil | Sumber/Catatan |
 |---|---|---|---|
-| 4.1.1 | Uji integrasi Worker (alur T7) | Lulus | 3 penilaian terkirim, gerbang 3 DM terbuka, `voting_hasil` tersimpan sekali |
-| 4.1.2 | Test Worker | 5/5 lulus | `worker/test/worker.test.js` |
+| 4.1.1 | Uji logika Worker dengan Firestore tiruan (mock fetch) | Lulus | 3 penilaian, gerbang 3 DM, `voting_hasil` ditulis sekali; bukan uji Firestore nyata |
+| 4.1.2 | Test Worker | 5/5 lulus | `worker/test/worker.test.js` (mock fetch, bukan koneksi Firestore nyata) |
 | 4.1.3 | Test aplikasi | 67/67 lulus | `src/tests/` |
 | 4.1.4 | Uji tampilan hasil statik | Lulus | `HalamanHasil.jsx` menampilkan pemenang dan tabel Borda tanpa error konsol |
 
-Hasil integrasi Worker (acuan):
+Hasil uji Worker dengan Firestore tiruan (acuan):
 
 ```text
 penilaian    : sesepuh, orangtua, wo -> statusKirim true
@@ -56,3 +55,4 @@ Nilai S (Weighted Product) diambil dari data acuan Tabel 7.2 / `src/fixtures/dat
 - Kandidat E unggul karena konsisten tinggi di Sesepuh dan Orang Tua; meski WO menempatkan F di ranking 1, bobot jabatan 3:2:1 membuat total E tetap tertinggi.
 - Hasil Borda sesuai dengan data acuan proyek (E=35, F=29, A=26, B=17, C=13, D=6) dan terkunci oleh test otomatis.
 - Bukti perhitungan manual tersedia di `docs/excel-acuan/Dina_Becik_Excel_Acuan.xlsx` (28 PASS); implementasi aplikasi harus tetap selaras dengan acuan tersebut.
+- T7 (hasil identik di tiga browser) **belum diuji** karena menunggu `.env.local` + Worker aktif.

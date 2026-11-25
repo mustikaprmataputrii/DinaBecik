@@ -188,7 +188,7 @@ docs/panduan-proyek.pdf      ← acuan
 | N7 | Tulis naskah demo 7 menit | Minggu 5 | ⬜ |
 | N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
 | N9 | Draf BAB 4 (hasil & pembahasan) — E = 35, poin Borda | Minggu 4 | 🟡 Draf (`docs/laporan/BAB4-hasil-pembahasan.md`) |
-| N10 | Draf BAB 5 (kesimpulan) | Minggu 4 | 🟡 Draf (`docs/laporan/BAB5-conclusion.md`) |
+| N10 | Draf BAB 5 (kesimpulan) | Minggu 4 | 🟡 Draf (`docs/laporan/BAB5-kesimpulan.md`) |
 
 ### Catatan penting untuk kamu
 
