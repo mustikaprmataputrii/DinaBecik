@@ -3,9 +3,12 @@
  *  Halaman: Dashboard
  * ============================================================================
  *  Menampilkan status acara dan status tiap DM (sudah/belum menilai).
- *  Panduan bagian 10: "Status acara, status tiap DM, pintasan menu".
- *
- *  Semua blok konten dibungkus kartu; latar batik hanya terlihat di celah.
+ *  Revisi pasca-presentasi:
+ *    - Semua DM memiliki pintasan Kelola Data (dengan hak kelola per peran).
+ *    - Menu Konsensus & perhitungan Weighted Borda (termasuk Panel Bukti
+ *      Akurasi Borda) hanya tampil pada akun Sesepuh.
+ *    - Semua DM dapat membuka Riwayat untuk melihat tanggal terpilih dan
+ *      komentar masing-masing keputusan.
  * ============================================================================
  */
 
@@ -18,13 +21,28 @@ import PanelBuktiAkurasi from '../components/PanelBuktiAkurasi.jsx';
 import { getAcara, getKandidat, getStatusSemuaDm, getHasilVoting, mulaiPenilaian } from '../data/index.js';
 import { DECISION_MAKERS, URUTAN_DM, STATUS_ACARA, METODE } from '../shared/constants.js';
 
-const PINTASAN = [
-  { ke: '/kelola', judul: 'Kelola Data', isi: 'Isi data hajatan sendiri', ikon: '✎' },
-  { ke: '/kandidat', judul: 'Data Acara', isi: 'Kandidat & weton', ikon: '▤' },
-  { ke: '/bobot', judul: 'Atur Bobot', isi: '5 kriteria, total 100%', ikon: '⚖' },
-  { ke: '/penilaian', judul: 'Penilaian Saya', isi: 'S, V, ranking WP', ikon: '◈' },
-  { ke: '/hasil', judul: 'Konsensus', isi: 'Hasil Weighted Borda', ikon: '★' },
-];
+function daftarPintasan(peran) {
+  const keteranganKelola =
+    peran === 'sesepuh'
+      ? 'Identitas, kandidat & nilai C1/C3/C4/C5'
+      : peran === 'wo'
+        ? 'Biaya C2 & nilai C1/C3/C4/C5'
+        : 'Nilai C1, C3, C4, C5 saya';
+
+  const dasar = [
+    { ke: '/kelola', judul: 'Kelola Data', isi: keteranganKelola, ikon: '✎' },
+    { ke: '/kandidat', judul: 'Data Acara', isi: 'Kandidat & weton', ikon: '▤' },
+    { ke: '/bobot', judul: 'Atur Bobot', isi: '5 kriteria, total 100%', ikon: '⚖' },
+    { ke: '/penilaian', judul: 'Penilaian Saya', isi: 'S, V, ranking WP', ikon: '◈' },
+  ];
+
+  if (peran === 'sesepuh') {
+    dasar.push({ ke: '/hasil', judul: 'Konsensus', isi: 'Hasil Weighted Borda', ikon: '★' });
+  }
+
+  dasar.push({ ke: '/riwayat', judul: 'Riwayat', isi: 'Keputusan selesai & komentar', ikon: '◷' });
+  return dasar;
+}
 
 /** Format tanggal Indonesia dari string ISO. */
 function tanggalPanjang(iso) {
@@ -34,6 +52,7 @@ function tanggalPanjang(iso) {
 }
 
 export default function HalamanDashboard({ sesi }) {
+  const adalahSesepuh = sesi?.peran === 'sesepuh';
   const [acara, setAcara] = useState(null);
   const [kandidat, setKandidat] = useState([]);
   const [statusDm, setStatusDm] = useState(null);
@@ -62,7 +81,7 @@ export default function HalamanDashboard({ sesi }) {
         getAcara(),
         getKandidat(),
         getStatusSemuaDm(),
-        getHasilVoting(),
+        getHasilVoting().catch(() => null),
       ]);
       if (batal) return;
       setAcara(a);
@@ -78,12 +97,13 @@ export default function HalamanDashboard({ sesi }) {
 
   const jumlahSudah = statusDm ? URUTAN_DM.filter((d) => statusDm[d]).length : 0;
   const dmSaya = DECISION_MAKERS.find((d) => d.key === sesi?.peran);
+  const pintasan = daftarPintasan(sesi?.peran);
 
-  // Pemenang dibaca dari hasil konsensus, lalu dicocokkan ke data kandidat.
-  // Tidak ada nama tanggal yang ditulis mati di sini.
+  // Pemenang dibaca dari hasil konsensus atau ringkasan acara, lalu dicocokkan ke data kandidat.
   const pemenangFinal = hasil?.rincian?.[0] ?? null;
-  const kandidatPemenang = pemenangFinal
-    ? kandidat.find((k) => k.kode === pemenangFinal.kode) ?? null
+  const kodePemenang = pemenangFinal?.kode ?? acara?.pemenang_kode ?? null;
+  const kandidatPemenang = kodePemenang
+    ? kandidat.find((k) => k.kode === kodePemenang) ?? null
     : null;
 
   return (
@@ -102,17 +122,19 @@ export default function HalamanDashboard({ sesi }) {
               Anda masuk sebagai{' '}
               <span className="font-semibold text-emas-200">{dmSaya?.jabatan}</span>. Penilaian Anda
               akan diberi bobot suara{' '}
-              <span className="angka font-semibold text-emas-200">{dmSaya?.bobotSuara}</span> pada
-              konsensus Weighted Borda.
+              <span className="angka font-semibold text-emas-200">{dmSaya?.bobotSuara}</span> dalam
+              pengambilan keputusan kelompok.
             </p>
           </div>
           <div className="flex shrink-0 flex-col items-end gap-2">
             <span className="chip-emas">
               <span aria-hidden="true">◈</span>
-              {METODE.penilaianIndividual} → {METODE.konsensus.split(' (')[0]}
+              {adalahSesepuh
+                ? `${METODE.penilaianIndividual} → ${METODE.konsensus.split(' (')[0]}`
+                : METODE.penilaianIndividual}
             </span>
             {acara?.status && <BadgeStatus status={acara.status} gelap ukuran="sm" />}
-            {acara?.status === STATUS_ACARA.DRAFT && sesi?.peran === 'sesepuh' && (
+            {acara?.status === STATUS_ACARA.DRAFT && adalahSesepuh && (
               <button
                 type="button"
                 onClick={tanganiMulaiPenilaian}
@@ -122,17 +144,23 @@ export default function HalamanDashboard({ sesi }) {
                 {mulaiSibuk ? 'Memulai…' : 'Mulai penilaian'}
               </button>
             )}
-            <a
-              href="#bukti-akurasi"
-              className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
-            >
-              Bukti akurasi ↓
-            </a>
+            {adalahSesepuh && (
+              <a
+                href="#bukti-akurasi"
+                className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
+              >
+                Bukti akurasi ↓
+              </a>
+            )}
           </div>
         </div>
       </Kartu>
 
-      {galatMulai && <p role="alert" className="rounded-md border border-bahaya-200 bg-bahaya-50 px-3 py-2 text-sm text-bahaya">{galatMulai}</p>}
+      {galatMulai && (
+        <p role="alert" className="rounded-md border border-bahaya-200 bg-bahaya-50 px-3 py-2 text-sm text-bahaya">
+          {galatMulai}
+        </p>
+      )}
 
       {memuat ? (
         <Kartu className="p-6 text-sm text-netral-500">Memuat data acara…</Kartu>
@@ -170,20 +198,22 @@ export default function HalamanDashboard({ sesi }) {
                   Metode
                 </div>
                 <div className="mt-1 text-sm font-medium text-sogan-800">
-                  {METODE.penilaianIndividual} → {METODE.konsensus.split(' (')[0]}
+                  {adalahSesepuh
+                    ? `${METODE.penilaianIndividual} → ${METODE.konsensus.split(' (')[0]}`
+                    : METODE.penilaianIndividual}
                 </div>
               </div>
             </div>
           </Kartu>
 
-          {/* ================= BUKTI AKURASI (angka contoh Tabel 7.2/7.3) ================= */}
-          <PanelBuktiAkurasi />
+          {/* ================= BUKTI AKURASI (khusus Sesepuh, memuat tabel Borda) ================= */}
+          {adalahSesepuh && <PanelBuktiAkurasi />}
 
           {/* ================= STATUS DM + PINTASAN ================= */}
           <div className="grid gap-6 lg:grid-cols-3">
             <Kartu varian="tebal" className="lg:col-span-2">
               <JudulKartu
-                keterangan="Voting terbuka hanya setelah ketiga DM mengirim penilaian"
+                keterangan="Keputusan final diproses hanya setelah ketiga DM mengirim penilaian"
                 aksi={
                   <span className="chip-krem">
                     <span className="angka font-semibold text-sogan-800">{jumlahSudah}</span>
@@ -251,7 +281,9 @@ export default function HalamanDashboard({ sesi }) {
               <div className="border-t border-sogan-200 px-5 py-3.5">
                 {jumlahSudah === URUTAN_DM.length ? (
                   <p className="rounded-md border border-selesai-300 bg-selesai-50 px-3 py-2 text-sm text-selesai">
-                    ✓ Ketiga DM sudah menilai. Konsensus Weighted Borda sudah dapat dihitung.
+                    {adalahSesepuh
+                      ? '✓ Ketiga DM sudah menilai. Konsensus Weighted Borda sudah tersedia di menu Konsensus.'
+                      : '✓ Ketiga DM sudah menilai. Keputusan final dan ruang komentar tersedia di menu Riwayat.'}
                   </p>
                 ) : (
                   <p className="rounded-md border border-sogan-200 bg-krem-100/70 px-3 py-2 text-sm text-netral-600">
@@ -269,7 +301,7 @@ export default function HalamanDashboard({ sesi }) {
             <Kartu varian="tebal">
               <JudulKartu keterangan="Menu utama">Pintasan</JudulKartu>
               <div className="space-y-2 p-4">
-                {PINTASAN.filter((p) => p.ke !== '/kelola' || sesi?.peran === 'sesepuh').map((p) => (
+                {pintasan.map((p) => (
                   <Link
                     key={p.ke}
                     to={p.ke}
@@ -297,12 +329,16 @@ export default function HalamanDashboard({ sesi }) {
             </Kartu>
           </div>
 
-          {/* ================= HASIL ================= */}
-          {hasil && (
+          {/* ================= HASIL RINGKAS ================= */}
+          {kodePemenang && (
             <Kartu varian="emas" bingkai>
               <JudulKartu
                 gelap
-                keterangan="Hasil final dibaca dari database yang sama oleh ketiga akun"
+                keterangan={
+                  adalahSesepuh
+                    ? 'Hasil final dibaca dari database yang sama; rincian Borda khusus Sesepuh'
+                    : 'Ringkasan tanggal terpilih; komentar keputusan tersedia di menu Riwayat'
+                }
                 aksi={<BadgeStatus status={STATUS_ACARA.SELESAI} ukuran="sm" gelap />}
               >
                 Tanggal Terpilih
@@ -310,7 +346,7 @@ export default function HalamanDashboard({ sesi }) {
               <div className="flex flex-wrap items-center justify-between gap-4 p-5">
                 <div>
                   <div className="text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-emas-300/70">
-                    Kandidat {pemenangFinal?.kode ?? '—'}
+                    Kandidat {kodePemenang}
                   </div>
                   <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-judul text-xl font-semibold text-emas-100">
                     {kandidatPemenang ? (
@@ -330,26 +366,35 @@ export default function HalamanDashboard({ sesi }) {
                       </span>
                     )}
                   </div>
-                  {pemenangFinal && (
-                    <div className="mt-1.5 text-xs text-krem-200/70">
-                      <span className="angka font-semibold text-emas-200">
-                        {pemenangFinal.totalPoin} poin
-                      </span>
-                      {kandidatPemenang && (
-                        <>
-                          {' · '}
-                          <span className="angka">Rp {kandidatPemenang.biaya} juta</span>
-                        </>
-                      )}
-                    </div>
-                  )}
+                  <div className="mt-1.5 text-xs text-krem-200/70">
+                    {adalahSesepuh && pemenangFinal && (
+                      <>
+                        <span className="angka font-semibold text-emas-200">
+                          {pemenangFinal.totalPoin} poin
+                        </span>
+                        {kandidatPemenang && ' · '}
+                      </>
+                    )}
+                    {kandidatPemenang && (
+                      <span className="angka">Rp {kandidatPemenang.biaya} juta</span>
+                    )}
+                  </div>
                 </div>
-                <Link
-                  to="/hasil"
-                  className="rounded-md bg-gradient-to-b from-emas-400 to-emas-600 px-4 py-2 text-sm font-semibold text-sogan-900 shadow-md transition hover:from-emas-300 hover:to-emas-500"
-                >
-                  Lihat rincian konsensus →
-                </Link>
+                {adalahSesepuh ? (
+                  <Link
+                    to="/hasil"
+                    className="rounded-md bg-gradient-to-b from-emas-400 to-emas-600 px-4 py-2 text-sm font-semibold text-sogan-900 shadow-md transition hover:from-emas-300 hover:to-emas-500"
+                  >
+                    Lihat rincian konsensus →
+                  </Link>
+                ) : (
+                  <Link
+                    to="/riwayat"
+                    className="rounded-md bg-gradient-to-b from-emas-400 to-emas-600 px-4 py-2 text-sm font-semibold text-sogan-900 shadow-md transition hover:from-emas-300 hover:to-emas-500"
+                  >
+                    Lihat riwayat &amp; komentar →
+                  </Link>
+                )}
               </div>
             </Kartu>
           )}
