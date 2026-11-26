@@ -165,42 +165,40 @@ Kamu meninjau **Nadya** (data & tampilan hasil).
 
 ---
 
-## NADYA — Data, Weton & Dokumentasi
+## NADYA ? Data, Weton & Dokumentasi
 
 ### File yang kamu miliki
 
 ```
-src/fixtures/dataAcuan.js    ← Tabel 7.1/7.2/7.3
-docs/                        ← laporan, slide, naskah demo
-docs/panduan-proyek.pdf      ← acuan
+src/fixtures/dataAcuan.js    <- Tabel 7.1/7.2/7.3
+docs/                        <- laporan, slide, naskah demo
+docs/panduan-proyek.pdf      <- acuan
 ```
 
 ### Tugas
 
 | # | Tugas | Target | Status |
 |---|---|---|---|
-| N1 | Verifikasi tabel neptu hari & pasaran | Minggu 1 | ✅ (sudah diverifikasi Agni) |
-| N2 | Verifikasi aturan skor weton (sisa → skor) | Minggu 1 | ✅ |
-| N3 | Verifikasi data dummy 6 kandidat Tabel 7.1 | Minggu 1 | ✅ |
-| N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | ✅ (`src/fixtures/dataUjiSeri.js`) |
-| N5 | Tulis latar belakang & landasan teori laporan | Minggu 2–3 | 🟡 Draf (`docs/laporan/BAB1-2-...md`) |
-| N6 | Susun slide presentasi | Minggu 4–5 | 🟡 Draf (`docs/laporan/SLIDE-PRESENTASI-N6.md`) |
-| N7 | Tulis naskah demo 7 menit | Minggu 5 | 🟡 Draf (`docs/laporan/NASKAH-DEMO-N7.md`) |
-| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | ✅ (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
+| N1 | Verifikasi tabel neptu hari & pasaran | Minggu 1 | Selesai (sudah diverifikasi Agni) |
+| N2 | Verifikasi aturan skor weton (sisa -> skor) | Minggu 1 | Selesai |
+| N3 | Verifikasi data dummy 6 kandidat Tabel 7.1 | Minggu 1 | Selesai |
+| N4 | Tambah data uji skenario SERI (untuk T6) | Minggu 1 | Selesai (`src/fixtures/dataUjiSeri.js`) |
+| N5 | Tulis latar belakang & landasan teori laporan | Minggu 2-3 | Draf (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
+| N6 | Susun slide presentasi | Minggu 4-5 | Draf PR #39 (`docs/laporan/SLIDE-PRESENTASI-N6.md`) |
+| N7 | Tulis naskah demo 7 menit | Minggu 5 | Draf PR #37 (`docs/laporan/NASKAH-DEMO-N7.md`) |
+| N8 | Kumpulkan referensi (Borda, WP, weton) | Minggu 3 | Selesai (`docs/laporan/BAB1-2-latar-belakang-landasan-teori.md`) |
+| N9 | Draf BAB 4 & BAB 5 | Minggu 4 | Draf PR #36 (`docs/laporan/BAB4-hasil-pembahasan.md`, `BAB5-kesimpulan.md`) |
+| N10 | Sinkronisasi pasca revisi dosen (#42) | Pasca presentasi | Berjalan: docs teknis/pembagian kerja; fixture/angka acuan menunggu Excel final Agni (#40) |
 
 ### Catatan penting untuk kamu
 
-⚠️ **Jangan mengubah `src/fixtures/dataAcuan.js`.** File itu dikunci oleh 51 unit
-test. Jika diubah, test merah dan seluruh kelompok terblokir.
-
-Jika butuh data uji baru (misalnya skenario seri), buat file **terpisah**:
-`src/fixtures/dataUjiSeri.js`
+- **Jangan mengubah `src/fixtures/dataAcuan.js` sendirian saat revisi acuan.** File itu dikunci test; sinkronkan dengan Excel Acuan final Agni (#40) dan perbarui fixture + test + dokumen secara terkoordinasi.
+- Jika butuh data uji baru (misalnya skenario seri), buat file **terpisah**: `src/fixtures/dataUjiSeri.js`.
+- Revisi dosen: Kelola Data dibagi per peran (Sesepuh identitas/kandidat, WO C2, semua DM C1/C3/C4/C5 per DM). C1 weton otomatis jadi acuan/nilai awal yang bisa disesuaikan DM. Konsensus/Borda hanya akun Sesepuh; komentar DM pindah ke Riwayat per keputusan.
 
 ### Peninjau kamu
 
 **Sri** meninjau data & tampilan hasil.
-
----
 
 ## Jadwal 5 Minggu
 

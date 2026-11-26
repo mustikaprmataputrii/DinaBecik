@@ -363,3 +363,35 @@ firebase -> @firebase/firestore -> @grpc/grpc-js@1.9.16
 - Bila nanti dipakai produksi, mitigasinya: naikkan versi `firebase` begitu
   rilis yang membawa `@grpc/grpc-js` lebih baru tersedia, lalu jalankan ulang
   `npm audit` dan test.
+
+---
+
+## 15. Revisi dosen pasca-presentasi (Issue #40/#41/#42)
+
+**Status: keputusan revisi diterima; implementasi masih berjalan di PR/issue terpisah.**
+Angka acuan Tabel 7.1/7.2/7.3 lama tetap menjadi baseline sampai Excel Acuan
+revisi final dari Agni (#40) disepakati dan test diperbarui bersama.
+
+### Keputusan
+
+| Butir | Keputusan revisi |
+|---|---|
+| Kelola Data - Sesepuh | Mengisi identitas hajatan dan daftar kandidat tanggal; sinkron ke semua akun. |
+| Kelola Data - WO | Mengisi **C2 biaya gedung + katering (juta rupiah)** untuk semua kandidat; sinkron ke semua akun. |
+| Kelola Data - semua DM | Masing-masing DM (Sesepuh, Orang Tua, WO) mengisi nilai **C1, C3, C4, C5** skala 1-5 **per DM** untuk perhitungan WP masing-masing. |
+| C1 Weton | Rumus weton otomatis tetap menjadi **acuan/nilai awal C1**, tetapi tiap DM boleh menyesuaikannya (1-5). |
+| Konsensus/Borda | Menu Konsensus dan perhitungan Weighted Borda **hanya tampil di akun Sesepuh**. Orang Tua/WO tidak melihat menu/perhitungan Borda; mereka melihat ringkasan tanggal terpilih. |
+| Komentar DM | Komentar Decision Maker dipindahkan dari halaman Konsensus ke **halaman Riwayat** per masing-masing keputusan; ketiga DM dapat membaca/menulis. |
+
+### Dampak ke area kerja
+
+- **Agni (#40)**: Excel Acuan, `src/shared/*`, `src/tests/*`, BAB3 - penyesuaian model nilai per DM dan akses konsensus.
+- **Alia (#41)**: kontrak adapter, Firestore rules, Worker - dukung hak kelola per peran, nilai C1/C3/C4/C5 per DM, pembatasan Konsensus.
+- **Nadya (#42)**: sinkron fixture/data acuan setelah Excel final, perbarui docs/laporan/slide/naskah demo.
+- **Sri (PR #43)**: UI/halaman sesuai pembagian hak akses dan pemindahan komentar ke Riwayat.
+
+### Catatan sinkronisasi angka
+
+Jangan mengubah `src/fixtures/dataAcuan.js` atau angka Tabel 7.2/7.3 di
+dokumen/laporan sampai Excel Acuan revisi dari Agni final. Setelah final,
+perbarui fixture + test + dokumen dalam koordinasi PR agar CI tetap hijau.
