@@ -25,6 +25,11 @@ import {
   simpanBobotDm,
   getPenilaianDm,
 } from '../data/index.js';
+import {
+  ambilNilaiDm,
+  gabungkanKandidatDenganNilaiDm,
+  keKandidatWP,
+} from '../components/nilaiKriteriaHelper.js';
 import { hitungWP, validasiBobot } from '../shared/wp.js';
 import {
   KRITERIA,
@@ -37,22 +42,6 @@ import {
 /** Batas aman satu kriteria (persen). */
 const MIN = 0;
 const MAX = 100;
-
-/**
- * Kandidat dari adapter berbentuk baris Tabel 7.1 (`skorWeton`), sedangkan
- * hitungWP() memakai key kriteria (`weton`). Pemetaan dilakukan di sini agar
- * lapisan data tidak perlu diubah.
- */
-function keKandidatWP(baris) {
-  return baris.map((k) => ({
-    kode: k.kode,
-    weton: k.skorWeton,
-    biaya: k.biaya,
-    gedung: k.gedung,
-    cuaca: k.cuaca,
-    tamu: k.tamu,
-  }));
-}
 
 /** Batasi nilai ke 0..100 dan bulatkan. */
 function rapikan(nilai) {
@@ -151,10 +140,11 @@ export default function HalamanBobot({ sesi }) {
         getKandidat(),
         getPenilaianDm('acara-demo-2027', userId),
       ]);
+      const { peta } = await ambilNilaiDm('acara-demo-2027', userId, k);
       if (batal) return;
       setAcara(a);
       setBobot(b);
-      setKandidat(keKandidatWP(k));
+      setKandidat(keKandidatWP(gabungkanKandidatDenganNilaiDm(k, peta)));
       setStatusKirim(Boolean(p?.statusKirim));
       setMemuat(false);
     })();

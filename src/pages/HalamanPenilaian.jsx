@@ -26,6 +26,13 @@ import {
   kirimPenilaian,
   getStatusSemuaDm,
 } from '../data/index.js';
+import {
+  BACKEND_NILAI_DM_SIAP,
+  ambilNilaiDm,
+  gabungkanKandidatDenganNilaiDm,
+  keKandidatWP,
+} from '../components/nilaiKriteriaHelper.js';
+import { hitungWP } from '../shared/wp.js';
 import { KRITERIA, URUTAN_KRITERIA, URUTAN_DM, DECISION_MAKERS } from '../shared/constants.js';
 
 const ACARA_ID = 'acara-demo-2027';
@@ -45,12 +52,14 @@ function nilaiKriteria(kandidat, key) {
 
 export default function HalamanPenilaian({ sesi }) {
   const userId = sesi?.peran;
+  const adalahSesepuh = userId === 'sesepuh';
   const dm = DECISION_MAKERS.find((d) => d.key === userId);
 
   const [acara, setAcara] = useState(null);
   const [kandidat, setKandidat] = useState([]);
   const [bobot, setBobot] = useState(null);
   const [penilaian, setPenilaian] = useState(null);
+  const [nilaiKustomLokal, setNilaiKustomLokal] = useState(false);
   const [statusDm, setStatusDm] = useState(null);
   const [memuat, setMemuat] = useState(true);
   const [mengirim, setMengirim] = useState(false);
@@ -64,10 +73,24 @@ export default function HalamanPenilaian({ sesi }) {
       getPenilaianDm(ACARA_ID, userId),
       getStatusSemuaDm(),
     ]);
+    const { peta, kustom } = await ambilNilaiDm(ACARA_ID, userId, k);
+    const gabungan = gabungkanKandidatDenganNilaiDm(k, peta);
+
+    let penilaianTampil = p;
+    if (!p?.statusKirim && !BACKEND_NILAI_DM_SIAP && kustom && b && gabungan.length > 0) {
+      try {
+        const wpLokal = hitungWP(keKandidatWP(gabungan), b);
+        penilaianTampil = { ...p, ...wpLokal };
+      } catch {
+        penilaianTampil = p;
+      }
+    }
+
     setAcara(a);
-    setKandidat(k);
+    setKandidat(gabungan);
     setBobot(b);
-    setPenilaian(p);
+    setPenilaian(penilaianTampil);
+    setNilaiKustomLokal(!BACKEND_NILAI_DM_SIAP && kustom);
     setStatusDm(s);
     setMemuat(false);
   }, [userId]);
@@ -159,12 +182,20 @@ export default function HalamanPenilaian({ sesi }) {
         <JudulKartu
           keterangan={`Bobot ${dm?.nama ?? userId} — total 100%`}
           aksi={
-            <Link
-              to="/bobot"
-              className="rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-xs font-medium text-sogan-700 shadow-sm transition hover:border-emas-500 hover:bg-emas-50"
-            >
-              Ubah bobot →
-            </Link>
+            <div className="flex flex-wrap items-center gap-2">
+              <Link
+                to="/kelola"
+                className="rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-xs font-medium text-sogan-700 shadow-sm transition hover:border-emas-500 hover:bg-emas-50"
+              >
+                Ubah nilai C1/C3/C4/C5 →
+              </Link>
+              <Link
+                to="/bobot"
+                className="rounded-md border border-sogan-300 bg-netral-0 px-3 py-1.5 text-xs font-medium text-sogan-700 shadow-sm transition hover:border-emas-500 hover:bg-emas-50"
+              >
+                Ubah bobot →
+              </Link>
+            </div>
           }
         >
           Bobot yang Dipakai
@@ -323,6 +354,13 @@ export default function HalamanPenilaian({ sesi }) {
 
         {/* ---- Aksi kirim ---- */}
         <div className="border-t border-sogan-200 px-5 py-4">
+          {nilaiKustomLokal && !terkunci && (
+            <p className="mb-3 rounded-md border border-emas-300 bg-emas-50 px-3 py-2 text-xs leading-relaxed text-emas-900">
+              Pratinjau S, V, dan ranking di atas sudah menghitung nilai C1/C3/C4/C5 pribadi Anda.
+              Pengiriman ke server memakai matriks nilai per DM menunggu pembaruan adapter &amp;
+              Worker dari Backend (<span className="font-semibold">@aliajuly</span>).
+            </p>
+          )}
           {terkunci ? (
             <div className="rounded-md border border-selesai-300 bg-selesai-50 px-3 py-2.5">
               <p className="text-sm font-medium text-selesai">
@@ -442,10 +480,10 @@ export default function HalamanPenilaian({ sesi }) {
 
             {semuaKirim && (
               <Link
-                to="/hasil"
+                to={adalahSesepuh ? '/hasil' : '/riwayat'}
                 className="mt-4 inline-block rounded-md bg-gradient-to-b from-emas-400 to-emas-600 px-4 py-2 text-sm font-semibold text-sogan-900 shadow-md transition hover:from-emas-300 hover:to-emas-500"
               >
-                Lihat konsensus →
+                {adalahSesepuh ? 'Lihat konsensus →' : 'Lihat riwayat keputusan →'}
               </Link>
             )}
           </div>

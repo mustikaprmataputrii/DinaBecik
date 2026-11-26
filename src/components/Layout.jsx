@@ -27,7 +27,8 @@ const MENU = [
 export default function Layout({ sesi, onLogout, children }) {
   const navigate = useNavigate();
   const dm = DECISION_MAKERS.find((d) => d.key === sesi?.peran);
-  const menu = MENU.filter((item) => item.ke !== '/kelola' || sesi?.peran === 'sesepuh');
+  // Semua DM memiliki menu Kelola Data; menu Konsensus (Borda) khusus Sesepuh.
+  const menu = MENU.filter((item) => item.ke !== '/hasil' || sesi?.peran === 'sesepuh');
 
   async function tanganiLogout() {
     await logout();

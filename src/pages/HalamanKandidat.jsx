@@ -21,8 +21,14 @@ import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
 import KalenderWeton from '../components/KalenderWeton.jsx';
 import { getAcara, getKandidat, getHasilVoting } from '../data/index.js';
+import {
+  ambilNilaiDm,
+  gabungkanKandidatDenganNilaiDm,
+} from '../components/nilaiKriteriaHelper.js';
 import { hitungSkorWeton } from '../shared/weton.js';
-import { KRITERIA, ATURAN_WETON, TOTAL_BOBOT_WAJIB } from '../shared/constants.js';
+import { KRITERIA, ATURAN_WETON, TOTAL_BOBOT_WAJIB, DECISION_MAKERS } from '../shared/constants.js';
+
+const ACARA_ID = 'acara-demo-2027';
 
 /** Format tanggal Indonesia. */
 function tanggalPanjang(iso) {
@@ -31,6 +37,8 @@ function tanggalPanjang(iso) {
 }
 
 export default function HalamanKandidat({ sesi }) {
+  const userId = sesi?.peran;
+  const dm = DECISION_MAKERS.find((d) => d.key === userId);
   const [acara, setAcara] = useState(null);
   const [kandidat, setKandidat] = useState([]);
   const [memuat, setMemuat] = useState(true);
@@ -40,27 +48,33 @@ export default function HalamanKandidat({ sesi }) {
   useEffect(() => {
     let batal = false;
     (async () => {
-      const [a, k, h] = await Promise.all([getAcara(), getKandidat(), getHasilVoting()]);
+      const [a, k, h] = await Promise.all([
+        getAcara(ACARA_ID),
+        getKandidat(ACARA_ID),
+        getHasilVoting(ACARA_ID).catch(() => null),
+      ]);
+      const { peta } = await ambilNilaiDm(ACARA_ID, userId, k);
       if (batal) return;
       setAcara(a);
-      setKandidat(k);
-      setKodePemenang(h?.rincian?.find((r) => r.rankingFinal === 1)?.kode ?? null);
+      setKandidat(gabungkanKandidatDenganNilaiDm(k, peta));
+      setKodePemenang(h?.rincian?.find((r) => r.rankingFinal === 1)?.kode ?? a?.pemenang_kode ?? null);
       setMemuat(false);
     })();
     return () => {
       batal = true;
     };
-  }, []);
+  }, [userId]);
 
   /**
    * Hitung ulang weton tiap kandidat dari tanggalnya, lalu bandingkan dengan
-   * data yang tersimpan. Kalau berbeda, tampilan memberi tanda agar tidak
+   * acuan weton yang tersimpan. Kalau berbeda, tampilan memberi tanda agar tidak
    * diam-diam salah.
    */
   const verifikasi = useMemo(() => {
     if (!acara || kandidat.length === 0) return [];
     return kandidat.map((k) => {
       const hitung = hitungSkorWeton(k.tanggal, acara.neptu_pria, acara.neptu_wanita);
+      const skorAcuan = k.skorWetonAcuan ?? k.skorWeton;
       return {
         kode: k.kode,
         hitung,
@@ -68,7 +82,7 @@ export default function HalamanKandidat({ sesi }) {
           hitung.hari === k.hari &&
           hitung.pasaran === k.pasaran &&
           hitung.neptuWeton === k.neptuWetonH &&
-          hitung.skor === k.skorWeton,
+          hitung.skor === skorAcuan,
       };
     });
   }, [acara, kandidat]);
@@ -95,8 +109,10 @@ export default function HalamanKandidat({ sesi }) {
               {acara?.nama_acara}
             </h1>
             <p className="mt-2 max-w-xl text-sm leading-relaxed text-krem-200/80">
-              {kandidat.length} kandidat tanggal. Skor weton (C1) dihitung otomatis dari tanggal —
-              tidak pernah diinput manual.
+              {kandidat.length} kandidat tanggal dari Sesepuh. C2 biaya diisi Wedding Organizer;
+              nilai C1, C3, C4, dan C5 di bawah menampilkan penilaian{' '}
+              <span className="font-semibold text-emas-200">{dm?.nama ?? userId}</span> (C1 diawali
+              acuan weton otomatis dan dapat disesuaikan).
             </p>
           </div>
           <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
@@ -108,7 +124,7 @@ export default function HalamanKandidat({ sesi }) {
               to="/kelola"
               className="rounded-md border border-emas-500/60 px-2.5 py-1 text-xs font-medium text-emas-200 transition hover:bg-emas-500/15 hover:text-emas-100"
             >
-              Ubah data →
+              Kelola data →
             </Link>
           </div>
         </div>
@@ -245,6 +261,11 @@ export default function HalamanKandidat({ sesi }) {
                         {k.skorWeton}
                         {v && !v.cocok && <span title="Tidak cocok dengan hitungan ulang">!</span>}
                       </span>
+                      {k.c1DiubahManual && (
+                        <span className="mt-0.5 block text-[0.58rem] text-netral-400">
+                          acuan {k.skorWetonAcuan}
+                        </span>
+                      )}
                     </td>
                     <td className="angka px-2 py-2.5 text-right text-xs text-netral-600">
                       {k.biaya}
@@ -297,7 +318,7 @@ export default function HalamanKandidat({ sesi }) {
         <Kartu varian="emas" bingkai>
           <JudulKartu
             gelap
-            keterangan="Skor C1 berasal dari rumus, bukan dari isian manual"
+            keterangan="Acuan awal skor C1 berasal dari rumus weton otomatis dan dapat disesuaikan per DM di Kelola Data"
             aksi={
               <button
                 type="button"
@@ -447,10 +468,10 @@ export default function HalamanKandidat({ sesi }) {
       </div>
 
       <BlokTeks judul="Catatan data" ikon="◈">
-        Angka Tabel 7.2/7.3 dikunci 50 unit test, tetapi isi tabel di atas adalah data yang
-        sedang aktif — bisa diganti lewat halaman{' '}
-        <span className="font-semibold text-sogan-800">Kelola Data</span>. Total bobot tiap DM
-        harus {TOTAL_BOBOT_WAJIB}%; bila tidak, penyimpanan ditolak. Neptu hari dan pasaran
+        Identitas hajatan &amp; daftar tanggal kandidat dikelola Sesepuh, biaya C2 dikelola Wedding
+        Organizer, sedangkan nilai C1, C3, C4, dan C5 dapat diisi terpisah oleh masing-masing DM di
+        halaman <span className="font-semibold text-sogan-800">Kelola Data</span>. Total bobot
+        tiap DM harus {TOTAL_BOBOT_WAJIB}%; bila tidak, penyimpanan ditolak. Neptu hari dan pasaran
         bersifat pasti, tetapi tafsir kecocokan dapat berbeda antar daerah.
       </BlokTeks>
     </div>

@@ -40,11 +40,15 @@ function Aplikasi() {
                 <Route path="/bobot" element={<HalamanBobot sesi={sesi} />} />
                 <Route path="/penilaian" element={<HalamanPenilaian sesi={sesi} />} />
                 <Route path="/kandidat" element={<HalamanKandidat sesi={sesi} />} />
+                <Route path="/kelola" element={<HalamanKelola sesi={sesi} />} />
                 <Route
-                  path="/kelola"
-                  element={sesi.peran === 'sesepuh' ? <HalamanKelola sesi={sesi} /> : <Navigate to="/dashboard" replace />}
+                  path="/hasil"
+                  element={sesi.peran === 'sesepuh' ? <HalamanHasil sesi={sesi} /> : <Navigate to="/dashboard" replace />}
                 />
-                <Route path="/hasil" element={<HalamanHasil sesi={sesi} />} />
+                <Route
+                  path="/hasil/:acaraId"
+                  element={sesi.peran === 'sesepuh' ? <HalamanHasil sesi={sesi} /> : <Navigate to="/dashboard" replace />}
+                />
                 <Route path="/riwayat" element={<HalamanRiwayat sesi={sesi} />} />
                 <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>

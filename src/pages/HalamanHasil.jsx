@@ -14,18 +14,18 @@
  */
 
 import { useEffect, useMemo, useState } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import Kartu, { JudulKartu, BlokTeks } from '../components/Kartu.jsx';
 import BadgeStatus from '../components/BadgeStatus.jsx';
 import BadgeWeton from '../components/BadgeWeton.jsx';
 import GrafikBorda from '../components/GrafikBorda.jsx';
-import PanelKomentar from '../components/PanelKomentar.jsx';
 import {
   getAcara,
   getKandidat,
   getStatusSemuaDm,
   getHasilVoting,
 } from '../data/index.js';
-import { cekGerbangVoting, poinBorda } from '../shared/borda.js';
+import { cekGerbangVoting } from '../shared/borda.js';
 import {
   BOBOT_JABATAN,
   DECISION_MAKERS,
@@ -44,6 +44,10 @@ function tanggalPanjang(iso) {
 const ACARA_ID = 'acara-demo-2027';
 
 export default function HalamanHasil({ sesi }) {
+  const { acaraId: paramAcaraId } = useParams();
+  const acaraId = paramAcaraId || ACARA_ID;
+  const adalahSesepuh = sesi?.peran === 'sesepuh';
+
   const [acara, setAcara] = useState(null);
   const [kandidat, setKandidat] = useState([]);
   const [statusDm, setStatusDm] = useState(null);
@@ -51,13 +55,14 @@ export default function HalamanHasil({ sesi }) {
   const [memuat, setMemuat] = useState(true);
 
   useEffect(() => {
+    if (!adalahSesepuh) return;
     let batal = false;
     (async () => {
       const [a, k, s, h] = await Promise.all([
-        getAcara(),
-        getKandidat(),
-        getStatusSemuaDm(),
-        getHasilVoting(),
+        getAcara(acaraId),
+        getKandidat(acaraId),
+        getStatusSemuaDm(acaraId),
+        getHasilVoting(acaraId),
       ]);
       if (batal) return;
       setAcara(a);
@@ -69,13 +74,18 @@ export default function HalamanHasil({ sesi }) {
     return () => {
       batal = true;
     };
-  }, []);
+  }, [acaraId, adalahSesepuh]);
 
   const gerbang = useMemo(() => cekGerbangVoting(statusDm ?? {}), [statusDm]);
   const petaKandidat = useMemo(
     () => Object.fromEntries(kandidat.map((k) => [k.kode, k])),
     [kandidat]
   );
+
+  // Halaman Konsensus & perhitungan Weighted Borda khusus akun Sesepuh.
+  if (!adalahSesepuh) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const pemenang = hasil?.rincian?.find((r) => r.rankingFinal === 1) ?? null;
   const jumlahKandidat = hasil?.jumlahKandidat ?? kandidat.length;
@@ -483,8 +493,18 @@ export default function HalamanHasil({ sesi }) {
         <GrafikBorda rincian={hasil.rincian} maksPoin={maksPoin} />
       </Kartu>
 
-      {/* ================= KOMENTAR DM (S12) ================= */}
-      <PanelKomentar acaraId={ACARA_ID} sesi={sesi} />
+      {/* ================= CATATAN KOMENTAR (dipindah ke Riwayat) ================= */}
+      <BlokTeks judul="Komentar Decision Maker" ikon="💬" className="tanpa-cetak">
+        Ruang komentar dan catatan diskusi dari ketiga decision maker untuk masing-masing keputusan
+        kini tersedia di halaman{' '}
+        <Link
+          to="/riwayat"
+          className="font-semibold text-emas-700 underline decoration-emas-400/60 hover:text-emas-800"
+        >
+          Riwayat Keputusan →
+        </Link>
+        .
+      </BlokTeks>
 
       {/* ================= JEJAK PERHITUNGAN ================= */}
       <BlokTeks judul="Cara membaca hasil" ikon="◈">
